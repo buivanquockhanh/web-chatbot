@@ -5,85 +5,493 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0b3a35">
 <title>SAFE NET 4A | Trợ lý an toàn số</title>
-<meta name="description" content="SAFE NET 4A - Không gian nhận diện, phân tích và tìm hướng hỗ trợ an toàn trên không gian mạng.">
-<link rel="preconnect" href="https://googleapis.com">
-<link rel="preconnect" href="https://gstatic.com" crossorigin>
-<link href="https://googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://googleapis.com" rel="stylesheet">
 <style>
-:root{--ink:#0e2f2c;--deep:#0b3a35;--pine:#123f39;--teal:#0e7466;--teal-bright:#17997f;--teal-soft:#dcefe4;--coral:#d4684a;--coral-deep:#b34e31;--amber:#e9a13b;--paper:#f2ede1;--card:#fffdf7;--sand:#eae2ce;--line:#ddd3bd;--muted:#61756d;--cream:#f6f1e4;--shadow:0 20px 50px rgba(14,47,44,.10);--shadow-soft:0 8px 22px rgba(14,47,44,.07);--radius:22px}
+:root{--ink:#0e2f2c;--deep:#0b3a35;--teal:#0e7466;--teal-bright:#17997f;--teal-soft:#dcefe4;--coral:#d4684a;--coral-deep:#b34e31;--amber:#e9a13b;--paper:#f2ede1;--card:#fffdf7;--line:#ddd3bd;--muted:#61756d;--cream:#f6f1e4;--shadow:0 20px 50px rgba(14,47,44,.10);--radius:22px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:"Be Vietnam Pro",system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
-body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://w3.org' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .04 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E")}
-main,header.topbar,footer{position:relative;z-index:1}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Be Vietnam Pro",system-ui,sans-serif;line-height:1.55}
 button,textarea{font:inherit}button{cursor:pointer}a{color:inherit}
-.ic{width:1em;height:1em;display:inline-block;vertical-align:-.12em;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
-.reveal{opacity:0;transform:translateY(14px);animation:rise .7s cubic-bezier(.22,.8,.3,1) forwards}
-@keyframes rise{to{opacity:1;transform:none}}
-.d1{animation-delay:.05s}.d2{animation-delay:.14s}.d3{animation-delay:.23s}.d4{animation-delay:.32s}
-.topbar{position:sticky;top:0;z-index:30;background:rgba(11,58,53,.94);backdrop-filter:blur(14px);color:var(--cream);box-shadow:0 1px 0 rgba(246,241,228,.12)}
+.ic{width:1em;height:1em;display:inline-block;vertical-align:-.12em;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.topbar{position:sticky;top:0;z-index:30;background:rgba(11,58,53,.95);color:var(--cream)}
 .nav{max-width:1180px;margin:auto;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.brand{display:flex;align-items:center;gap:12px;color:var(--cream)}
-.logo{width:44px;height:44px;border-radius:14px;background:linear-gradient(140deg,var(--teal-bright),#0c5a50);display:grid;place-items:center;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18),0 8px 18px rgba(11,58,53,.4)}
-.logo .ic{width:24px;height:24px}
-.brand strong{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:17px;letter-spacing:.03em;font-weight:700}
-.brand small{display:block;color:#b9cdc2;font-size:10.5px;letter-spacing:.04em}
-.nav-actions{display:flex;gap:8px;flex-wrap:wrap}
-.btn{border:0;border-radius:999px;padding:10px 16px;font-size:12px;font-weight:700;transition:.18s;display:inline-flex;align-items:center;gap:7px}
-.btn .ic{width:14px;height:14px}.btn:hover{transform:translateY(-2px)}.btn:active{transform:translateY(0)}
-.btn-primary{background:var(--coral);color:#fff;box-shadow:0 8px 18px rgba(212,104,74,.35)}.btn-primary:hover{background:var(--coral-deep)}
-.btn-cream{background:var(--cream);color:var(--deep);border:1px solid rgba(246,241,228,.25)}
-.btn-soft{background:var(--teal-soft);color:var(--deep);border:1px solid #c4e0d2}.btn-soft:hover{background:#cfe9dd}
-.btn-quiet{background:transparent;color:var(--muted);border:1px solid var(--line)}.btn-quiet:hover{background:var(--card);color:var(--deep)}
-main{max-width:1180px;margin:0 auto;padding:30px 22px 60px}
-.hero{display:grid;grid-template-columns:1.5fr .9fr;gap:20px;margin:6px 0 26px;align-items:stretch}
-.hero-main{padding:6px 0 0}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:10.5px;font-weight:800;letter-spacing:.18em;color:var(--teal);text-transform:uppercase}
-.eyebrow::before{content:"";width:26px;height:2px;background:var(--coral);border-radius:2px}
-h1{font-family:"Bricolage Grotesque",sans-serif;font-size:clamp(32px,4.6vw,52px);line-height:1.08;margin:14px 0 16px;letter-spacing:-.02em;font-weight:800;color:var(--deep)}
-h1 em{font-style:normal;color:var(--teal);position:relative;white-space:nowrap}
-h1 em::after{content:"";position:absolute;left:0;right:0;bottom:.04em;height:.14em;background:var(--amber);opacity:.55;border-radius:99px;z-index:-1}
-.hero-main p{max-width:640px;color:var(--muted);font-size:13.5px;margin:0}
-.hero-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
-.chip{display:inline-flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 13px 7px 8px;font-size:11px;font-weight:600;color:var(--deep);box-shadow:var(--shadow-soft)}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:42px;height:42px;border-radius:13px;background:var(--teal-bright);display:grid;place-items:center;color:#fff}
+.brand strong{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:17px}
+.brand small{display:block;color:#b9cdc2;font-size:10.5px}
+.nav-actions{display:flex;gap:8px}
+.btn{border:0;border-radius:999px;padding:9px 15px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+.btn-primary{background:var(--coral);color:#fff}.btn-cream{background:var(--cream);color:var(--deep)}.btn-soft{background:var(--teal-soft);color:var(--deep)}.btn-quiet{background:transparent;color:var(--muted);border:1px solid var(--line)}
+main{max-width:1180px;margin:0 auto;padding:26px 22px 60px}
+.hero{display:grid;grid-template-columns:1.5fr .9fr;gap:20px;margin-bottom:24px}
+.eyebrow{font-size:10.5px;font-weight:800;letter-spacing:.15em;color:var(--teal);text-transform:uppercase}
+h1{font-family:"Bricolage Grotesque",sans-serif;font-size:clamp(30px,4.5vw,48px);line-height:1.1;margin:10px 0 14px;color:var(--deep)}
+h1 em{font-style:normal;color:var(--teal)}
+.hero-main p{color:var(--muted);font-size:13.5px;margin:0}
+.hero-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.chip{display:inline-flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 13px 6px 8px;font-size:11px;font-weight:600}
 .chip b{width:22px;height:22px;border-radius:50%;background:var(--deep);color:var(--cream);font-size:9px;display:grid;place-items:center}
-.hero-rail{background:var(--deep);color:var(--cream);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;position:relative;overflow:hidden;display:flex;flex-direction:column}
-.hero-rail::after{content:"";position:absolute;width:220px;height:220px;border-radius:50%;border:1.5px dashed rgba(246,241,228,.18);right:-70px;bottom:-70px}
-.hero-rail h2{font-family:"Bricolage Grotesque",sans-serif;font-size:18px;margin:0 0 4px;font-weight:700}
-.hero-rail .sub{font-size:11px;color:#b9cdc2;margin:0 0 16px}
-.ladder{display:grid;gap:0;position:relative;z-index:1}
-.rung{display:flex;gap:13px;align-items:flex-start;padding:10px 0;position:relative}
-.rung::before{content:"";position:absolute;left:15px;top:0;bottom:0;width:1.5px;background:rgba(246,241,228,.16)}
-.rung:first-child::before{top:50%}.rung:last-child::before{bottom:50%}
-.rung-dot{width:31px;height:31px;flex:0 0 31px;border-radius:50%;background:rgba(246,241,228,.08);border:1.5px solid rgba(246,241,228,.3);display:grid;place-items:center;font-size:10px;font-weight:800;position:relative;z-index:1}
-.rung:nth-child(1) .rung-dot{background:var(--teal-bright);border-color:transparent;color:#fff}
-.rung:nth-child(4) .rung-dot{background:var(--coral);border-color:transparent;color:#fff}
-.rung b{display:block;font-size:12.5px;font-weight:700}.rung span{font-size:10.5px;color:#b9cdc2}
-.support{background:var(--deep);color:var(--cream);border-radius:26px;box-shadow:var(--shadow);padding:30px;margin:0 0 26px;position:relative;overflow:hidden}
-.support::before{content:"";position:absolute;inset:0;background:radial-gradient(420px 220px at 88% -10%,rgba(23,153,127,.35),transparent 70%),radial-gradient(300px 200px at 0% 120%,rgba(212,104,74,.22),transparent 70%);pointer-events:none}
-.support-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px;position:relative;z-index:1}
-.support-head .eyebrow{color:var(--amber)}.support-head .eyebrow::before{background:var(--amber)}
-.support-head h2{font-family:"Bricolage Grotesque",sans-serif;font-size:clamp(21px,2.6vw,28px);margin:8px 0 4px;font-weight:700}
-.support-head p{font-size:12px;color:#b9cdc2;margin:0;max-width:560px}
-.support-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:14px;position:relative;z-index:1}
-.support-card{background:rgba(246,241,228,.07);border:1px solid rgba(246,241,228,.16);border-radius:18px;padding:18px;display:flex;flex-direction:column;transition:.2s}
-.support-card:hover{background:rgba(246,241,228,.11);transform:translateY(-3px)}
-.support-card.main{background:var(--cream);color:var(--ink);border-color:transparent}.support-card.main:hover{background:#fff}
-.person{display:flex;align-items:center;gap:14px;margin-bottom:14px}
-.person-avatar{width:56px;height:56px;flex:0 0 56px;border-radius:18px;background:linear-gradient(140deg,var(--teal-bright),var(--deep));color:#fff;display:grid;place-items:center;font-family:"Bricolage Grotesque",sans-serif;font-size:19px;font-weight:700;box-shadow:0 10px 22px rgba(11,58,53,.3)}
-.person-name{font-family:"Bricolage Grotesque",sans-serif;font-size:17px;font-weight:700;line-height:1.2}
-.person-role{font-size:11px;font-weight:700;color:var(--coral-deep);margin-top:2px}
-.person-org{font-size:10.5px;color:var(--muted);margin-top:1px}
-.contact-rows{display:grid;gap:9px;margin-top:auto}
-.contact-row{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:13px;background:var(--card);border:1px solid var(--line);color:var(--deep);text-decoration:none;font-size:12px;font-weight:600;transition:.18s}
-.contact-row:hover{border-color:var(--teal);background:var(--teal-soft);transform:translateX(3px)}
-.contact-row .bubble-ic{width:34px;height:34px;flex:0 0 34px;border-radius:11px;display:grid;place-items:center;font-size:16px}
-.contact-row.tel .bubble-ic{background:var(--teal-soft);color:var(--teal)}
-.contact-row.mail .bubble-ic{background:#f7e8d7;color:var(--coral-deep)}
-.contact-row small{display:block;font-size:9.5px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
-.support-card h3{font-size:13.5px;margin:2px 0 6px;font-weight:700;display:flex;align-items:center;gap:8px}
-.support-card h3 .ic{width:16px;height:16px;color:var(--amber)}
-.support-card .desc{font-size:11px;color:#b9cdc2;margin:0 0 14px;flex:1}
-.support-card.main .desc{color:var(--muted)}
-.support-card .btn{margin-top:auto;justify-content:center}
-.support-note{margin-top:16px;padding-top:14px;border-top:1px dashed rgba(246,241,228,.22);font-size:10.5px;color:#b9cdc2;display:flex;align-items:center;gap:8px;position:relative;z-index:1}
-.support-note .ic{width:15px;height:15px;color:var(--amber)}
+.hero-rail{background:var(--deep);color:var(--cream);border-radius:var(--radius);padding:22px}
+.hero-rail h2{font-family:"Bricolage Grotesque",sans-serif;font-size:18px;margin:0 0 4px}
+.hero-rail .sub{font-size:11px;color:#b9cdc2;margin:0 0 14px}
+.rung{display:flex;gap:12px;padding:8px 0}
+.rung-dot{width:30px;height:30px;flex:0 0 30px;border-radius:50%;background:rgba(246,241,228,.12);border:1.5px solid rgba(246,241,228,.3);display:grid;place-items:center;font-size:10px;font-weight:800}
+.rung:nth-child(1) .rung-dot{background:var(--teal-bright);border-color:transparent}
+.rung:nth-child(4) .rung-dot{background:var(--coral);border-color:transparent}
+.rung b{display:block;font-size:12.5px}.rung span{font-size:10.5px;color:#b9cdc2}
+.support{background:var(--deep);color:var(--cream);border-radius:24px;padding:26px;margin-bottom:24px}
+.support-head .eyebrow{color:var(--amber)}
+.support-head h2{font-family:"Bricolage Grotesque",sans-serif;font-size:24px;margin:6px 0 4px}
+.support-head p{font-size:12px;color:#b9cdc2;margin:0 0 18px}
+.support-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:14px}
+.support-card{background:rgba(246,241,228,.08);border:1px solid rgba(246,241,228,.16);border-radius:16px;padding:16px;display:flex;flex-direction:column}
+.support-card.main{background:var(--cream);color:var(--ink)}
+.person{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.person-avatar{width:48px;height:48px;border-radius:14px;background:var(--teal);color:#fff;display:grid;place-items:center;font-weight:700}
+.person-name{font-weight:700;font-size:16px}.person-role{font-size:11px;font-weight:700;color:var(--coral-deep)}.person-org{font-size:10.5px;color:var(--muted)}
+.contact-row{display:block;padding:9px 12px;border-radius:11px;background:var(--card);border:1px solid var(--line);color:var(--deep);text-decoration:none;font-size:12px;font-weight:600;margin-top:8px}
+.support-card h3{font-size:13.5px;margin:0 0 6px}.support-card .desc{font-size:11px;color:#b9cdc2;margin:0 0 12px;flex:1}.support-card.main .desc{color:var(--muted)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:18px;align-items:start}
+.chat-shell{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.chat-head{padding:15px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;background:#faf6ec}
+.chat-title{display:flex;align-items:center;gap:10px}
+.bot-avatar{width:38px;height:38px;border-radius:12px;background:var(--deep);color:var(--cream);display:grid;place-items:center;font-weight:800}
+.online{color:#1d7a55;font-size:10px;font-weight:700;background:#e7f3ea;border-radius:999px;padding:4px 10px}
+.upload-strip{padding:10px 18px;background:#f4efe2;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:11.5px}
+.upload-label{font-weight:700;color:var(--deep);cursor:pointer;background:var(--card);border:1px solid var(--line);padding:6px 12px;border-radius:999px}
+.upload-label:hover{border-color:var(--teal);background:var(--teal-soft)}
+#fileInput{display:none}#fileStatus{font-weight:600;color:var(--teal);font-size:11px}
+.messages{height:56vh;min-height:380px;overflow-y:auto;padding:18px;background:#f8f5ec}
+.welcome{max-width:600px;margin:12px auto;text-align:center}
+.welcome h2{font-family:"Bricolage Grotesque",sans-serif;font-size:21px;margin:0 0 6px;color:var(--deep)}
+.welcome p{font-size:12px;color:var(--muted);margin:0 0 14px}
+.suggestions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.suggestion{border:1px solid var(--line);background:var(--card);color:#41564f;border-radius:999px;padding:7px 13px;font-size:10.5px;font-weight:600}
+.suggestion:hover{background:var(--teal-soft);border-color:var(--teal)}
+.msg-row{display:flex;margin:12px 0;gap:9px;align-items:flex-end}.msg-row.user{justify-content:flex-end}
+.msg-avatar{width:28px;height:28px;flex:0 0 28px;border-radius:9px;background:var(--deep);color:var(--cream);display:grid;place-items:center;font-size:10px;font-weight:800}
+.bubble{max-width:82%;padding:12px 15px;border-radius:16px;background:var(--card);border:1px solid var(--line);font-size:12.5px;white-space:pre-wrap;overflow-wrap:anywhere}
+.user .bubble{background:var(--deep);color:var(--cream);border-color:var(--deep)}
+.msg-time{font-size:9px;color:#9aa79e;margin-top:4px}.user .msg-time{text-align:right}
+.composer{border-top:1px solid var(--line);padding:12px 15px;background:var(--card)}
+.composer-wrap{display:flex;align-items:flex-end;gap:8px;border:1.5px solid var(--line);background:#fffef9;border-radius:14px;padding:7px 8px 7px 13px}
+#messageInput{width:100%;border:0;outline:0;resize:none;min-height:36px;max-height:120px;background:transparent;font-size:12.5px;padding:7px 0}
+.send{width:38px;height:38px;border:0;border-radius:11px;background:var(--coral);color:#fff;font-weight:bold}
+.send:disabled{opacity:.45}
+.composer-note{display:flex;justify-content:space-between;padding-top:6px;color:#8c9a91;font-size:9.5px}
+.side{display:grid;gap:12px}
+.side-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:15px;border-left:3px solid var(--teal)}
+.side-card:nth-child(2){border-left-color:var(--amber)}.side-card:nth-child(3){border-left-color:var(--coral)}
+.side-card h3{font-size:13px;margin:0 0 4px;color:var(--deep)}.side-card p{font-size:10.5px;color:var(--muted);margin:0}
+.resources{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
+.resource{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.resource b{display:block;font-size:14px;color:var(--deep)}.resource p{font-size:11px;color:var(--muted);margin:4px 0 12px}
+.footer{text-align:center;color:#7d8f85;font-size:10.5px;padding:22px 10px}
+.modal-backdrop{position:fixed;inset:0;background:rgba(9,38,35,.6);display:none;align-items:center;justify-content:center;padding:18px;z-index:50}
+.modal-backdrop.show{display:flex}.modal{max-width:600px;width:100%;background:var(--card);border-radius:20px;padding:22px}.modal-close{float:right}
+@media(max-width:900px){.hero,.support-grid,.layout,.resources{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <nav class="nav">
+    <div class="brand">
+      <div class="logo">🛡️</div>
+      <div><strong>SAFE NET 4A</strong><small>THPT Mộ Đức · Không gian hỗ trợ an toàn số</small></div>
+    </div>
+    <div class="nav-actions">
+      <button class="btn btn-cream" id="handbookTop">Cẩm nang 4A</button>
+      <button class="btn btn-primary" id="newChatTop">+ Cuộc trò chuyện mới</button>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-main">
+      <span class="eyebrow">Adaptive digital safety system</span>
+      <h1>Mỗi câu chuyện,<br>một hướng hỗ trợ <em>phù hợp</em>.</h1>
+      <p>Trò chuyện tự nhiên, hỏi tiếp khi cần và điều chỉnh hướng hỗ trợ theo những gì bạn chia sẻ. SAFE NET đồng hành cùng bạn qua 4A: Nhận diện – Phân tích – Thích ứng – Hỗ trợ.</p>
+      <div class="hero-chips">
+        <span class="chip"><b>A1</b> Nhận diện</span>
+        <span class="chip"><b>A2</b> Phân tích</span>
+        <span class="chip"><b>A3</b> Thích ứng</span>
+        <span class="chip"><b>A4</b> Hỗ trợ</span>
+      </div>
+    </div>
+    <aside class="hero-rail">
+      <h2>Bốn trụ cột 4A</h2>
+      <p class="sub">Mỗi lượt trò chuyện có thể mở ra hướng tìm hiểu mới.</p>
+      <div class="rung"><span class="rung-dot">A1</span><div><b>Awareness · Nhận diện</b><span>Quan sát điều gì đang xảy ra.</span></div></div>
+      <div class="rung"><span class="rung-dot">A2</span><div><b>Analysis · Phân tích</b><span>Làm rõ vai trò và mức độ ảnh hưởng.</span></div></div>
+      <div class="rung"><span class="rung-dot">A3</span><div><b>Adaptation · Thích ứng</b><span>Chọn cách ứng phó phù hợp.</span></div></div>
+      <div class="rung"><span class="rung-dot">A4</span><div><b>Assistance · Hỗ trợ</b><span>Kết nối người lớn đáng tin cậy.</span></div></div>
+    </aside>
+  </section>
+
+  <section class="support" id="nguoi-ho-tro">
+    <div class="support-head">
+      <span class="eyebrow">Người hỗ trợ trực tiếp</span>
+      <h2>Khi bạn cần một người thật bên cạnh</h2>
+      <p>Chatbot chỉ là bước khởi đầu. Dưới đây là người phụ trách dự án sẵn sàng lắng nghe và hỗ trợ bạn tại trường.</p>
+    </div>
+    <div class="support-grid">
+      <article class="support-card main">
+        <div class="person">
+          <div class="person-avatar">NB</div>
+          <div>
+            <div class="person-name">Nguyễn Bảo Ngân</div>
+            <div class="person-role">Giáo viên phụ trách dự án</div>
+            <div class="person-org">THPT Mộ Đức</div>
+          </div>
+        </div>
+        <p class="desc">Bạn có thể gọi điện hoặc gửi email để hẹn gặp, trao đổi về bất kỳ tình huống nào khiến bạn không an toàn.</p>
+        <a class="contact-row" href="tel:0900000000">📞 Điện thoại: 0900 000 000</a>
+        <a class="contact-row" href="mailto:nguoihotro@thptmoduc.edu.vn">✉️ Email: nguoihotro@thptmoduc.edu.vn</a>
+      </article>
+      <article class="support-card">
+        <h3>Trạm Lắng Nghe</h3>
+        <p class="desc">Kênh chia sẻ ẩn danh do dự án thiết lập. Bạn có thể viết ra những điều chưa muốn nói bằng lời.</p>
+        <button class="btn btn-cream" id="padletBtn">Mở Trạm Lắng Nghe ↗</button>
+      </article>
+      <article class="support-card">
+        <h3>Khi có nguy cơ ngay lập tức</h3>
+        <p class="desc">Nếu bạn hoặc một bạn khác đang bị đe dọa, ép buộc hoặc mất an toàn, hãy gọi tổng đài quốc gia bảo vệ trẻ em.</p>
+        <a class="btn btn-primary" href="tel:111">Gọi tổng đài 111</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="layout" id="chat">
+    <div class="chat-shell">
+      <div class="chat-head">
+        <div class="chat-title">
+          <div class="bot-avatar">4A</div>
+          <div><strong style="display:block;font-size:14px">SAFE NET AI</strong><small style="color:var(--muted);font-size:10px">AI trò chuyện nhiều lượt · Hỗ trợ học tập &amp; an toàn số</small></div>
+        </div>
+        <span class="online">● Sẵn sàng trò chuyện</span>
+      </div>
+
+      <div class="upload-strip">
+        <label for="fileInput" class="upload-label">📎 Đính kèm tài liệu (PDF, DOCX, TXT)</label>
+        <input type="file" id="fileInput" accept=".pdf,.docx,.txt" />
+        <span id="fileStatus">Chưa chọn tài liệu</span>
+      </div>
+
+      <div class="messages" id="messages">
+        <div class="welcome" id="welcome">
+          <h2>Tôi có thể giúp gì cho bạn?</h2>
+          <p>Bạn có thể tải tài liệu lên hoặc chia sẻ câu chuyện của mình bên dưới.</p>
+          <div class="suggestions" id="suggestions"></div>
+        </div>
+      </div>
+
+      <form class="composer" id="chatForm">
+        <div class="composer-wrap">
+          <textarea id="messageInput" rows="1" maxlength="4000" placeholder="Nhập câu hỏi hoặc câu chuyện của bạn… (Enter để gửi)"></textarea>
+          <button class="send" id="sendBtn" type="submit">➤</button>
+        </div>
+        <div class="composer-note">
+          <span>Không nhập mật khẩu hoặc thông tin nhạy cảm.</span>
+          <span id="counter">0/4000</span>
+        </div>
+      </form>
+    </div>
+
+    <aside class="side">
+      <div class="side-card"><h3>A1 · Nhận diện</h3><p>Phân biệt hành vi bắt nạt, xung đột, trêu đùa và tình huống chưa đủ dữ kiện.</p></div>
+      <div class="side-card"><h3>A2–A3 · Phân tích &amp; thích ứng</h3><p>Làm rõ vai trò, tần suất, ảnh hưởng và chọn giải pháp phù hợp.</p></div>
+      <div class="side-card"><h3>A4 · Hỗ trợ</h3><p>Gợi ý cách tìm người lớn đáng tin cậy, giáo viên hoặc kênh hỗ trợ phù hợp.</p></div>
+    </aside>
+  </section>
+
+  <section class="resources">
+    <article class="resource"><b>Cẩm nang SAFE NET 4A</b><p>Tìm hiểu bốn bước nhận diện, phân tích, thích ứng và hỗ trợ.</p><button class="btn btn-soft" id="handbookCard">Mở cẩm nang ›</button></article>
+    <article class="resource"><b>Làm mới hội thoại</b><p>Bắt đầu một chủ đề mới. Nội dung hội thoại hiện tại sẽ được xóa khỏi giao diện.</p><button class="btn btn-quiet" id="newChatCard">Bắt đầu lại ›</button></article>
+  </section>
+</main>
+
+<footer class="footer">Dự án nghiên cứu khoa học · <b>SAFE NET 4A</b> · THPT Mộ Đức</footer>
+
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <button class="btn btn-quiet modal-close" id="modalClose">Đóng ✕</button>
+    <h2>Cẩm nang SAFE NET 4A</h2>
+    <p><b>A1 · Nhận diện:</b> Quan sát nội dung, người liên quan, tần suất và bối cảnh.</p>
+    <p><b>A2 · Phân tích:</b> Làm rõ điều gì đã xảy ra, ai bị ảnh hưởng và mức độ rủi ro.</p>
+    <p><b>A3 · Thích ứng:</b> Bảo vệ tài khoản, lưu bằng chứng, đặt giới hạn phù hợp.</p>
+    <p><b>A4 · Hỗ trợ:</b> Kết nối người lớn đáng tin cậy, giáo viên hoặc tổng đài 111.</p>
+  </div>
+</div>
+<script>
+(function() {
+  function byId(id) { return document.getElementById(id); }
+
+  function injectCss(url) {
+    var l = document.createElement("link");
+    l.rel = "stylesheet";
+    l.href = url;
+    document.head.appendChild(l);
+  }
+  function injectScript(url) {
+    return new Promise(function(resolve, reject) {
+      var s = document.createElement("script");
+      s.src = url;
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+
+  var katexBase = "https" + "://" + "cdn.jsdelivr.net/npm/katex@0.16.11/dist/";
+  injectCss(katexBase + "katex.min.css");
+  injectScript(katexBase + "katex.min.js").then(function() {
+    return injectScript(katexBase + "contrib/auto-render.min.js");
+  }).catch(function() {});
+
+  async function ensurePdfLib() {
+    if (typeof window.pdfjsLib !== "undefined") return window.pdfjsLib;
+    var sources = [
+      {
+        lib: "https" + "://" + "cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js",
+        worker: "https" + "://" + "cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js"
+      },
+      {
+        lib: "https" + "://" + "://unpkg.com",
+        worker: "https" + "://" + "://unpkg.com"
+      }
+    ];
+    for (var i = 0; i < sources.length; i++) {
+      try {
+        await injectScript(sources[i].lib);
+        if (typeof window.pdfjsLib !== "undefined") {
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc = sources[i].worker;
+          return window.pdfjsLib;
+        }
+      } catch (e) {}
+    }
+    throw new Error("Không thể tải thư viện đọc PDF.");
+  }
+
+  async function ensureMammothLib() {
+    if (typeof window.mammoth !== "undefined") return window.mammoth;
+    var urls = [
+      "https" + "://" + "cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js",
+      "https" + "://" + "://unpkg.com"
+    ];
+    for (var i = 0; i < urls.length; i++) {
+      try {
+        await injectScript(urls[i]);
+        if (typeof window.mammoth !== "undefined") return window.mammoth;
+      } catch (e) {}
+    }
+    throw new Error("Không thể tải thư viện đọc file Word.");
+  }
+
+  ensurePdfLib().catch(function() {});
+  ensureMammothLib().catch(function() {});
+
+  var extractedText = "";
+  var uploadedFileName = "";
+
+  byId("fileInput").addEventListener("change", async function(e) {
+    var file = e.target.files.item(0);
+    if (!file) return;
+    var status = byId("fileStatus");
+    status.style.color = "var(--teal)";
+    status.textContent = "Đang đọc tài liệu...";
+    uploadedFileName = file.name;
+    extractedText = "";
+
+    try {
+      var lower = file.name.toLowerCase();
+      if (lower.endsWith(".txt")) {
+        extractedText = await file.text();
+      } else if (lower.endsWith(".pdf")) {
+        var pdfLib = await ensurePdfLib();
+        var buf = await file.arrayBuffer();
+        var pdf = await pdfLib.getDocument({ data: buf }).promise;
+        var full = "";
+        for (var i = 1; i <= pdf.numPages; i++) {
+          var page = await pdf.getPage(i);
+          var content = await page.getTextContent();
+          full += content.items.map(function(it) { return it.str; }).join(" ") + "\n";
+        }
+        extractedText = full.trim();
+      } else if (lower.endsWith(".docx")) {
+        var mammothLib = await ensureMammothLib();
+        var buf = await file.arrayBuffer();
+        var res = await mammothLib.extractRawText({ arrayBuffer: buf });
+        extractedText = res.value.trim();
+      }
+
+      if (!extractedText) {
+        status.style.color = "#b34e31";
+        status.textContent = "⚠️ File rỗng hoặc là PDF ảnh scan";
+      } else {
+        status.style.color = "#1d7a55";
+        status.textContent = "✅ Đã nạp: " + file.name + " (" + extractedText.length + " ký tự)";
+      }
+    } catch (err) {
+      status.style.color = "#b34e31";
+      status.textContent = "❌ Lỗi đọc file: " + err.message;
+    }
+  });
+
+  var messagesEl = byId("messages");
+  var inputEl = byId("messageInput");
+  var sendBtn = byId("sendBtn");
+  var form = byId("chatForm");
+
+  var SUGGESTIONS = [
+    { label: "Bị nói xấu trong nhóm chat", prompt: "Mình đang bị một nhóm bạn nói xấu và chế giễu trong nhóm chat lớp. Mình không biết nên phản ứng thế nào." },
+    { label: "Cảm thấy bị cô lập", prompt: "Mình cảm thấy bị cô lập, các bạn thường không cho mình tham gia vào nhóm." },
+    { label: "Áp lực học tập", prompt: "Mình đang chịu áp lực học tập và cảm thấy rất khó cân bằng mọi thứ." },
+    { label: "Bị làm phiền trên mạng", prompt: "Có người lạ liên tục nhắn tin làm phiền và khiến mình thấy không an toàn." }
+  ];
+
+  function renderSuggestions() {
+    var box = byId("suggestions");
+    if (!box) return;
+    box.innerHTML = "";
+    SUGGESTIONS.forEach(function(item) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "suggestion";
+      btn.textContent = "• " + item.label;
+      btn.addEventListener("click", function() { sendMessage(item.prompt); });
+      box.appendChild(btn);
+    });
+  }
+  renderSuggestions();
+
+  var history = [];
+  var busy = false;
+
+  function timeLabel() {
+    return new Intl.DateTimeFormat("vi-VN", { hour: "2-digit", minute: "2-digit" }).format(new Date());
+  }
+
+  function addMessage(role, text) {
+    var w = byId("welcome");
+    if (w) w.remove();
+
+    var row = document.createElement("div");
+    row.className = "msg-row " + (role === "user" ? "user" : "assistant");
+    if (role !== "user") {
+      var avatar = document.createElement("div");
+      avatar.className = "msg-avatar";
+      avatar.textContent = "4A";
+      row.appendChild(avatar);
+    }
+    var wrap = document.createElement("div");
+    var bubble = document.createElement("div");
+    bubble.className = "bubble";
+    bubble.textContent = text;
+    var time = document.createElement("div");
+    time.className = "msg-time";
+    time.textContent = timeLabel();
+    wrap.appendChild(bubble);
+    wrap.appendChild(time);
+    row.appendChild(wrap);
+    messagesEl.appendChild(row);
+
+    if (role !== "user" && typeof window.renderMathInElement === "function") {
+      window.renderMathInElement(bubble, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$", right: "$", display: false }
+        ],
+        throwOnError: false
+      });
+    }
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function setBusy(val) {
+    busy = val;
+    sendBtn.disabled = val;
+    inputEl.disabled = val;
+    sendBtn.textContent = val ? "…" : "➤";
+  }
+
+  async function sendMessage(text) {
+    var clean = text.trim();
+    if (!clean || busy || clean.length > 4000) return;
+
+    addMessage("user", clean);
+    inputEl.value = "";
+    byId("counter").textContent = "0/4000";
+    inputEl.style.height = "auto";
+    setBusy(true);
+
+    try {
+      var response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: clean,
+          history: history.slice(-20),
+          fileName: uploadedFileName,
+          fileContent: extractedText
+        })
+      });
+
+      var data = await response.json().catch(function() { return {}; });
+      if (!response.ok) {
+        throw new Error(data.error || "Chưa thể kết nối SAFE NET lúc này.");
+      }
+
+      var answer = (data.reply || "").trim();
+      history.push({ role: "user", text: clean });
+      history.push({ role: "model", text: answer });
+      addMessage("assistant", answer);
+    } catch (error) {
+      addMessage("assistant", "Mình chưa kết nối được với hệ thống AI. " + error.message);
+    } finally {
+      setBusy(false);
+      inputEl.focus();
+    }
+  }
+
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+    sendMessage(inputEl.value);
+  });
+
+  inputEl.addEventListener("input", function() {
+    byId("counter").textContent = inputEl.value.length + "/4000";
+    inputEl.style.height = "auto";
+    inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + "px";
+  });
+
+  inputEl.addEventListener("keydown", function(e) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      form.requestSubmit();
+    }
+  });
+
+  function newChat() {
+    if (busy) return;
+    history.length = 0;
+    messagesEl.innerHTML = '<div class="welcome" id="welcome"><h2>Tôi có thể giúp gì cho bạn?</h2><p>Bạn có thể tải tài liệu lên hoặc chia sẻ câu chuyện của mình bên dưới.</p><div class="suggestions" id="suggestions"></div></div>';
+    renderSuggestions();
+    inputEl.focus();
+  }
+
+  byId("newChatTop").addEventListener("click", newChat);
+  byId("newChatCard").addEventListener("click", newChat);
+
+  var modal = byId("modalBackdrop");
+  byId("handbookTop").addEventListener("click", function() { modal.classList.add("show"); });
+  byId("handbookCard").addEventListener("click", function() { modal.classList.add("show"); });
+  byId("modalClose").addEventListener("click", function() { modal.classList.remove("show"); });
+  modal.addEventListener("click", function(e) { if (e.target === modal) modal.classList.remove("show"); });
+
+  byId("padletBtn").addEventListener("click", function() {
+    window.open("https://padlet.com", "_blank", "noopener,noreferrer");
+  });
+})();
+</script>
+</body>
+</html>
