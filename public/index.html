@@ -10,13 +10,14 @@
     .header { background: #1e3a8a; color: #fff; padding: 16px 20px; font-weight: bold; font-size: 18px; display: flex; justify-content: space-between; align-items: center; }
     .upload-bar { background: #e0e7ff; padding: 10px 20px; display: flex; align-items: center; gap: 10px; font-size: 14px; border-bottom: 1px solid #c7d2fe; flex-wrap: wrap; }
     .chat-box { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
-    .msg { max-width: 80%; padding: 12px 16px; border-radius: 12px; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word; }
+    .msg { max-width: 82%; padding: 12px 16px; border-radius: 12px; line-height: 1.6; white-space: pre-wrap; word-wrap: break-word; }
     .user { align-self: flex-end; background: #2563eb; color: #fff; }
     .bot { align-self: flex-start; background: #f1f5f9; color: #0f172a; border: 1px solid #e2e8f0; }
     .input-area { display: flex; padding: 14px; border-top: 1px solid #e2e8f0; gap: 10px; }
     input[type="text"] { flex: 1; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 15px; outline: none; }
     button { background: #2563eb; color: #fff; border: none; padding: 0 20px; border-radius: 8px; font-weight: bold; cursor: pointer; }
     button:disabled { background: #94a3b8; }
+    .katex-display { margin: 8px 0; overflow-x: auto; overflow-y: hidden; }
   </style>
 </head>
 <body>
@@ -33,7 +34,7 @@
     </div>
 
     <div class="chat-box" id="chatBox">
-      <div class="msg bot">Xin chào! Bạn có thể tải tài liệu (PDF, Word, TXT) lên thanh phía trên, sau đó đặt câu hỏi để mình hỗ trợ nhé.</div>
+      <div class="msg bot">Xin chào! Bạn có thể tải tài liệu (PDF, Word, TXT) lên thanh phía trên, sau đó đặt câu hỏi (kể cả bài tập Toán, Lý, Hóa có công thức) để mình hỗ trợ nhé.</div>
     </div>
 
     <div class="input-area">
@@ -47,6 +48,13 @@
     var uploadedFileName = "";
     var chatHistory = [];
 
+    function injectCss(url) {
+      var l = document.createElement('link');
+      l.rel = 'stylesheet';
+      l.href = url;
+      document.head.appendChild(l);
+    }
+
     function injectScript(url) {
       return new Promise(function(resolve, reject) {
         var s = document.createElement('script');
@@ -57,7 +65,14 @@
       });
     }
 
-    // Tự động tải thư viện PDF từ nhiều nguồn dự phòng (jsDelivr -> unpkg -> cdnjs)
+    // 1. Nạp thư viện vẽ công thức toán KaTeX đẹp chuẩn sách giáo khoa
+    var katexBase = "https" + "://" + "cdn.jsdelivr.net/npm/katex@0.16.11/dist/";
+    injectCss(katexBase + "katex.min.css");
+    injectScript(katexBase + "katex.min.js").then(function() {
+      return injectScript(katexBase + "contrib/auto-render.min.js");
+    }).catch(function(e) { console.error("Lỗi tải KaTeX:", e); });
+
+    // 2. Nạp thư viện đọc PDF và Word đa nguồn dự phòng
     async function ensurePdfLib() {
       if (typeof window.pdfjsLib !== 'undefined') return window.pdfjsLib;
       var sources = [
@@ -68,13 +83,8 @@
         {
           lib: "https" + "://" + "://unpkg.com",
           worker: "https" + "://" + "://unpkg.com"
-        },
-        {
-          lib: "https" + "://" + "://cloudflare.com",
-          worker: "https" + "://" + "://cloudflare.com"
         }
       ];
-
       for (var i = 0; i < sources.length; i++) {
         try {
           await injectScript(sources[i].lib);
@@ -84,7 +94,7 @@
           }
         } catch (e) {}
       }
-      throw new Error("Không thể kết nối máy chủ thư viện PDF (kiểm tra lại mạng).");
+      throw new Error("Không thể tải thư viện đọc PDF.");
     }
 
     async function ensureMammothLib() {
@@ -102,7 +112,6 @@
       throw new Error("Không thể tải thư viện đọc file Word.");
     }
 
-    // Tải trước thư viện ngay khi mở trang
     ensurePdfLib().catch(function() {});
     ensureMammothLib().catch(function() {});
 
@@ -157,6 +166,18 @@
       div.className = "msg " + sender;
       div.textContent = text;
       box.appendChild(div);
+
+      // Tự động vẽ đẹp công thức toán học nếu là tin nhắn từ bot
+      if (sender === 'bot' && typeof window.renderMathInElement === 'function') {
+        window.renderMathInElement(div, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '$', right: '$', display: false }
+          ],
+          throwOnError: false
+        });
+      }
+
       box.scrollTop = box.scrollHeight;
     }
 
