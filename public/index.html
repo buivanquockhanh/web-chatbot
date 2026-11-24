@@ -4,16 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SAFE NET 4A — Trợ lý AI KHKT</title>
-  <!-- Thư viện đọc PDF và Word ngay trên trình duyệt -->
   <script src="https://cloudflare.com"></script>
   <script src="https://cloudflare.com"></script>
   <style>
     body { font-family: system-ui, sans-serif; background: #f0f4f8; margin: 0; display: flex; justify-content: center; height: 100vh; }
     .container { width: 100%; max-width: 720px; background: #fff; display: flex; flex-direction: column; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
     .header { background: #1e3a8a; color: #fff; padding: 16px 20px; font-weight: bold; font-size: 18px; display: flex; justify-content: space-between; align-items: center; }
-    .upload-bar { background: #e0e7ff; padding: 10px 20px; display: flex; align-items: center; gap: 10px; font-size: 14px; border-bottom: 1px solid #c7d2fe; }
+    .upload-bar { background: #e0e7ff; padding: 10px 20px; display: flex; align-items: center; gap: 10px; font-size: 14px; border-bottom: 1px solid #c7d2fe; flex-wrap: wrap; }
     .chat-box { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
-    .msg { max-width: 80%; padding: 12px 16px; border-radius: 12px; line-height: 1.5; white-space: pre-wrap; }
+    .msg { max-width: 80%; padding: 12px 16px; border-radius: 12px; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word; }
     .user { align-self: flex-end; background: #2563eb; color: #fff; }
     .bot { align-self: flex-start; background: #f1f5f9; color: #0f172a; border: 1px solid #e2e8f0; }
     .input-area { display: flex; padding: 14px; border-top: 1px solid #e2e8f0; gap: 10px; }
@@ -51,7 +50,6 @@
     let uploadedFileName = "";
     let chatHistory = [];
 
-    // Xử lý đọc file khi người dùng chọn tài liệu
     document.getElementById('fileInput').addEventListener('change', async (e) => {
       const file = e.target.files[0];
       if (!file) return;
@@ -60,9 +58,9 @@
       uploadedFileName = file.name;
 
       try {
-        if (file.name.endsWith('.txt')) {
+        if (file.name.toLowerCase().endsWith('.txt')) {
           extractedText = await file.text();
-        } else if (file.name.endsWith('.pdf')) {
+        } else if (file.name.toLowerCase().endsWith('.pdf')) {
           const arrayBuffer = await file.arrayBuffer();
           const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
           let fullText = "";
@@ -72,7 +70,7 @@
             fullText += content.items.map(item => item.str).join(" ") + "\n";
           }
           extractedText = fullText;
-        } else if (file.name.endsWith('.docx')) {
+        } else if (file.name.toLowerCase().endsWith('.docx')) {
           const arrayBuffer = await file.arrayBuffer();
           const result = await mammoth.extractRawText({ arrayBuffer });
           extractedText = result.value;
@@ -114,14 +112,25 @@
             fileContent: extractedText
           })
         });
-        const data = await res.json();
-        const reply = data.reply || data.error;
+
+        const rawText = await res.text();
+        let data;
+        try {
+          data = JSON.parse(rawText);
+        } catch (parseErr) {
+          appendMessage(`Lỗi phản hồi từ Vercel (Mã ${res.status}): Kiểm tra lại cấu trúc thư mục api/chat.js trên GitHub.`, 'bot');
+          return;
+        }
+
+        const reply = data.reply || data.error || "Không nhận được phản hồi.";
         appendMessage(reply, 'bot');
 
-        chatHistory.push({ role: 'user', text: message });
-        chatHistory.push({ role: 'model', text: reply });
+        if (data.reply) {
+          chatHistory.push({ role: 'user', text: message });
+          chatHistory.push({ role: 'model', text: reply });
+        }
       } catch (err) {
-        appendMessage("Lỗi kết nối máy chủ.", 'bot');
+        appendMessage("Lỗi kết nối mạng tới máy chủ: " + err.message, 'bot');
       } finally {
         btn.disabled = false;
       }
