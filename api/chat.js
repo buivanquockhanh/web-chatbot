@@ -25,21 +25,19 @@ export default async function handler(req, res) {
       { role: 'user', parts: [{ text: message }] }
     ];
 
-    const geminiUrl = "https://googleapis.com" + apiKey;
+    // Ghép từng phần URL để đảm bảo không bị trình duyệt rút gọn nhầm khi copy
+    const host = "://googleapis.com";
+    const path = "/v1beta/models/gemini-2.5-flash:generateContent";
+    const geminiUrl = `https://${host}${path}?key=${encodeURIComponent(apiKey)}`;
 
-    let geminiRes;
-    try {
-      geminiRes = await fetch(geminiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          systemInstruction: { parts: [{ text: systemInstruction }] },
-          contents: contents
-        })
-      });
-    } catch (netErr) {
-      return res.status(500).json({ error: 'Lỗi kết nối tới Google Gemini: ' + (netErr.cause?.message || netErr.message) });
-    }
+    const geminiRes = await fetch(geminiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        systemInstruction: { parts: [{ text: systemInstruction }] },
+        contents: contents
+      })
+    });
 
     const data = await geminiRes.json();
 
