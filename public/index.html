@@ -45,37 +45,41 @@
   </div>
 
   <script>
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cloudflare.com';
-    let extractedText = "";
-    let uploadedFileName = "";
-    let chatHistory = [];
+    var extractedText = "";
+    var uploadedFileName = "";
+    var chatHistory = [];
 
-    document.getElementById('fileInput').addEventListener('change', async (e) => {
-      const file = e.target.files[0];
+    if (typeof pdfjsLib !== 'undefined') {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cloudflare.com';
+    }
+
+    document.getElementById('fileInput').addEventListener('change', async function(e) {
+      var file = e.target.files.item(0);
       if (!file) return;
-      const status = document.getElementById('fileStatus');
+      var status = document.getElementById('fileStatus');
       status.textContent = "Đang đọc file...";
       uploadedFileName = file.name;
 
       try {
-        if (file.name.toLowerCase().endsWith('.txt')) {
+        var lowerName = file.name.toLowerCase();
+        if (lowerName.endsWith('.txt')) {
           extractedText = await file.text();
-        } else if (file.name.toLowerCase().endsWith('.pdf')) {
-          const arrayBuffer = await file.arrayBuffer();
-          const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-          let fullText = "";
-          for (let i = 1; i <= pdf.numPages; i++) {
-            const page = await pdf.getPage(i);
-            const content = await page.getTextContent();
-            fullText += content.items.map(item => item.str).join(" ") + "\n";
+        } else if (lowerName.endsWith('.pdf')) {
+          var arrayBuffer = await file.arrayBuffer();
+          var pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+          var fullText = "";
+          for (var i = 1; i <= pdf.numPages; i++) {
+            var page = await pdf.getPage(i);
+            var content = await page.getTextContent();
+            fullText += content.items.map(function(item) { return item.str; }).join(" ") + "\n";
           }
           extractedText = fullText;
-        } else if (file.name.toLowerCase().endsWith('.docx')) {
-          const arrayBuffer = await file.arrayBuffer();
-          const result = await mammoth.extractRawText({ arrayBuffer });
+        } else if (lowerName.endsWith('.docx')) {
+          var arrayBuffer = await file.arrayBuffer();
+          var result = await mammoth.extractRawText({ arrayBuffer: arrayBuffer });
           extractedText = result.value;
         }
-        status.textContent = `✅ Đã nạp (${extractedText.length} ký tự)`;
+        status.textContent = "✅ Đã nạp (" + extractedText.length + " ký tự)";
       } catch (err) {
         status.textContent = "❌ Lỗi đọc file";
         console.error(err);
@@ -83,18 +87,18 @@
     });
 
     function appendMessage(text, sender) {
-      const box = document.getElementById('chatBox');
-      const div = document.createElement('div');
-      div.className = `msg ${sender}`;
+      var box = document.getElementById('chatBox');
+      var div = document.createElement('div');
+      div.className = "msg " + sender;
       div.textContent = text;
       box.appendChild(div);
       box.scrollTop = box.scrollHeight;
     }
 
     async function sendMessage() {
-      const input = document.getElementById('userInput');
-      const btn = document.getElementById('sendBtn');
-      const message = input.value.trim();
+      var input = document.getElementById('userInput');
+      var btn = document.getElementById('sendBtn');
+      var message = input.value.trim();
       if (!message) return;
 
       appendMessage(message, 'user');
@@ -102,27 +106,27 @@
       btn.disabled = true;
 
       try {
-        const res = await fetch('/api/chat', {
+        var res = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            message,
+            message: message,
             history: chatHistory,
             fileName: uploadedFileName,
             fileContent: extractedText
           })
         });
 
-        const rawText = await res.text();
-        let data;
+        var rawText = await res.text();
+        var data;
         try {
           data = JSON.parse(rawText);
         } catch (parseErr) {
-          appendMessage(`Lỗi phản hồi từ Vercel (Mã ${res.status}): Kiểm tra lại cấu trúc thư mục api/chat.js trên GitHub.`, 'bot');
+          appendMessage("Lỗi từ máy chủ Vercel (Mã " + res.status + "): Kiểm tra lại file api/chat.js trên GitHub.", 'bot');
           return;
         }
 
-        const reply = data.reply || data.error || "Không nhận được phản hồi.";
+        var reply = data.reply || data.error || "Không nhận được phản hồi.";
         appendMessage(reply, 'bot');
 
         if (data.reply) {
