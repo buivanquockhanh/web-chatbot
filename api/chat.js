@@ -12,7 +12,6 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Chưa cấu hình biến GEMINI_API_KEY trên Vercel.' });
     }
 
-    // Ghép ngữ cảnh tài liệu và lịch sử hội thoại vào prompt gửi cho AI
     let fullPrompt = "Bạn là trợ lý AI giáo dục của dự án SAFE NET 4A. Hãy trả lời thân thiện, chính xác và dễ hiểu bằng tiếng Việt.\n\n";
     
     if (fileContent) {
@@ -33,25 +32,38 @@ export default async function handler(req, res) {
     const path = "/v1beta/interactions";
     const apiUrl = "https" + "://" + host + path;
 
-    const geminiRes = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-goog-api-key': apiKey
-      },
-      body: JSON.stringify({
-        model: "gemini-3.8-flash",
-        input: fullPrompt
-      })
-    });
+    // Danh sách model ưu tiên: nếu model chính quá tải sẽ tự động chuyển sang model dự phòng
+    const models = ["gemini-3.8-flash", "gemini-3.8-flash-lite", "gemini-4-hydrogen"];
+    let data = null;
+    let lastError = "";
 
-    const data = await geminiRes.json();
+    for (const modelName of models) {
+      const geminiRes = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goog-api-key': apiKey
+        },
+        body: JSON.stringify({
+          model: modelName,
+          input: fullPrompt
+        })
+      });
 
-    if (data.error) {
-      return res.status(500).json({ error: 'Lỗi từ Gemini API: ' + data.error.message });
+      data = await geminiRes.json();
+
+      // Nếu gọi thành công (không có lỗi), thoát vòng lặp ngay
+      if (!data.error) {
+        break;
+      }
+      lastError = data.error.message;
     }
 
-    // Trích xuất câu trả lời từ cấu trúc Interactions API mới
+    if (data && data.error) {
+      return res.status(500).json({ error: 'Tất cả model AI đều đang bận: ' + lastError });
+    }
+
+    // Trích xuất câu trả lời từ cấu trúc Interactions API
     let reply = "Xin lỗi, AI chưa thể phản hồi lúc này.";
     if (data.steps && Array.isArray(data.steps)) {
       const modelStep = data.steps.find(step => step.type === 'model_output');
@@ -60,7 +72,7 @@ export default async function handler(req, res) {
       }
     }
 
-    // Lưu lịch sử chat và dữ liệu tài liệu về Google Sheets
+    // Tự động lưu lịch sử chat và dữ liệu tài liệu về Google Sheets
     if (sheetUrl && sheetUrl.startsWith('http')) {
       await fetch(sheetUrl, {
         method: 'POST',
