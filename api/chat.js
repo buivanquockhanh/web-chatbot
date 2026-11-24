@@ -57,8 +57,15 @@ export default async function handler(req, res) {
       { role: 'user', content: message }
     ];
 
-    const groqUrl = "https" + "://://groq.com";
-    const groqModels = ["openai/gpt-oss-120b", "qwen/qwen3.8-27b", "openai/gpt-oss-20b"];
+    const proto = "https";
+    const domain = "api" + ".groq" + ".com";
+    const groqUrl = proto + "://" + domain + "/openai/v1/chat/completions";
+
+    const groqModels = [
+      "openai/gpt-oss-120b",
+      "qwen/qwen3.8-27b",
+      "openai/gpt-oss-20b"
+    ];
 
     let data = null;
     let lastError = "";
