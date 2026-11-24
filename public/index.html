@@ -47,25 +47,64 @@
     var uploadedFileName = "";
     var chatHistory = [];
 
-    // Tự động nạp thư viện PDF.js và Mammoth.js bằng nối chuỗi để không bao giờ bị rút gọn link
-    function loadScript(url, callback) {
-      var s = document.createElement('script');
-      s.src = url;
-      s.onload = callback || function() {};
-      document.head.appendChild(s);
+    function injectScript(url) {
+      return new Promise(function(resolve, reject) {
+        var s = document.createElement('script');
+        s.src = url;
+        s.onload = resolve;
+        s.onerror = reject;
+        document.head.appendChild(s);
+      });
     }
 
-    var cdnBase = "https" + "://" + "://cloudflare.com" + "/ajax/libs/";
-    var pdfLibUrl = cdnBase + "pdf.js/3.11.174/pdf.min.js";
-    var pdfWorkerUrl = cdnBase + "pdf.js/3.11.174/pdf.worker.min.js";
-    var mammothUrl = cdnBase + "mammoth/1.6.0/mammoth.browser.min.js";
+    // Tự động tải thư viện PDF từ nhiều nguồn dự phòng (jsDelivr -> unpkg -> cdnjs)
+    async function ensurePdfLib() {
+      if (typeof window.pdfjsLib !== 'undefined') return window.pdfjsLib;
+      var sources = [
+        {
+          lib: "https" + "://" + "cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js",
+          worker: "https" + "://" + "cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js"
+        },
+        {
+          lib: "https" + "://" + "://unpkg.com",
+          worker: "https" + "://" + "://unpkg.com"
+        },
+        {
+          lib: "https" + "://" + "://cloudflare.com",
+          worker: "https" + "://" + "://cloudflare.com"
+        }
+      ];
 
-    loadScript(pdfLibUrl, function() {
-      if (typeof pdfjsLib !== 'undefined') {
-        pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
+      for (var i = 0; i < sources.length; i++) {
+        try {
+          await injectScript(sources[i].lib);
+          if (typeof window.pdfjsLib !== 'undefined') {
+            window.pdfjsLib.GlobalWorkerOptions.workerSrc = sources[i].worker;
+            return window.pdfjsLib;
+          }
+        } catch (e) {}
       }
-    });
-    loadScript(mammothUrl);
+      throw new Error("Không thể kết nối máy chủ thư viện PDF (kiểm tra lại mạng).");
+    }
+
+    async function ensureMammothLib() {
+      if (typeof window.mammoth !== 'undefined') return window.mammoth;
+      var urls = [
+        "https" + "://" + "cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js",
+        "https" + "://" + "://unpkg.com"
+      ];
+      for (var i = 0; i < urls.length; i++) {
+        try {
+          await injectScript(urls[i]);
+          if (typeof window.mammoth !== 'undefined') return window.mammoth;
+        } catch (e) {}
+      }
+      throw new Error("Không thể tải thư viện đọc file Word.");
+    }
+
+    // Tải trước thư viện ngay khi mở trang
+    ensurePdfLib().catch(function() {});
+    ensureMammothLib().catch(function() {});
 
     document.getElementById('fileInput').addEventListener('change', async function(e) {
       var file = e.target.files.item(0);
@@ -81,11 +120,9 @@
         if (lowerName.endsWith('.txt')) {
           extractedText = await file.text();
         } else if (lowerName.endsWith('.pdf')) {
-          if (typeof pdfjsLib === 'undefined') {
-            throw new Error("Đang tải thư viện PDF, vui lòng thử chọn lại file sau 2 giây");
-          }
+          var pdfLib = await ensurePdfLib();
           var arrayBuffer = await file.arrayBuffer();
-          var pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+          var pdf = await pdfLib.getDocument({ data: arrayBuffer }).promise;
           var fullText = "";
           for (var i = 1; i <= pdf.numPages; i++) {
             var page = await pdf.getPage(i);
@@ -94,11 +131,9 @@
           }
           extractedText = fullText.trim();
         } else if (lowerName.endsWith('.docx')) {
-          if (typeof mammoth === 'undefined') {
-            throw new Error("Đang tải thư viện Word, vui lòng thử chọn lại file sau 2 giây");
-          }
+          var mammothLib = await ensureMammothLib();
           var arrayBuffer = await file.arrayBuffer();
-          var result = await mammoth.extractRawText({ arrayBuffer: arrayBuffer });
+          var result = await mammothLib.extractRawText({ arrayBuffer: arrayBuffer });
           extractedText = result.value.trim();
         }
 
