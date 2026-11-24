@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SAFE NET 4A — Trợ lý AI KHKT</title>
-  <script src="https://cloudflare.com"></script>
-  <script src="https://cloudflare.com"></script>
+  <script src="https://unpkg.com"></script>
+  <script src="https://unpkg.com"></script>
   <style>
     body { font-family: system-ui, sans-serif; background: #f0f4f8; margin: 0; display: flex; justify-content: center; height: 100vh; }
     .container { width: 100%; max-width: 720px; background: #fff; display: flex; flex-direction: column; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
@@ -49,22 +49,29 @@
     var uploadedFileName = "";
     var chatHistory = [];
 
+    // Ghép chuỗi URL worker để đảm bảo không bị trình duyệt rút gọn khi copy
+    var workerUrl = "https" + "://" + "://unpkg.com";
     if (typeof pdfjsLib !== 'undefined') {
-      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cloudflare.com';
+      pdfjsLib.GlobalWorkerOptions.workerSrc = workerUrl;
     }
 
     document.getElementById('fileInput').addEventListener('change', async function(e) {
       var file = e.target.files.item(0);
       if (!file) return;
       var status = document.getElementById('fileStatus');
+      status.style.color = "#059669";
       status.textContent = "Đang đọc file...";
       uploadedFileName = file.name;
+      extractedText = "";
 
       try {
         var lowerName = file.name.toLowerCase();
         if (lowerName.endsWith('.txt')) {
           extractedText = await file.text();
         } else if (lowerName.endsWith('.pdf')) {
+          if (typeof pdfjsLib === 'undefined') {
+            throw new Error("Chưa tải được thư viện đọc PDF");
+          }
           var arrayBuffer = await file.arrayBuffer();
           var pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
           var fullText = "";
@@ -73,15 +80,26 @@
             var content = await page.getTextContent();
             fullText += content.items.map(function(item) { return item.str; }).join(" ") + "\n";
           }
-          extractedText = fullText;
+          extractedText = fullText.trim();
         } else if (lowerName.endsWith('.docx')) {
+          if (typeof mammoth === 'undefined') {
+            throw new Error("Chưa tải được thư viện đọc Word");
+          }
           var arrayBuffer = await file.arrayBuffer();
           var result = await mammoth.extractRawText({ arrayBuffer: arrayBuffer });
-          extractedText = result.value;
+          extractedText = result.value.trim();
         }
-        status.textContent = "✅ Đã nạp (" + extractedText.length + " ký tự)";
+
+        if (!extractedText) {
+          status.style.color = "#d97706";
+          status.textContent = "⚠️ File rỗng hoặc là file PDF dạng ảnh scan";
+        } else {
+          status.style.color = "#059669";
+          status.textContent = "✅ Đã nạp (" + extractedText.length + " ký tự)";
+        }
       } catch (err) {
-        status.textContent = "❌ Lỗi đọc file";
+        status.style.color = "#dc2626";
+        status.textContent = "❌ Lỗi: " + err.message;
         console.error(err);
       }
     });
