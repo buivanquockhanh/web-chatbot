@@ -30,23 +30,40 @@ export default async function handler(req, res) {
     const path = "/openai/v1/chat/completions";
     const groqUrl = "https" + "://" + host + path;
 
-    const aiRes = await fetch(groqUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + groqKey
-      },
-      body: JSON.stringify({
-        model: "llama-3.3-70b-versatile",
-        messages: messages,
-        temperature: 0.7
-      })
-    });
+    // Danh sách các model mới nhất đang hoạt động trên Groq Free Tier
+    const groqModels = [
+      "openai/gpt-oss-120b",
+      "qwen/qwen3.8-27b",
+      "openai/gpt-oss-20b"
+    ];
 
-    const data = await aiRes.json();
+    let data = null;
+    let lastError = "";
 
-    if (data.error) {
-      return res.status(500).json({ error: 'Lỗi từ Groq AI: ' + data.error.message });
+    for (const modelName of groqModels) {
+      const aiRes = await fetch(groqUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + groqKey
+        },
+        body: JSON.stringify({
+          model: modelName,
+          messages: messages,
+          temperature: 0.7
+        })
+      });
+
+      data = await aiRes.json();
+
+      if (!data.error) {
+        break;
+      }
+      lastError = data.error.message;
+    }
+
+    if (data && data.error) {
+      return res.status(500).json({ error: 'Lỗi từ Groq AI: ' + lastError });
     }
 
     const reply = data?.choices?.at(0)?.message?.content || "Xin lỗi, AI chưa thể phản hồi lúc này.";
