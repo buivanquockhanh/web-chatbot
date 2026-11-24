@@ -103,10 +103,46 @@ h1 em{font-style:normal;color:var(--teal);background:var(--teal-soft);padding:0 
 .hb-rules{background:#fefce8;border:1.5px solid #fde047;border-radius:16px;padding:16px 18px;margin-bottom:18px}
 .hb-rules h4{margin:0 0 8px;font-size:15.5px;color:#854d0e}.hb-rules ul{margin:0;padding-left:20px;font-size:14px;color:#713f12;display:grid;gap:6px}
 .modal-footer{display:flex;justify-content:flex-end}
-@media(max-width:900px){.hero,.support-grid,.resources,.footer-inner,.hb-grid{grid-template-columns:1fr}}
+.rules-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.72);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:16px;z-index:999}.rules-backdrop.hidden{display:none}
+.rules-box{max-width:780px;width:100%;max-height:90vh;overflow-y:auto;background:#fff;border:2px solid #5eead4;border-radius:24px;padding:26px 28px;box-shadow:0 25px 60px rgba(0,0,0,.35);animation:popIn .35s ease}
+.rules-top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;border-bottom:1.5px solid #e2e8f0;padding-bottom:14px;margin-bottom:16px}
+.rules-tag{display:inline-block;background:#ccfbf1;color:#0f766e;font-size:12px;font-weight:800;padding:4px 12px;border-radius:999px;margin-bottom:6px}
+.rules-top h2{margin:0;font-size:21px;color:#0f172a;line-height:1.3}
+.rules-close-x{width:40px;height:40px;flex:0 0 40px;border-radius:50%;border:1.5px solid #cbd5e1;background:#f8fafc;color:#0f172a;font-size:18px;font-weight:800;display:grid;place-items:center;transition:.2s}
+.rules-close-x:hover{background:#f97316;color:#fff;border-color:#f97316;transform:rotate(90deg)}
+.rules-list{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.rule-item{background:#f0fdfa;border:1px solid #99f6e4;border-radius:14px;padding:12px 14px;font-size:13.5px;line-height:1.55;color:#334155}
+.rule-item b{display:block;color:#0f766e;font-size:14px;margin-bottom:3px}
+.rules-quote{background:linear-gradient(90deg,#0f766e,#0d9488);color:#fff;text-align:center;padding:14px 18px;border-radius:14px;font-weight:700;font-size:15px}
+.rules-hint{text-align:center;font-size:12.5px;color:#64748b;margin:10px 0 0}
+@media(max-width:900px){.hero,.support-grid,.resources,.footer-inner,.hb-grid,.rules-list{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
+<div class="rules-backdrop" id="welcomeRulesModal" role="dialog" aria-modal="true">
+  <div class="rules-box">
+    <div class="rules-top">
+      <div>
+        <span class="rules-tag">📌 THÔNG BÁO NHẮC NHỞ · SAFE NET 4A</span>
+        <h2>NHỮNG CÁCH ỨNG XỬ VĂN MINH TRÊN KHÔNG GIAN MẠNG</h2>
+      </div>
+      <button type="button" class="rules-close-x" id="closeRulesBtn" title="Đóng thông báo">✕</button>
+    </div>
+    <div class="rules-list">
+      <div class="rule-item"><b>1. Giữ thái độ lịch sự, dùng ngôn từ chuẩn mực</b>Sử dụng tiếng Việt rõ ràng, văn minh; không chửi bới, miệt thị, công kích cá nhân hay xúc phạm danh dự người khác.</div>
+      <div class="rule-item"><b>2. Suy nghĩ kỹ trước khi đăng bài và bình luận</b>Giữ bình tĩnh trước các vấn đề gây tranh cãi; không hùa theo đám đông hay bình luận theo cảm xúc nhất thời.</div>
+      <div class="rule-item"><b>3. Kiểm chứng thông tin trước khi chia sẻ</b>Chỉ chia sẻ thông tin chính thống, đã xác thực; không tiếp tay lan truyền tin giả (fake news) hoặc nội dung giật gân câu view.</div>
+      <div class="rule-item"><b>4. Tôn trọng sự khác biệt và phản biện xây dựng</b>Lắng nghe quan điểm trái chiều trên tinh thần tôn trọng; tranh luận bằng lý lẽ khách quan, không kỳ thị ngoại hình, giới tính hay vùng miền.</div>
+      <div class="rule-item"><b>5. Bảo vệ quyền riêng tư của bản thân và người khác</b>Không tự ý đăng tải hình ảnh, tin nhắn, thông tin cá nhân của người khác khi chưa được phép; chủ động bảo mật tài khoản cá nhân.</div>
+      <div class="rule-item"><b>6. Tôn trọng bản quyền nội dung số</b>Luôn ghi rõ nguồn gốc, tên tác giả khi trích dẫn bài viết, hình ảnh hoặc sản phẩm sáng tạo của người khác.</div>
+      <div class="rule-item"><b>7. Nói không với bắt nạt trực tuyến (Cyberbullying)</b>Không tham gia công kích, tẩy chay vô căn cứ; chủ động báo cáo (Report) các nội dung độc hại và hỗ trợ, bảo vệ nạn nhân trên mạng.</div>
+      <div class="rule-item"><b>8. Lan tỏa năng lượng và giá trị tích cực</b>Chia sẻ kiến thức hữu ích, câu chuyện đẹp, hành động nhân văn và sử dụng mạng xã hội hợp lý để cân bằng với cuộc sống thực.</div>
+    </div>
+    <div class="rules-quote">“Không gian mạng là ảo – Trách nhiệm và sự tử tế là thật.”</div>
+    <p class="rules-hint">Vui lòng nhấn nút <b>✕</b> ở góc trên bên phải để đóng thông báo và bắt đầu sử dụng trang web.</p>
+  </div>
+</div>
+
 <header class="topbar">
   <nav class="nav">
     <div class="brand">
@@ -220,16 +256,14 @@ h1 em{font-style:normal;color:var(--teal);background:var(--teal-soft);padding:0 
   <div class="footer-inner">
     <div>
       <h4>THPT Mộ Đức</h4>
-      <p class="footer-desc">Hệ sinh thái tư vấn học đường tích hợp Website – Fanpage Facebook "Trạm Chạm" – Kênh TikTok "Chạm". Mọi tin nhắn được Tổ Tư vấn Học đường tiếp nhận và bảo mật.</p>
+      <p class="footer-desc">Không gian đồng hành và hỗ trợ học sinh trước áp lực, tổn thương tâm lý và bắt nạt trên không gian mạng thông qua mô hình SAFE NET 4A.</p>
       <div class="footer-loc"><span>📍</span><span>Phòng Tư vấn tâm lý – Trường THPT Mộ Đức · Thứ Hai – Thứ Sáu: giờ ra chơi buổi sáng, buổi chiều; buổi tối tư vấn trực tuyến</span></div>
     </div>
     <div>
       <h4>Truy cập nhanh</h4>
       <ul class="footer-links">
         <li><a href="#chat" id="linkCanhBao">🛡️ Hộp thư Cảnh báo Xanh</a></li>
-        <li><a href="#nguoi-ho-tro">📅 Đặt lịch tư vấn 1-1</a></li>
         <li><a href="#chat" id="linkTramLangNghe">🎧 Trạm Lắng Nghe</a></li>
-        <li><a href="#chat" id="linkDass21">📈 Tự kiểm tra DASS-21</a></li>
       </ul>
     </div>
     <div>
@@ -258,331 +292,3 @@ h1 em{font-style:normal;color:var(--teal);background:var(--teal-soft);padding:0 
       <button type="button" class="btn btn-quiet" id="modalClose">Đóng ✕</button>
     </div>
     <div class="hb-grid">
-      <div class="hb-card a1"><div class="hb-step"><span>A1</span> Awareness · Nhận diện</div><p>Quan sát kỹ nội dung tin nhắn, hình ảnh, người liên quan, tần suất lặp lại và bối cảnh sự việc. Không vội vàng kết luận hay phản ứng theo cảm xúc nhất thời.</p></div>
-      <div class="hb-card a2"><div class="hb-step"><span>A2</span> Analysis · Phân tích</div><p>Đánh giá mức độ ảnh hưởng đến tâm lý, danh dự và sự an toàn của bản thân; phân biệt rõ trêu đùa vô ý với hành vi bắt nạt, đe dọa hoặc lừa đảo.</p></div>
-      <div class="hb-card a3"><div class="hb-step"><span>A3</span> Adaptation · Thích ứng</div><p>Chủ động bảo vệ tài khoản (đổi mật khẩu, bật bảo mật 2 lớp), chụp ảnh màn hình lưu bằng chứng, chặn tài khoản quấy rối và đặt giới hạn an toàn.</p></div>
-      <div class="hb-card a4"><div class="hb-step"><span>A4</span> Assistance · Hỗ trợ</div><p>Chia sẻ ngay với cha mẹ, thầy cô Tổ Tư vấn học đường THPT Mộ Đức, Trạm Lắng Nghe hoặc gọi tổng đài miễn phí <b>111</b> khi có nguy cơ mất an toàn.</p></div>
-    </div>
-    <div class="hb-rules">
-      <h4>⚠️ 4 Nguyên tắc vàng bảo vệ bản thân</h4>
-      <ul>
-        <li><b>Không im lặng chịu đựng:</b> Luôn tìm một người lớn đáng tin cậy để đồng hành.</li>
-        <li><b>Không đáp trả tiêu cực:</b> Tránh đôi co, xúc phạm ngược lại hoặc chia sẻ rộng rãi nội dung gây tổn thương.</li>
-        <li><b>Giữ kín thông tin cá nhân:</b> Tuyệt đối không gửi mật khẩu, mã OTP, địa chỉ nhà hay hình ảnh nhạy cảm cho người lạ.</li>
-        <li><b>Lưu giữ bằng chứng:</b> Chụp màn hình toàn bộ tin nhắn, đường link, tài khoản vi phạm trước khi chặn.</li>
-      </ul>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-primary" id="modalStartChat">💬 Trò chuyện cùng AI ngay</button>
-    </div>
-  </div>
-</div>
-<script>
-(function() {
-  function byId(id) { return document.getElementById(id); }
-
-  function injectCss(url) {
-    var l = document.createElement("link");
-    l.rel = "stylesheet";
-    l.href = url;
-    document.head.appendChild(l);
-  }
-  function injectScript(url) {
-    return new Promise(function(resolve, reject) {
-      var s = document.createElement("script");
-      s.src = url;
-      s.onload = resolve;
-      s.onerror = reject;
-      document.head.appendChild(s);
-    });
-  }
-
-  var katexBase = "https" + "://" + "cdn.jsdelivr.net" + "/npm/katex@0.16.11/dist/";
-  injectCss(katexBase + "katex.min.css");
-  injectScript(katexBase + "katex.min.js").then(function() {
-    return injectScript(katexBase + "contrib/auto-render.min.js");
-  }).catch(function() {});
-
-  async function ensurePdfLib() {
-    if (typeof window.pdfjsLib !== "undefined") return window.pdfjsLib;
-    var lib1 = "https" + "://" + "cdn.jsdelivr.net" + "/npm/pdfjs-dist@3.11.174/build/pdf.min.js";
-    var wrk1 = "https" + "://" + "cdn.jsdelivr.net" + "/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
-    var lib2 = "https" + "://" + "unpkg.com" + "/pdfjs-dist@3.11.174/build/pdf.min.js";
-    var wrk2 = "https" + "://" + "unpkg.com" + "/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
-    var sources = [{ lib: lib1, worker: wrk1 }, { lib: lib2, worker: wrk2 }];
-    for (var i = 0; i < sources.length; i++) {
-      try {
-        await injectScript(sources[i].lib);
-        if (typeof window.pdfjsLib !== "undefined") {
-          window.pdfjsLib.GlobalWorkerOptions.workerSrc = sources[i].worker;
-          return window.pdfjsLib;
-        }
-      } catch (e) {}
-    }
-    throw new Error("Không thể tải thư viện đọc PDF.");
-  }
-
-  async function ensureMammothLib() {
-    if (typeof window.mammoth !== "undefined") return window.mammoth;
-    var u1 = "https" + "://" + "cdn.jsdelivr.net" + "/npm/mammoth@1.6.0/mammoth.browser.min.js";
-    var u2 = "https" + "://" + "unpkg.com" + "/mammoth@1.6.0/mammoth.browser.min.js";
-    var urls = [u1, u2];
-    for (var i = 0; i < urls.length; i++) {
-      try {
-        await injectScript(urls[i]);
-        if (typeof window.mammoth !== "undefined") return window.mammoth;
-      } catch (e) {}
-    }
-    throw new Error("Không thể tải thư viện đọc file Word.");
-  }
-
-  ensurePdfLib().catch(function() {});
-  ensureMammothLib().catch(function() {});
-
-  window.safeNetFile = { text: "", name: "" };
-
-  byId("fileInput").addEventListener("change", async function(e) {
-    var file = e.target.files.item(0);
-    if (!file) return;
-    var status = byId("fileStatus");
-    status.style.color = "var(--teal)";
-    status.textContent = "Đang đọc tài liệu...";
-    window.safeNetFile.name = file.name;
-    window.safeNetFile.text = "";
-
-    try {
-      var lower = file.name.toLowerCase();
-      if (lower.endsWith(".txt")) {
-        window.safeNetFile.text = await file.text();
-      } else if (lower.endsWith(".pdf")) {
-        var pdfLib = await ensurePdfLib();
-        var buf = await file.arrayBuffer();
-        var pdf = await pdfLib.getDocument({ data: buf }).promise;
-        var full = "";
-        for (var i = 1; i <= pdf.numPages; i++) {
-          var page = await pdf.getPage(i);
-          var content = await page.getTextContent();
-          full += content.items.map(function(it) { return it.str; }).join(" ") + "\n";
-        }
-        window.safeNetFile.text = full.trim();
-      } else if (lower.endsWith(".docx")) {
-        var mammothLib = await ensureMammothLib();
-        var buf = await file.arrayBuffer();
-        var res = await mammothLib.extractRawText({ arrayBuffer: buf });
-        window.safeNetFile.text = res.value.trim();
-      }
-
-      if (!window.safeNetFile.text) {
-        status.style.color = "var(--coral-deep)";
-        status.textContent = "⚠️ File rỗng hoặc là PDF ảnh scan";
-      } else {
-        status.style.color = "var(--deep)";
-        status.textContent = "✅ Đã nạp: " + file.name + " (" + window.safeNetFile.text.length + " ký tự)";
-      }
-    } catch (err) {
-      status.style.color = "var(--coral-deep)";
-      status.textContent = "❌ Lỗi đọc file: " + err.message;
-    }
-  });
-})();
-</script>
-<script>
-(function() {
-  function byId(id) { return document.getElementById(id); }
-
-  var messagesEl = byId("messages");
-  var inputEl = byId("messageInput");
-  var sendBtn = byId("sendBtn");
-  var form = byId("chatForm");
-
-  var SUGGESTIONS = [
-    { label: "Bị nói xấu trong nhóm chat", prompt: "Mình đang bị một nhóm bạn nói xấu và chế giễu trong nhóm chat lớp. Mình không biết nên phản ứng thế nào." },
-    { label: "Cảm thấy bị cô lập", prompt: "Mình cảm thấy bị cô lập, các bạn thường không cho mình tham gia vào nhóm." },
-    { label: "Áp lực học tập", prompt: "Mình đang chịu áp lực học tập và cảm thấy rất khó cân bằng mọi thứ." },
-    { label: "Tự kiểm tra tâm lý DASS-21", prompt: "Mình muốn thực hiện bài tự kiểm tra mức độ căng thẳng, lo âu DASS-21." }
-  ];
-
-  function renderSuggestions() {
-    var box = byId("suggestions");
-    if (!box) return;
-    box.innerHTML = "";
-    SUGGESTIONS.forEach(function(item) {
-      var btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "suggestion";
-      btn.textContent = "• " + item.label;
-      btn.addEventListener("click", function() { sendMessage(item.prompt); });
-      box.appendChild(btn);
-    });
-  }
-  renderSuggestions();
-
-  var history = [];
-  var busy = false;
-
-  function timeLabel() {
-    return new Intl.DateTimeFormat("vi-VN", { hour: "2-digit", minute: "2-digit" }).format(new Date());
-  }
-
-  function addMessage(role, text) {
-    var w = byId("welcome");
-    if (w) w.remove();
-
-    var row = document.createElement("div");
-    row.className = "msg-row " + (role === "user" ? "user" : "assistant");
-    if (role !== "user") {
-      var avatar = document.createElement("div");
-      avatar.className = "msg-avatar";
-      avatar.textContent = "4A";
-      row.appendChild(avatar);
-    }
-    var wrap = document.createElement("div");
-    var bubble = document.createElement("div");
-    bubble.className = "bubble";
-
-    var safeHtml = text
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
-    bubble.innerHTML = safeHtml;
-
-
-    var time = document.createElement("div");
-    time.className = "msg-time";
-    time.textContent = timeLabel();
-    wrap.appendChild(bubble);
-    wrap.appendChild(time);
-    row.appendChild(wrap);
-    messagesEl.appendChild(row);
-
-    if (role !== "user" && typeof window.renderMathInElement === "function") {
-      window.renderMathInElement(bubble, {
-        delimiters: [
-          { left: "$$", right: "$$", display: true },
-          { left: "$", right: "$", display: false }
-        ],
-        throwOnError: false
-      });
-    }
-    messagesEl.scrollTop = messagesEl.scrollHeight;
-  }
-
-  function setBusy(val) {
-    busy = val;
-    sendBtn.disabled = val;
-    inputEl.disabled = val;
-    sendBtn.textContent = val ? "…" : "➤";
-  }
-
-  async function sendMessage(text) {
-    var clean = text.trim();
-    if (!clean || busy || clean.length > 4000) return;
-
-    addMessage("user", clean);
-    inputEl.value = "";
-    byId("counter").textContent = "0/4000";
-    inputEl.style.height = "auto";
-    setBusy(true);
-
-    try {
-      var fileObj = window.safeNetFile || { name: "", text: "" };
-      var response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: clean,
-          history: history.slice(-20),
-          fileName: fileObj.name,
-          fileContent: fileObj.text
-        })
-      });
-
-      var data = await response.json().catch(function() { return {}; });
-      if (!response.ok) {
-        throw new Error(data.error || "Chưa thể kết nối SAFE NET lúc này.");
-      }
-
-      var answer = (data.reply || "").trim();
-      history.push({ role: "user", text: clean });
-      history.push({ role: "model", text: answer });
-      addMessage("assistant", answer);
-    } catch (error) {
-      addMessage("assistant", "Mình chưa kết nối được với hệ thống AI. " + error.message);
-    } finally {
-      setBusy(false);
-      inputEl.focus();
-    }
-  }
-
-  form.addEventListener("submit", function(e) {
-    e.preventDefault();
-    sendMessage(inputEl.value);
-  });
-
-  inputEl.addEventListener("input", function() {
-    byId("counter").textContent = inputEl.value.length + "/4000";
-    inputEl.style.height = "auto";
-    inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + "px";
-  });
-
-  inputEl.addEventListener("keydown", function(e) {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      form.requestSubmit();
-    }
-  });
-
-  function newChat() {
-    if (busy) return;
-    history.length = 0;
-    messagesEl.innerHTML = '<div class="welcome" id="welcome"><h2>Tôi có thể giúp gì cho bạn?</h2><p>Bạn có thể tải tài liệu lên hoặc chia sẻ câu chuyện của mình bên dưới.</p><div class="suggestions" id="suggestions"></div></div>';
-    renderSuggestions();
-    inputEl.focus();
-  }
-
-  byId("newChatTop").addEventListener("click", newChat);
-  byId("newChatCard").addEventListener("click", newChat);
-
-  var modal = byId("modalBackdrop");
-  byId("handbookTop").addEventListener("click", function() { modal.classList.add("show"); });
-  byId("handbookCard").addEventListener("click", function() { modal.classList.add("show"); });
-  byId("modalClose").addEventListener("click", function() { modal.classList.remove("show"); });
-  byId("modalStartChat").addEventListener("click", function() {
-    modal.classList.remove("show");
-    inputEl.focus();
-  });
-  modal.addEventListener("click", function(e) { if (e.target === modal) modal.classList.remove("show"); });
-
-  var padletUrl = "https" + "://" + "padlet.com" + "/bngan5441/TramLangNghe_THPTMoDuc";
-  byId("padletBtn").addEventListener("click", function() {
-    window.open(padletUrl, "_blank", "noopener,noreferrer");
-  });
-  byId("linkTramLangNghe").addEventListener("click", function(e) {
-    e.preventDefault();
-    window.open(padletUrl, "_blank", "noopener,noreferrer");
-  });
-
-  byId("call111Btn").addEventListener("click", function() {
-    window.location.href = "tel:111";
-  });
-
-  document.querySelectorAll(".footer-hotlines li").forEach(function(item) {
-    item.addEventListener("click", function() {
-      var num = item.getAttribute("data-num");
-      if (num) window.location.href = "tel:" + num;
-    });
-  });
-
-  byId("linkCanhBao").addEventListener("click", function() {
-    inputEl.value = "Mình muốn gửi phản ánh / cảnh báo an toàn học đường ẩn danh.";
-    inputEl.focus();
-  });
-
-  byId("linkDass21").addEventListener("click", function() {
-    sendMessage("Mình muốn thực hiện bài tự kiểm tra mức độ căng thẳng, lo âu DASS-21.");
-  });
-})();
-</script>
-</body>
-</html>
