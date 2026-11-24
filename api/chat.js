@@ -9,12 +9,12 @@ export default async function handler(req, res) {
     const sheetUrl = process.env.GOOGLE_SHEET_URL;
 
     if (!apiKey) {
-      return res.status(500).json({ error: 'Chưa cấu hình GEMINI_API_KEY trên Vercel' });
+      return res.status(500).json({ error: 'Chưa cấu hình biến GEMINI_API_KEY trên Vercel.' });
     }
 
     let systemInstruction = "Bạn là trợ lý AI giáo dục của dự án SAFE NET 4A. Hãy trả lời thân thiện, chính xác và dễ hiểu bằng tiếng Việt.";
     if (fileContent) {
-      systemInstruction += `\n\nNgười dùng đã tải lên tài liệu tên là "${fileName}". Hãy ưu tiên sử dụng thông tin trong tài liệu dưới đây để trả lời:\n--- TÀI LIỆU ---\n${fileContent.slice(0, 30000)}\n--- HẾT ---`;
+      systemInstruction += `\n\nNgười dùng đã tải lên tài liệu tên là "${fileName}". Hãy ưu tiên sử dụng thông tin trong tài liệu dưới đây để trả lời câu hỏi. Nếu tài liệu không có thông tin, hãy nói rõ và hỗ trợ theo kiến thức chuẩn:\n--- NỘI DUNG TÀI LIỆU ---\n${fileContent.slice(0, 30000)}\n--- HẾT TÀI LIỆU ---`;
     }
 
     const contents = [
@@ -39,7 +39,6 @@ export default async function handler(req, res) {
 
     const data = await geminiRes.json();
 
-    // Nếu Google trả về lỗi (ví dụ sai API Key), hiển thị thẳng lý do lên màn hình chat
     if (data.error) {
       return res.status(500).json({ error: 'Lỗi từ Gemini API: ' + data.error.message });
     }
@@ -61,6 +60,6 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ reply });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi server: ' + error.message });
+    return res.status(500).json({ error: 'Lỗi hệ thống backend: ' + error.message });
   }
 }
