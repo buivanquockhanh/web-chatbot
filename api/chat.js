@@ -32,12 +32,11 @@ export default async function handler(req, res) {
     const path = "/v1beta/interactions";
     const apiUrl = "https" + "://" + host + path;
 
-    // Danh sách model ưu tiên: nếu model chính quá tải sẽ tự động chuyển sang model dự phòng
-    const models = ["gemini-3.8-flash", "gemini-3.8-flash-lite", "gemini-4-hydrogen"];
+    const models = ["gemini-3.8-flash", "gemini-4-hydrogen", "gemini-3.8-flash", "gemini-4-hydrogen"];
     let data = null;
     let lastError = "";
 
-    for (const modelName of models) {
+    for (let i = 0; i < models.length; i++) {
       const geminiRes = await fetch(apiUrl, {
         method: 'POST',
         headers: {
@@ -45,25 +44,25 @@ export default async function handler(req, res) {
           'x-goog-api-key': apiKey
         },
         body: JSON.stringify({
-          model: modelName,
+          model: models[i],
           input: fullPrompt
         })
       });
 
       data = await geminiRes.json();
 
-      // Nếu gọi thành công (không có lỗi), thoát vòng lặp ngay
       if (!data.error) {
         break;
       }
       lastError = data.error.message;
+      // Đợi 1.5 giây trước khi tự động thử lại lần tiếp theo
+      await new Promise(resolve => setTimeout(resolve, 1500));
     }
 
     if (data && data.error) {
-      return res.status(500).json({ error: 'Tất cả model AI đều đang bận: ' + lastError });
+      return res.status(500).json({ error: 'Máy chủ Google đang quá tải tạm thời, vui lòng thử lại sau vài giây: ' + lastError });
     }
 
-    // Trích xuất câu trả lời từ cấu trúc Interactions API
     let reply = "Xin lỗi, AI chưa thể phản hồi lúc này.";
     if (data.steps && Array.isArray(data.steps)) {
       const modelStep = data.steps.find(step => step.type === 'model_output');
@@ -72,7 +71,6 @@ export default async function handler(req, res) {
       }
     }
 
-    // Tự động lưu lịch sử chat và dữ liệu tài liệu về Google Sheets
     if (sheetUrl && sheetUrl.startsWith('http')) {
       await fetch(sheetUrl, {
         method: 'POST',
