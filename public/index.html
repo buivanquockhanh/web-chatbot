@@ -73,14 +73,6 @@ h1 em{font-style:normal;color:var(--teal);background:var(--teal-soft);padding:0 
 .composer-note{display:flex;justify-content:space-between;padding-top:7px;color:#64748b;font-size:12px}
 .resources{max-width:980px;margin:24px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:16px}.resource{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:20px}
 .resource b{display:block;font-size:16px;color:#0f172a}.resource p{font-size:13.5px;color:var(--muted);margin:6px 0 14px}
-.site-footer{background:#0f3d38;color:#e2e8f0;margin-top:44px;padding:40px 22px 24px;font-size:14px}
-.footer-inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:30px;padding-bottom:26px;border-bottom:1px solid rgba(255,255,255,.15)}
-.site-footer h4{color:#fff;font-size:17px;margin:0 0 12px}.footer-desc{line-height:1.65;margin:0 0 14px;font-size:14px;color:#cbd5e1}
-.footer-loc{display:flex;gap:8px;align-items:flex-start;font-size:13.5px;color:#99f6e4}
-.footer-links,.footer-hotlines{list-style:none;padding:0;margin:0;display:grid;gap:11px}
-.footer-links a{color:#e2e8f0;text-decoration:underline;text-underline-offset:4px;font-size:14px}
-.footer-hotlines li{color:#fff;font-size:14.5px;display:flex;align-items:center;gap:10px;cursor:pointer}.footer-hotlines b{color:#fbbf24;font-size:16px;min-width:36px}
-.footer-bottom{max-width:1180px;margin:18px auto 0;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:13px;color:#94a3b8}
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pulseDot{0%,100%{box-shadow:0 0 0 0 rgba(13,148,136,.5)}50%{box-shadow:0 0 0 6px rgba(13,148,136,0)}}
 @keyframes popIn{from{opacity:0;transform:scale(.93) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
@@ -115,7 +107,7 @@ h1 em{font-style:normal;color:var(--teal);background:var(--teal-soft);padding:0 
 .rule-item b{display:block;color:#0f766e;font-size:14px;margin-bottom:3px}
 .rules-quote{background:linear-gradient(90deg,#0f766e,#0d9488);color:#fff;text-align:center;padding:14px 18px;border-radius:14px;font-weight:700;font-size:15px}
 .rules-hint{text-align:center;font-size:12.5px;color:#64748b;margin:10px 0 0}
-@media(max-width:900px){.hero,.support-grid,.resources,.footer-inner,.hb-grid,.rules-list{grid-template-columns:1fr}}
+@media(max-width:900px){.hero,.support-grid,.resources,.hb-grid,.rules-list{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -127,7 +119,6 @@ h1 em{font-style:normal;color:var(--teal);background:var(--teal-soft);padding:0 
         <h2>NHỮNG CÁCH ỨNG XỬ VĂN MINH TRÊN KHÔNG GIAN MẠNG</h2>
       </div>
       <button type="button" class="rules-close-x" id="closeRulesBtn" title="Đóng thông báo" onclick="document.getElementById('welcomeRulesModal').style.display='none'; document.body.style.overflow='';">✕</button>
-
     </div>
     <div class="rules-list">
       <div class="rule-item"><b>1. Giữ thái độ lịch sự, dùng ngôn từ chuẩn mực</b>Sử dụng tiếng Việt rõ ràng, văn minh; không chửi bới, miệt thị, công kích cá nhân hay xúc phạm danh dự người khác.</div>
@@ -252,54 +243,23 @@ h1 em{font-style:normal;color:var(--teal);background:var(--teal-soft);padding:0 
     <article class="resource"><b>Làm mới hội thoại</b><p>Bắt đầu một chủ đề mới. Nội dung hội thoại hiện tại sẽ được xóa khỏi giao diện.</p><button type="button" class="btn btn-quiet" id="newChatCard">Bắt đầu lại ›</button></article>
   </section>
 </main>
-<footer class="site-footer" style="background:#0f3d38; color:#e2e8f0; margin-top:48px; padding:42px 24px 24px;">
-  <div style="max-width:1180px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:32px; padding-bottom:28px; border-bottom:1px solid rgba(255,255,255,0.15);">
-    
+
+<footer class="site-footer" style="background:#0f3d38; color:#e2e8f0; margin-top:48px; padding:44px 24px 26px;">
+  <div style="max-width:1100px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:48px; align-items:start; padding-bottom:32px; border-bottom:1px solid rgba(255,255,255,0.15);">
     <div>
-      <h4 style="color:#ffffff; font-size:18px; margin:0 0 12px; display:flex; align-items:center; gap:8px;">
+      <h4 style="color:#ffffff; font-size:19px; margin:0 0 14px; display:flex; align-items:center; gap:9px;">
         <span>🛡️</span> THPT Mộ Đức
       </h4>
-      <p style="margin:0; font-size:14.5px; line-height:1.7; color:#cbd5e1;">
+      <p style="margin:0; font-size:15px; line-height:1.75; color:#cbd5e1; max-width:460px;">
         Không gian đồng hành và hỗ trợ học sinh trước áp lực, tổn thương tâm lý và bắt nạt trên không gian mạng thông qua mô hình SAFE NET 4A.
       </p>
     </div>
-
     <div>
-      <h4 style="color:#ffffff; font-size:17px; margin:0 0 14px;">Truy cập nhanh</h4>
-      <ul style="list-style:none; padding:0; margin:0; display:grid; gap:12px;">
-        <li>
-          <a href="#chat" id="linkCanhBao" style="color:#99f6e4; text-decoration:none; font-weight:600; font-size:14.5px; display:inline-flex; align-items:center; gap:8px;">
-            <span>🛡️</span> Hộp thư Cảnh báo Xanh
-          </a>
+      <h4 style="color:#ffffff; font-size:18px; margin:0 0 16px;">Khi cần giúp đỡ ngay</h4>
+      <ul class="footer-hotlines" style="list-style:none; padding:0; margin:0; display:grid; gap:11px;">
+        <li data-num="111" style="background:rgba(255,255,255,0.08); padding:10px 16px; border-radius:12px; display:flex; align-items:center; gap:12px; cursor:pointer; font-size:14.5px; border:1px solid rgba(255,255,255,0.08);">
+          <span>📞</span> <b style="color:#fbbf24; font-size:16px; min-width:36px;">111</b> <span>Tổng đài quốc gia bảo vệ trẻ em</span>
         </li>
-        <li>
-          <a href="#chat" id="linkTramLangNghe" style="color:#99f6e4; text-decoration:none; font-weight:600; font-size:14.5px; display:inline-flex; align-items:center; gap:8px;">
-            <span>🎧</span> Trạm Lắng Nghe
-          </a>
+        <li data-num="113" style="background:rgba(255,255,255,0.08); padding:10px 16px; border-radius:12px; display:flex; align-items:center; gap:12px; cursor:pointer; font-size:14.5px; border:1px solid rgba(255,255,255,0.08);">
+          <span>📞</span> <b style="color:#fbbf24; font-size:16px; min-width:36px;">113</b> <span>Công an</span>
         </li>
-      </ul>
-    </div>
-
-    <div>
-      <h4 style="color:#ffffff; font-size:17px; margin:0 0 14px;">Khi cần giúp đỡ ngay</h4>
-      <ul class="footer-hotlines" style="list-style:none; padding:0; margin:0; display:grid; gap:10px;">
-        <li data-num="111" style="background:rgba(255,255,255,0.08); padding:8px 14px; border-radius:10px; display:flex; align-items:center; gap:10px; cursor:pointer; font-size:14px;">
-          <span>📞</span> <b style="color:#fbbf24; font-size:16px; min-width:34px;">111</b> <span>Tổng đài quốc gia bảo vệ trẻ em</span>
-        </li>
-        <li data-num="113" style="background:rgba(255,255,255,0.08); padding:8px 14px; border-radius:10px; display:flex; align-items:center; gap:10px; cursor:pointer; font-size:14px;">
-          <span>📞</span> <b style="color:#fbbf24; font-size:16px; min-width:34px;">113</b> <span>Công an</span>
-        </li>
-        <li data-num="115" style="background:rgba(255,255,255,0.08); padding:8px 14px; border-radius:10px; display:flex; align-items:center; gap:10px; cursor:pointer; font-size:14px;">
-          <span>📞</span> <b style="color:#fbbf24; font-size:16px; min-width:34px;">115</b> <span>Cấp cứu y tế</span>
-        </li>
-      </ul>
-    </div>
-
-  </div>
-
-  <div style="max-width:1180px; margin:20px auto 0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; font-size:13.5px; color:#94a3b8;">
-    <span>© Trường THPT Mộ Đức · Dự án KHKT SAFE NET 4A</span>
-    <span>Không cần tài khoản để nhắn tin · Bảo mật &amp; An toàn</span>
-  </div>
-</footer>
-
