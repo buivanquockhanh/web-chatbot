@@ -73,10 +73,12 @@ h1 em{font-style:normal;color:var(--teal);background:var(--teal-soft);padding:0 
 .composer-note{display:flex;justify-content:space-between;padding-top:7px;color:#64748b;font-size:12px}
 .resources{max-width:980px;margin:24px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:16px}.resource{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:20px}
 .resource b{display:block;font-size:16px;color:#0f172a}.resource p{font-size:13.5px;color:var(--muted);margin:6px 0 14px}
+.privacy-box{max-width:980px;margin:20px auto 0;background:#fefce8;border:1.5px solid #fde047;color:#713f12;border-radius:16px;padding:15px 20px;font-size:13.5px;line-height:1.65;display:flex;gap:12px;align-items:flex-start}
+.privacy-box span.ic-lock{font-size:20px;line-height:1.2}
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pulseDot{0%,100%{box-shadow:0 0 0 0 rgba(13,148,136,.5)}50%{box-shadow:0 0 0 6px rgba(13,148,136,0)}}
 @keyframes popIn{from{opacity:0;transform:scale(.93) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.hero,.support,.layout,.resources{animation:fadeUp .65s ease both}
+.hero,.support,.layout,.resources,.privacy-box{animation:fadeUp .65s ease both}
 .chip,.support-card,.resource,.suggestion,.hb-card{transition:transform .22s ease,box-shadow .22s ease,background .2s ease}
 .chip:hover,.support-card:hover,.resource:hover,.hb-card:hover{transform:translateY(-4px);box-shadow:0 12px 24px rgba(13,148,136,.15)}
 .suggestion:hover{transform:translateY(-2px);background:var(--teal-soft)}
@@ -142,7 +144,7 @@ h1 em{font-style:normal;color:var(--teal);background:var(--teal-soft);padding:0 
       <div><strong>SAFE NET 4A</strong><small>THPT Mộ Đức · Không gian hỗ trợ an toàn số</small></div>
     </div>
     <div class="nav-actions">
-      <button type="button" class="btn btn-cream" id="handbookTop">Cẩm nang 4A</button>
+      <button type="button" class="btn btn-cream" id="handbookTop" onclick="document.getElementById('modalBackdrop').classList.add('show')">Cẩm nang 4A</button>
       <button type="button" class="btn btn-primary" id="newChatTop">+ Cuộc trò chuyện mới</button>
     </div>
   </nav>
@@ -239,12 +241,27 @@ h1 em{font-style:normal;color:var(--teal);background:var(--teal-soft);padding:0 
   </section>
 
   <section class="resources">
-    <article class="resource"><b>Cẩm nang SAFE NET 4A</b><p>Tìm hiểu bốn bước nhận diện, phân tích, thích ứng và hỗ trợ.</p><button type="button" class="btn btn-soft" id="handbookCard">Mở cẩm nang ›</button></article>
-    <article class="resource"><b>Làm mới hội thoại</b><p>Bắt đầu một chủ đề mới. Nội dung hội thoại hiện tại sẽ được xóa khỏi giao diện.</p><button type="button" class="btn btn-quiet" id="newChatCard">Bắt đầu lại ›</button></article>
+    <article class="resource">
+      <b>📘 Cẩm nang SAFE NET 4A</b>
+      <p>Tìm hiểu chi tiết quy trình 4 bước nhận diện, phân tích, thích ứng và hỗ trợ cùng 4 nguyên tắc vàng bảo vệ bản thân.</p>
+      <button type="button" class="btn btn-soft" id="handbookCard" onclick="document.getElementById('modalBackdrop').classList.add('show')">Mở cẩm nang ›</button>
+    </article>
+    <article class="resource">
+      <b>🔄 Làm mới hội thoại</b>
+      <p>Bắt đầu một chủ đề mới. Nội dung hội thoại hiện tại sẽ được xóa khỏi giao diện để đảm bảo riêng tư.</p>
+      <button type="button" class="btn btn-quiet" id="newChatCard">Bắt đầu lại ›</button>
+    </article>
   </section>
+
+  <div class="privacy-box">
+    <span class="ic-lock">🔒</span>
+    <div>
+      <b>Cam kết bảo mật &amp; Lưu ý sử dụng:</b> SAFE NET 4A là công cụ hỗ trợ giáo dục và tư vấn ban đầu, không thay thế người lớn đáng tin cậy, chuyên viên tâm lý, nhà trường hay cơ quan chức năng. Mọi trao đổi được bảo mật và không yêu cầu tài khoản; bạn vui lòng không nhập họ tên thật, địa chỉ nhà, mật khẩu hay hình ảnh riêng tư. Nếu có nguy cơ mất an toàn khẩn cấp, hãy liên hệ trực tiếp thầy cô hoặc gọi tổng đài <b>111</b>.
+    </div>
+  </div>
 </main>
 
-<footer class="site-footer" style="background:#0f3d38; color:#e2e8f0; margin-top:48px; padding:44px 24px 26px;">
+<footer class="site-footer" style="background:#0f3d38; color:#e2e8f0; margin-top:44px; padding:44px 24px 26px;">
   <div style="max-width:1100px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:48px; align-items:start; padding-bottom:32px; border-bottom:1px solid rgba(255,255,255,0.15);">
     <div>
       <h4 style="color:#ffffff; font-size:19px; margin:0 0 14px; display:flex; align-items:center; gap:9px;">
@@ -257,12 +274,6 @@ h1 em{font-style:normal;color:var(--teal);background:var(--teal-soft);padding:0 
     <div>
       <h4 style="color:#ffffff; font-size:18px; margin:0 0 16px;">Khi cần giúp đỡ ngay</h4>
       <ul class="footer-hotlines" style="list-style:none; padding:0; margin:0; display:grid; gap:11px;">
-        <li data-num="111" style="background:rgba(255,255,255,0.08); padding:10px 16px; border-radius:12px; display:flex; align-items:center; gap:12px; cursor:pointer; font-size:14.5px; border:1px solid rgba(255,255,255,0.08);">
-          <span>📞</span> <b style="color:#fbbf24; font-size:16px; min-width:36px;">111</b> <span>Tổng đài quốc gia bảo vệ trẻ em</span>
-        </li>
-        <li data-num="113" style="background:rgba(255,255,255,0.08); padding:10px 16px; border-radius:12px; display:flex; align-items:center; gap:12px; cursor:pointer; font-size:14.5px; border:1px solid rgba(255,255,255,0.08);">
-          <span>📞</span> <b style="color:#fbbf24; font-size:16px; min-width:36px;">113</b> <span>Công an</span>
-        </li>
 <script>
 (function() {
   function byId(id) { return document.getElementById(id); }
@@ -378,21 +389,13 @@ h1 em{font-style:normal;color:var(--teal);background:var(--teal-soft);padding:0 
     });
   }
 })();
-</script>
-
-
-  <script>
+<script>
 (function() {
   function byId(id) { return document.getElementById(id); }
 
   var rulesModal = byId("welcomeRulesModal");
-  var closeRulesBtn = byId("closeRulesBtn");
-  if (rulesModal && closeRulesBtn) {
+  if (rulesModal) {
     document.body.style.overflow = "hidden";
-    closeRulesBtn.addEventListener("click", function() {
-      rulesModal.style.display = "none";
-      document.body.style.overflow = "";
-    });
   }
 
   var messagesEl = byId("messages");
@@ -550,13 +553,6 @@ h1 em{font-style:normal;color:var(--teal);background:var(--teal-soft);padding:0 
   byId("newChatCard")?.addEventListener("click", newChat);
 
   var modal = byId("modalBackdrop");
-  byId("handbookTop")?.addEventListener("click", function() { modal.classList.add("show"); });
-  byId("handbookCard")?.addEventListener("click", function() { modal.classList.add("show"); });
-  byId("modalClose")?.addEventListener("click", function() { modal.classList.remove("show"); });
-  byId("modalStartChat")?.addEventListener("click", function() {
-    modal.classList.remove("show");
-    inputEl.focus();
-  });
   modal?.addEventListener("click", function(e) { if (e.target === modal) modal.classList.remove("show"); });
 
   var padletUrl = "https" + "://" + "padlet.com" + "/bngan5441/TramLangNghe_THPTMoDuc";
