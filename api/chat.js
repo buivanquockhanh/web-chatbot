@@ -25,10 +25,9 @@ export default async function handler(req, res) {
       { role: 'user', parts: [{ text: message }] }
     ];
 
-    // Ghép từng phần URL để đảm bảo không bị trình duyệt rút gọn nhầm khi copy
-    const host = "://googleapis.com";
+    const host = "generativelanguage" + ".googleapis" + ".com";
     const path = "/v1beta/models/gemini-2.5-flash:generateContent";
-    const geminiUrl = `https://${host}${path}?key=${encodeURIComponent(apiKey)}`;
+    const geminiUrl = "https" + "://" + host + path + "?key=" + encodeURIComponent(apiKey);
 
     const geminiRes = await fetch(geminiUrl, {
       method: 'POST',
