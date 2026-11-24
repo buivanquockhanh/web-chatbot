@@ -263,3 +263,318 @@ h1 em{font-style:normal;color:var(--teal);background:var(--teal-soft);padding:0 
         <li data-num="113" style="background:rgba(255,255,255,0.08); padding:10px 16px; border-radius:12px; display:flex; align-items:center; gap:12px; cursor:pointer; font-size:14.5px; border:1px solid rgba(255,255,255,0.08);">
           <span>📞</span> <b style="color:#fbbf24; font-size:16px; min-width:36px;">113</b> <span>Công an</span>
         </li>
+<script>
+(function() {
+  function byId(id) { return document.getElementById(id); }
+
+  function injectCss(url) {
+    var l = document.createElement("link");
+    l.rel = "stylesheet";
+    l.href = url;
+    document.head.appendChild(l);
+  }
+
+  function injectScript(url) {
+    return new Promise(function(resolve, reject) {
+      var s = document.createElement("script");
+      s.src = url;
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+
+  var cdn = "https" + "://" + "cdn.jsdelivr.net";
+  var unpkg = "https" + "://" + "unpkg.com";
+
+  var katexBase = cdn + "/npm/katex@0.16.11/dist/";
+  injectCss(katexBase + "katex.min.css");
+  injectScript(katexBase + "katex.min.js").then(function() {
+    return injectScript(katexBase + "contrib/auto-render.min.js");
+  }).catch(function() {});
+
+  async function ensurePdfLib() {
+    if (typeof window.pdfjsLib !== "undefined") return window.pdfjsLib;
+    var sources = [
+      { lib: cdn + "/npm/pdfjs-dist@3.11.174/build/pdf.min.js", worker: cdn + "/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js" },
+      { lib: unpkg + "/pdfjs-dist@3.11.174/build/pdf.min.js", worker: unpkg + "/pdfjs-dist@3.11.174/build/pdf.worker.min.js" }
+    ];
+    for (var i = 0; i < sources.length; i++) {
+      try {
+        await injectScript(sources[i].lib);
+        if (typeof window.pdfjsLib !== "undefined") {
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc = sources[i].worker;
+          return window.pdfjsLib;
+        }
+      } catch (e) {}
+    }
+    throw new Error("Không thể tải thư viện đọc PDF.");
+  }
+
+  async function ensureMammothLib() {
+    if (typeof window.mammoth !== "undefined") return window.mammoth;
+    var urls = [
+      cdn + "/npm/mammoth@1.6.0/mammoth.browser.min.js",
+      unpkg + "/mammoth@1.6.0/mammoth.browser.min.js"
+    ];
+    for (var i = 0; i < urls.length; i++) {
+      try {
+        await injectScript(urls[i]);
+        if (typeof window.mammoth !== "undefined") return window.mammoth;
+      } catch (e) {}
+    }
+    throw new Error("Không thể tải thư viện đọc file Word.");
+  }
+
+  ensurePdfLib().catch(function() {});
+  ensureMammothLib().catch(function() {});
+
+  window.safeNetFile = { text: "", name: "" };
+
+  var fileInput = byId("fileInput");
+  if (fileInput) {
+    fileInput.addEventListener("change", async function(e) {
+      var file = e.target.files.item(0);
+      if (!file) return;
+      var status = byId("fileStatus");
+      status.style.color = "var(--teal)";
+      status.textContent = "Đang đọc tài liệu...";
+      window.safeNetFile.name = file.name;
+      window.safeNetFile.text = "";
+
+      try {
+        var lower = file.name.toLowerCase();
+        if (lower.endsWith(".txt")) {
+          window.safeNetFile.text = await file.text();
+        } else if (lower.endsWith(".pdf")) {
+          var pdfLib = await ensurePdfLib();
+          var buf = await file.arrayBuffer();
+          var pdf = await pdfLib.getDocument({ data: buf }).promise;
+          var full = "";
+          for (var i = 1; i <= pdf.numPages; i++) {
+            var page = await pdf.getPage(i);
+            var content = await page.getTextContent();
+            full += content.items.map(function(it) { return it.str; }).join(" ") + "\n";
+          }
+          window.safeNetFile.text = full.trim();
+        } else if (lower.endsWith(".docx")) {
+          var mammothLib = await ensureMammothLib();
+          var buf = await file.arrayBuffer();
+          var res = await mammothLib.extractRawText({ arrayBuffer: buf });
+          window.safeNetFile.text = res.value.trim();
+        }
+
+        if (!window.safeNetFile.text) {
+          status.style.color = "var(--coral-deep)";
+          status.textContent = "⚠️ File rỗng hoặc là PDF ảnh scan";
+        } else {
+          status.style.color = "var(--deep)";
+          status.textContent = "✅ Đã nạp: " + file.name + " (" + window.safeNetFile.text.length + " ký tự)";
+        }
+      } catch (err) {
+        status.style.color = "var(--coral-deep)";
+        status.textContent = "❌ Lỗi đọc file: " + err.message;
+      }
+    });
+  }
+})();
+</script>
+
+
+  <script>
+(function() {
+  function byId(id) { return document.getElementById(id); }
+
+  var rulesModal = byId("welcomeRulesModal");
+  var closeRulesBtn = byId("closeRulesBtn");
+  if (rulesModal && closeRulesBtn) {
+    document.body.style.overflow = "hidden";
+    closeRulesBtn.addEventListener("click", function() {
+      rulesModal.style.display = "none";
+      document.body.style.overflow = "";
+    });
+  }
+
+  var messagesEl = byId("messages");
+  var inputEl = byId("messageInput");
+  var sendBtn = byId("sendBtn");
+  var form = byId("chatForm");
+
+  var SUGGESTIONS = [
+    { label: "Bị nói xấu trong nhóm chat", prompt: "Mình đang bị một nhóm bạn nói xấu và chế giễu trong nhóm chat lớp. Mình không biết nên phản ứng thế nào." },
+    { label: "Cảm thấy bị cô lập", prompt: "Mình cảm thấy bị cô lập, các bạn thường không cho mình tham gia vào nhóm." },
+    { label: "Áp lực học tập", prompt: "Mình đang chịu áp lực học tập và cảm thấy rất khó cân bằng mọi thứ." },
+    { label: "Bị làm phiền trên mạng", prompt: "Có người lạ liên tục nhắn tin làm phiền và khiến mình thấy không an toàn." }
+  ];
+
+  function renderSuggestions() {
+    var box = byId("suggestions");
+    if (!box) return;
+    box.innerHTML = "";
+    SUGGESTIONS.forEach(function(item) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "suggestion";
+      btn.textContent = "• " + item.label;
+      btn.addEventListener("click", function() { sendMessage(item.prompt); });
+      box.appendChild(btn);
+    });
+  }
+  renderSuggestions();
+
+  var history = [];
+  var busy = false;
+
+  function timeLabel() {
+    return new Intl.DateTimeFormat("vi-VN", { hour: "2-digit", minute: "2-digit" }).format(new Date());
+  }
+
+  function addMessage(role, text) {
+    var w = byId("welcome");
+    if (w) w.remove();
+
+    var row = document.createElement("div");
+    row.className = "msg-row " + (role === "user" ? "user" : "assistant");
+    if (role !== "user") {
+      var avatar = document.createElement("div");
+      avatar.className = "msg-avatar";
+      avatar.textContent = "4A";
+      row.appendChild(avatar);
+    }
+    var wrap = document.createElement("div");
+    var bubble = document.createElement("div");
+    bubble.className = "bubble";
+
+    var safeHtml = text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\*\*([^*]+?)\*{1,2}/g, "<strong>$1</strong>")
+      .replace(/\*/g, "");
+    bubble.innerHTML = safeHtml;
+
+    var time = document.createElement("div");
+    time.className = "msg-time";
+    time.textContent = timeLabel();
+    wrap.appendChild(bubble);
+    wrap.appendChild(time);
+    row.appendChild(wrap);
+    messagesEl.appendChild(row);
+
+    if (role !== "user" && typeof window.renderMathInElement === "function") {
+      window.renderMathInElement(bubble, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$", right: "$", display: false }
+        ],
+        throwOnError: false
+      });
+    }
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function setBusy(val) {
+    busy = val;
+    sendBtn.disabled = val;
+    inputEl.disabled = val;
+    sendBtn.textContent = val ? "…" : "➤";
+  }
+
+  async function sendMessage(text) {
+    var clean = text.trim();
+    if (!clean || busy || clean.length > 4000) return;
+
+    addMessage("user", clean);
+    inputEl.value = "";
+    byId("counter").textContent = "0/4000";
+    inputEl.style.height = "auto";
+    setBusy(true);
+
+    try {
+      var fileObj = window.safeNetFile || { name: "", text: "" };
+      var response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: clean,
+          history: history.slice(-20),
+          fileName: fileObj.name,
+          fileContent: fileObj.text
+        })
+      });
+
+      var data = await response.json().catch(function() { return {}; });
+      if (!response.ok) {
+        throw new Error(data.error || "Chưa thể kết nối SAFE NET lúc này.");
+      }
+
+      var answer = (data.reply || "").trim();
+      history.push({ role: "user", text: clean });
+      history.push({ role: "model", text: answer });
+      addMessage("assistant", answer);
+    } catch (error) {
+      addMessage("assistant", "Mình chưa kết nối được với hệ thống AI. " + error.message);
+    } finally {
+      setBusy(false);
+      inputEl.focus();
+    }
+  }
+
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+    sendMessage(inputEl.value);
+  });
+
+  inputEl.addEventListener("input", function() {
+    byId("counter").textContent = inputEl.value.length + "/4000";
+    inputEl.style.height = "auto";
+    inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + "px";
+  });
+
+  inputEl.addEventListener("keydown", function(e) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      form.requestSubmit();
+    }
+  });
+
+  function newChat() {
+    if (busy) return;
+    history.length = 0;
+    messagesEl.innerHTML = '<div class="welcome" id="welcome"><h2>Tôi có thể giúp gì cho bạn?</h2><p>Bạn có thể tải tài liệu lên hoặc chia sẻ câu chuyện của mình bên dưới.</p><div class="suggestions" id="suggestions"></div></div>';
+    renderSuggestions();
+    inputEl.focus();
+  }
+
+  byId("newChatTop")?.addEventListener("click", newChat);
+  byId("newChatCard")?.addEventListener("click", newChat);
+
+  var modal = byId("modalBackdrop");
+  byId("handbookTop")?.addEventListener("click", function() { modal.classList.add("show"); });
+  byId("handbookCard")?.addEventListener("click", function() { modal.classList.add("show"); });
+  byId("modalClose")?.addEventListener("click", function() { modal.classList.remove("show"); });
+  byId("modalStartChat")?.addEventListener("click", function() {
+    modal.classList.remove("show");
+    inputEl.focus();
+  });
+  modal?.addEventListener("click", function(e) { if (e.target === modal) modal.classList.remove("show"); });
+
+  var padletUrl = "https" + "://" + "padlet.com" + "/bngan5441/TramLangNghe_THPTMoDuc";
+  byId("padletBtn")?.addEventListener("click", function() {
+    window.open(padletUrl, "_blank", "noopener,noreferrer");
+  });
+
+  byId("call111Btn")?.addEventListener("click", function() {
+    window.location.href = "tel:111";
+  });
+
+  document.querySelectorAll(".footer-hotlines li").forEach(function(item) {
+    item.addEventListener("click", function() {
+      var num = item.getAttribute("data-num");
+      if (num) window.location.href = "tel:" + num;
+    });
+  });
+})();
+</script>
+</body>
+</html>
