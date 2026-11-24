@@ -1,227 +1,89 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SAFE NET 4A — Trợ lý AI KHKT</title>
-  <style>
-    body { font-family: system-ui, sans-serif; background: #f0f4f8; margin: 0; display: flex; justify-content: center; height: 100vh; }
-    .container { width: 100%; max-width: 720px; background: #fff; display: flex; flex-direction: column; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-    .header { background: #1e3a8a; color: #fff; padding: 16px 20px; font-weight: bold; font-size: 18px; display: flex; justify-content: space-between; align-items: center; }
-    .upload-bar { background: #e0e7ff; padding: 10px 20px; display: flex; align-items: center; gap: 10px; font-size: 14px; border-bottom: 1px solid #c7d2fe; flex-wrap: wrap; }
-    .chat-box { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
-    .msg { max-width: 82%; padding: 12px 16px; border-radius: 12px; line-height: 1.6; white-space: pre-wrap; word-wrap: break-word; }
-    .user { align-self: flex-end; background: #2563eb; color: #fff; }
-    .bot { align-self: flex-start; background: #f1f5f9; color: #0f172a; border: 1px solid #e2e8f0; }
-    .input-area { display: flex; padding: 14px; border-top: 1px solid #e2e8f0; gap: 10px; }
-    input[type="text"] { flex: 1; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 15px; outline: none; }
-    button { background: #2563eb; color: #fff; border: none; padding: 0 20px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-    button:disabled { background: #94a3b8; }
-    .katex-display { margin: 8px 0; overflow-x: auto; overflow-y: hidden; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <span>🛡️ SAFE NET 4A — Chatbot AI</span>
-      <span style="font-size: 12px; font-weight: normal;">Dự án KHKT</span>
-    </div>
-
-    <div class="upload-bar">
-      <label for="fileInput" style="cursor:pointer; font-weight:600; color:#1e3a8a;">📎 Tải tài liệu lên (PDF, DOCX, TXT):</label>
-      <input type="file" id="fileInput" accept=".pdf,.docx,.txt" />
-      <span id="fileStatus" style="color:#059669; font-weight:500;"></span>
-    </div>
-
-    <div class="chat-box" id="chatBox">
-      <div class="msg bot">Tôi có thể giúp gì cho bạn?</div>
-    </div>
-
-    <div class="input-area">
-      <input type="text" id="userInput" placeholder="Nhập câu hỏi của bạn..." onkeypress="if(event.key==='Enter') sendMessage()" />
-      <button id="sendBtn" onclick="sendMessage()">Gửi</button>
-    </div>
-  </div>
-
-  <script>
-    var extractedText = "";
-    var uploadedFileName = "";
-    var chatHistory = [];
-
-    function injectCss(url) {
-      var l = document.createElement('link');
-      l.rel = 'stylesheet';
-      l.href = url;
-      document.head.appendChild(l);
-    }
-
-    function injectScript(url) {
-      return new Promise(function(resolve, reject) {
-        var s = document.createElement('script');
-        s.src = url;
-        s.onload = resolve;
-        s.onerror = reject;
-        document.head.appendChild(s);
-      });
-    }
-
-    var katexBase = "https" + "://" + "cdn.jsdelivr.net/npm/katex@0.16.11/dist/";
-    injectCss(katexBase + "katex.min.css");
-    injectScript(katexBase + "katex.min.js").then(function() {
-      return injectScript(katexBase + "contrib/auto-render.min.js");
-    }).catch(function(e) { console.error("Lỗi tải KaTeX:", e); });
-
-    async function ensurePdfLib() {
-      if (typeof window.pdfjsLib !== 'undefined') return window.pdfjsLib;
-      var sources = [
-        {
-          lib: "https" + "://" + "cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js",
-          worker: "https" + "://" + "cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js"
-        },
-        {
-          lib: "https" + "://" + "://unpkg.com",
-          worker: "https" + "://" + "://unpkg.com"
-        }
-      ];
-      for (var i = 0; i < sources.length; i++) {
-        try {
-          await injectScript(sources[i].lib);
-          if (typeof window.pdfjsLib !== 'undefined') {
-            window.pdfjsLib.GlobalWorkerOptions.workerSrc = sources[i].worker;
-            return window.pdfjsLib;
-          }
-        } catch (e) {}
-      }
-      throw new Error("Không thể tải thư viện đọc PDF.");
-    }
-
-    async function ensureMammothLib() {
-      if (typeof window.mammoth !== 'undefined') return window.mammoth;
-      var urls = [
-        "https" + "://" + "cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js",
-        "https" + "://" + "://unpkg.com"
-      ];
-      for (var i = 0; i < urls.length; i++) {
-        try {
-          await injectScript(urls[i]);
-          if (typeof window.mammoth !== 'undefined') return window.mammoth;
-        } catch (e) {}
-      }
-      throw new Error("Không thể tải thư viện đọc file Word.");
-    }
-
-    ensurePdfLib().catch(function() {});
-    ensureMammothLib().catch(function() {});
-
-    document.getElementById('fileInput').addEventListener('change', async function(e) {
-      var file = e.target.files.item(0);
-      if (!file) return;
-      var status = document.getElementById('fileStatus');
-      status.style.color = "#059669";
-      status.textContent = "Đang đọc file...";
-      uploadedFileName = file.name;
-      extractedText = "";
-
-      try {
-        var lowerName = file.name.toLowerCase();
-        if (lowerName.endsWith('.txt')) {
-          extractedText = await file.text();
-        } else if (lowerName.endsWith('.pdf')) {
-          var pdfLib = await ensurePdfLib();
-          var arrayBuffer = await file.arrayBuffer();
-          var pdf = await pdfLib.getDocument({ data: arrayBuffer }).promise;
-          var fullText = "";
-          for (var i = 1; i <= pdf.numPages; i++) {
-            var page = await pdf.getPage(i);
-            var content = await page.getTextContent();
-            fullText += content.items.map(function(item) { return item.str; }).join(" ") + "\n";
-          }
-          extractedText = fullText.trim();
-        } else if (lowerName.endsWith('.docx')) {
-          var mammothLib = await ensureMammothLib();
-          var arrayBuffer = await file.arrayBuffer();
-          var result = await mammothLib.extractRawText({ arrayBuffer: arrayBuffer });
-          extractedText = result.value.trim();
-        }
-
-        if (!extractedText) {
-          status.style.color = "#d97706";
-          status.textContent = "⚠️ File rỗng hoặc là file PDF dạng ảnh scan";
-        } else {
-          status.style.color = "#059669";
-          status.textContent = "✅ Đã nạp (" + extractedText.length + " ký tự)";
-        }
-      } catch (err) {
-        status.style.color = "#dc2626";
-        status.textContent = "❌ Lỗi: " + err.message;
-        console.error(err);
-      }
-    });
-
-    function appendMessage(text, sender) {
-      var box = document.getElementById('chatBox');
-      var div = document.createElement('div');
-      div.className = "msg " + sender;
-      div.textContent = text;
-      box.appendChild(div);
-
-      if (sender === 'bot' && typeof window.renderMathInElement === 'function') {
-        window.renderMathInElement(div, {
-          delimiters: [
-            { left: '$$', right: '$$', display: true },
-            { left: '$', right: '$', display: false }
-          ],
-          throwOnError: false
-        });
-      }
-
-      box.scrollTop = box.scrollHeight;
-    }
-
-    async function sendMessage() {
-      var input = document.getElementById('userInput');
-      var btn = document.getElementById('sendBtn');
-      var message = input.value.trim();
-      if (!message) return;
-
-      appendMessage(message, 'user');
-      input.value = '';
-      btn.disabled = true;
-
-      try {
-        var res = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            message: message,
-            history: chatHistory,
-            fileName: uploadedFileName,
-            fileContent: extractedText
-          })
-        });
-
-        var rawText = await res.text();
-        var data;
-        try {
-          data = JSON.parse(rawText);
-        } catch (parseErr) {
-          appendMessage("Lỗi từ máy chủ Vercel (Mã " + res.status + "): Kiểm tra lại file api/chat.js trên GitHub.", 'bot');
-          return;
-        }
-
-        var reply = data.reply || data.error || "Không nhận được phản hồi.";
-        appendMessage(reply, 'bot');
-
-        if (data.reply) {
-          chatHistory.push({ role: 'user', text: message });
-          chatHistory.push({ role: 'model', text: reply });
-        }
-      } catch (err) {
-        appendMessage("Lỗi kết nối mạng tới máy chủ: " + err.message, 'bot');
-      } finally {
-        btn.disabled = false;
-      }
-    }
-  </script>
-</body>
-</html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b3a35">
+<title>SAFE NET 4A | Trợ lý an toàn số</title>
+<meta name="description" content="SAFE NET 4A - Không gian nhận diện, phân tích và tìm hướng hỗ trợ an toàn trên không gian mạng.">
+<link rel="preconnect" href="https://googleapis.com">
+<link rel="preconnect" href="https://gstatic.com" crossorigin>
+<link href="https://googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0e2f2c;--deep:#0b3a35;--pine:#123f39;--teal:#0e7466;--teal-bright:#17997f;--teal-soft:#dcefe4;--coral:#d4684a;--coral-deep:#b34e31;--amber:#e9a13b;--paper:#f2ede1;--card:#fffdf7;--sand:#eae2ce;--line:#ddd3bd;--muted:#61756d;--cream:#f6f1e4;--shadow:0 20px 50px rgba(14,47,44,.10);--shadow-soft:0 8px 22px rgba(14,47,44,.07);--radius:22px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Be Vietnam Pro",system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://w3.org' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .04 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E")}
+main,header.topbar,footer{position:relative;z-index:1}
+button,textarea{font:inherit}button{cursor:pointer}a{color:inherit}
+.ic{width:1em;height:1em;display:inline-block;vertical-align:-.12em;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.reveal{opacity:0;transform:translateY(14px);animation:rise .7s cubic-bezier(.22,.8,.3,1) forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+.d1{animation-delay:.05s}.d2{animation-delay:.14s}.d3{animation-delay:.23s}.d4{animation-delay:.32s}
+.topbar{position:sticky;top:0;z-index:30;background:rgba(11,58,53,.94);backdrop-filter:blur(14px);color:var(--cream);box-shadow:0 1px 0 rgba(246,241,228,.12)}
+.nav{max-width:1180px;margin:auto;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:12px;color:var(--cream)}
+.logo{width:44px;height:44px;border-radius:14px;background:linear-gradient(140deg,var(--teal-bright),#0c5a50);display:grid;place-items:center;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18),0 8px 18px rgba(11,58,53,.4)}
+.logo .ic{width:24px;height:24px}
+.brand strong{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:17px;letter-spacing:.03em;font-weight:700}
+.brand small{display:block;color:#b9cdc2;font-size:10.5px;letter-spacing:.04em}
+.nav-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:0;border-radius:999px;padding:10px 16px;font-size:12px;font-weight:700;transition:.18s;display:inline-flex;align-items:center;gap:7px}
+.btn .ic{width:14px;height:14px}.btn:hover{transform:translateY(-2px)}.btn:active{transform:translateY(0)}
+.btn-primary{background:var(--coral);color:#fff;box-shadow:0 8px 18px rgba(212,104,74,.35)}.btn-primary:hover{background:var(--coral-deep)}
+.btn-cream{background:var(--cream);color:var(--deep);border:1px solid rgba(246,241,228,.25)}
+.btn-soft{background:var(--teal-soft);color:var(--deep);border:1px solid #c4e0d2}.btn-soft:hover{background:#cfe9dd}
+.btn-quiet{background:transparent;color:var(--muted);border:1px solid var(--line)}.btn-quiet:hover{background:var(--card);color:var(--deep)}
+main{max-width:1180px;margin:0 auto;padding:30px 22px 60px}
+.hero{display:grid;grid-template-columns:1.5fr .9fr;gap:20px;margin:6px 0 26px;align-items:stretch}
+.hero-main{padding:6px 0 0}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:10.5px;font-weight:800;letter-spacing:.18em;color:var(--teal);text-transform:uppercase}
+.eyebrow::before{content:"";width:26px;height:2px;background:var(--coral);border-radius:2px}
+h1{font-family:"Bricolage Grotesque",sans-serif;font-size:clamp(32px,4.6vw,52px);line-height:1.08;margin:14px 0 16px;letter-spacing:-.02em;font-weight:800;color:var(--deep)}
+h1 em{font-style:normal;color:var(--teal);position:relative;white-space:nowrap}
+h1 em::after{content:"";position:absolute;left:0;right:0;bottom:.04em;height:.14em;background:var(--amber);opacity:.55;border-radius:99px;z-index:-1}
+.hero-main p{max-width:640px;color:var(--muted);font-size:13.5px;margin:0}
+.hero-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.chip{display:inline-flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 13px 7px 8px;font-size:11px;font-weight:600;color:var(--deep);box-shadow:var(--shadow-soft)}
+.chip b{width:22px;height:22px;border-radius:50%;background:var(--deep);color:var(--cream);font-size:9px;display:grid;place-items:center}
+.hero-rail{background:var(--deep);color:var(--cream);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.hero-rail::after{content:"";position:absolute;width:220px;height:220px;border-radius:50%;border:1.5px dashed rgba(246,241,228,.18);right:-70px;bottom:-70px}
+.hero-rail h2{font-family:"Bricolage Grotesque",sans-serif;font-size:18px;margin:0 0 4px;font-weight:700}
+.hero-rail .sub{font-size:11px;color:#b9cdc2;margin:0 0 16px}
+.ladder{display:grid;gap:0;position:relative;z-index:1}
+.rung{display:flex;gap:13px;align-items:flex-start;padding:10px 0;position:relative}
+.rung::before{content:"";position:absolute;left:15px;top:0;bottom:0;width:1.5px;background:rgba(246,241,228,.16)}
+.rung:first-child::before{top:50%}.rung:last-child::before{bottom:50%}
+.rung-dot{width:31px;height:31px;flex:0 0 31px;border-radius:50%;background:rgba(246,241,228,.08);border:1.5px solid rgba(246,241,228,.3);display:grid;place-items:center;font-size:10px;font-weight:800;position:relative;z-index:1}
+.rung:nth-child(1) .rung-dot{background:var(--teal-bright);border-color:transparent;color:#fff}
+.rung:nth-child(4) .rung-dot{background:var(--coral);border-color:transparent;color:#fff}
+.rung b{display:block;font-size:12.5px;font-weight:700}.rung span{font-size:10.5px;color:#b9cdc2}
+.support{background:var(--deep);color:var(--cream);border-radius:26px;box-shadow:var(--shadow);padding:30px;margin:0 0 26px;position:relative;overflow:hidden}
+.support::before{content:"";position:absolute;inset:0;background:radial-gradient(420px 220px at 88% -10%,rgba(23,153,127,.35),transparent 70%),radial-gradient(300px 200px at 0% 120%,rgba(212,104,74,.22),transparent 70%);pointer-events:none}
+.support-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px;position:relative;z-index:1}
+.support-head .eyebrow{color:var(--amber)}.support-head .eyebrow::before{background:var(--amber)}
+.support-head h2{font-family:"Bricolage Grotesque",sans-serif;font-size:clamp(21px,2.6vw,28px);margin:8px 0 4px;font-weight:700}
+.support-head p{font-size:12px;color:#b9cdc2;margin:0;max-width:560px}
+.support-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:14px;position:relative;z-index:1}
+.support-card{background:rgba(246,241,228,.07);border:1px solid rgba(246,241,228,.16);border-radius:18px;padding:18px;display:flex;flex-direction:column;transition:.2s}
+.support-card:hover{background:rgba(246,241,228,.11);transform:translateY(-3px)}
+.support-card.main{background:var(--cream);color:var(--ink);border-color:transparent}.support-card.main:hover{background:#fff}
+.person{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.person-avatar{width:56px;height:56px;flex:0 0 56px;border-radius:18px;background:linear-gradient(140deg,var(--teal-bright),var(--deep));color:#fff;display:grid;place-items:center;font-family:"Bricolage Grotesque",sans-serif;font-size:19px;font-weight:700;box-shadow:0 10px 22px rgba(11,58,53,.3)}
+.person-name{font-family:"Bricolage Grotesque",sans-serif;font-size:17px;font-weight:700;line-height:1.2}
+.person-role{font-size:11px;font-weight:700;color:var(--coral-deep);margin-top:2px}
+.person-org{font-size:10.5px;color:var(--muted);margin-top:1px}
+.contact-rows{display:grid;gap:9px;margin-top:auto}
+.contact-row{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:13px;background:var(--card);border:1px solid var(--line);color:var(--deep);text-decoration:none;font-size:12px;font-weight:600;transition:.18s}
+.contact-row:hover{border-color:var(--teal);background:var(--teal-soft);transform:translateX(3px)}
+.contact-row .bubble-ic{width:34px;height:34px;flex:0 0 34px;border-radius:11px;display:grid;place-items:center;font-size:16px}
+.contact-row.tel .bubble-ic{background:var(--teal-soft);color:var(--teal)}
+.contact-row.mail .bubble-ic{background:#f7e8d7;color:var(--coral-deep)}
+.contact-row small{display:block;font-size:9.5px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.support-card h3{font-size:13.5px;margin:2px 0 6px;font-weight:700;display:flex;align-items:center;gap:8px}
+.support-card h3 .ic{width:16px;height:16px;color:var(--amber)}
+.support-card .desc{font-size:11px;color:#b9cdc2;margin:0 0 14px;flex:1}
+.support-card.main .desc{color:var(--muted)}
+.support-card .btn{margin-top:auto;justify-content:center}
+.support-note{margin-top:16px;padding-top:14px;border-top:1px dashed rgba(246,241,228,.22);font-size:10.5px;color:#b9cdc2;display:flex;align-items:center;gap:8px;position:relative;z-index:1}
+.support-note .ic{width:15px;height:15px;color:var(--amber)}
