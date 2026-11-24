@@ -252,43 +252,54 @@ h1 em{font-style:normal;color:var(--teal);background:var(--teal-soft);padding:0 
     <article class="resource"><b>Làm mới hội thoại</b><p>Bắt đầu một chủ đề mới. Nội dung hội thoại hiện tại sẽ được xóa khỏi giao diện.</p><button type="button" class="btn btn-quiet" id="newChatCard">Bắt đầu lại ›</button></article>
   </section>
 </main>
+<footer class="site-footer" style="background:#0f3d38; color:#e2e8f0; margin-top:48px; padding:42px 24px 24px;">
+  <div style="max-width:1180px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:32px; padding-bottom:28px; border-bottom:1px solid rgba(255,255,255,0.15);">
+    
+    <div>
+      <h4 style="color:#ffffff; font-size:18px; margin:0 0 12px; display:flex; align-items:center; gap:8px;">
+        <span>🛡️</span> THPT Mộ Đức
+      </h4>
+      <p style="margin:0; font-size:14.5px; line-height:1.7; color:#cbd5e1;">
+        Không gian đồng hành và hỗ trợ học sinh trước áp lực, tổn thương tâm lý và bắt nạt trên không gian mạng thông qua mô hình SAFE NET 4A.
+      </p>
+    </div>
 
-<footer class="site-footer">
-  <div class="footer-inner">
     <div>
-      <h4>THPT Mộ Đức</h4>
-      <p class="footer-desc">Không gian đồng hành và hỗ trợ học sinh trước áp lực, tổn thương tâm lý và bắt nạt trên không gian mạng thông qua mô hình SAFE NET 4A.</p>
-      
-    <div>
-      <h4>Truy cập nhanh</h4>
-      <ul class="footer-links">
-        <li><a href="#chat" id="linkCanhBao">🛡️ Hộp thư Cảnh báo Xanh</a></li>
-        <li><a href="#chat" id="linkTramLangNghe">🎧 Trạm Lắng Nghe</a></li>
+      <h4 style="color:#ffffff; font-size:17px; margin:0 0 14px;">Truy cập nhanh</h4>
+      <ul style="list-style:none; padding:0; margin:0; display:grid; gap:12px;">
+        <li>
+          <a href="#chat" id="linkCanhBao" style="color:#99f6e4; text-decoration:none; font-weight:600; font-size:14.5px; display:inline-flex; align-items:center; gap:8px;">
+            <span>🛡️</span> Hộp thư Cảnh báo Xanh
+          </a>
+        </li>
+        <li>
+          <a href="#chat" id="linkTramLangNghe" style="color:#99f6e4; text-decoration:none; font-weight:600; font-size:14.5px; display:inline-flex; align-items:center; gap:8px;">
+            <span>🎧</span> Trạm Lắng Nghe
+          </a>
+        </li>
       </ul>
     </div>
+
     <div>
-      <h4>Khi cần giúp đỡ ngay</h4>
-      <ul class="footer-hotlines">
-        <li data-num="111">📞 <b>111</b> Tổng đài quốc gia bảo vệ trẻ em</li>
-        <li data-num="113">📞 <b>113</b> Công an</li>
-        <li data-num="115">📞 <b>115</b> Cấp cứu y tế</li>
+      <h4 style="color:#ffffff; font-size:17px; margin:0 0 14px;">Khi cần giúp đỡ ngay</h4>
+      <ul class="footer-hotlines" style="list-style:none; padding:0; margin:0; display:grid; gap:10px;">
+        <li data-num="111" style="background:rgba(255,255,255,0.08); padding:8px 14px; border-radius:10px; display:flex; align-items:center; gap:10px; cursor:pointer; font-size:14px;">
+          <span>📞</span> <b style="color:#fbbf24; font-size:16px; min-width:34px;">111</b> <span>Tổng đài quốc gia bảo vệ trẻ em</span>
+        </li>
+        <li data-num="113" style="background:rgba(255,255,255,0.08); padding:8px 14px; border-radius:10px; display:flex; align-items:center; gap:10px; cursor:pointer; font-size:14px;">
+          <span>📞</span> <b style="color:#fbbf24; font-size:16px; min-width:34px;">113</b> <span>Công an</span>
+        </li>
+        <li data-num="115" style="background:rgba(255,255,255,0.08); padding:8px 14px; border-radius:10px; display:flex; align-items:center; gap:10px; cursor:pointer; font-size:14px;">
+          <span>📞</span> <b style="color:#fbbf24; font-size:16px; min-width:34px;">115</b> <span>Cấp cứu y tế</span>
+        </li>
       </ul>
     </div>
+
   </div>
-  <div class="footer-bottom">
+
+  <div style="max-width:1180px; margin:20px auto 0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; font-size:13.5px; color:#94a3b8;">
     <span>© Trường THPT Mộ Đức · Dự án KHKT SAFE NET 4A</span>
     <span>Không cần tài khoản để nhắn tin · Bảo mật &amp; An toàn</span>
   </div>
 </footer>
 
-<div class="modal-backdrop" id="modalBackdrop">
-  <div class="modal">
-    <div class="modal-header">
-      <div>
-        <span class="modal-badge">HỆ THỐNG HỖ TRỢ THPT MỘ ĐỨC</span>
-        <h2>Cẩm nang hành động SAFE NET 4A</h2>
-        <p class="modal-sub">Quy trình 4 bước giúp bạn bình tĩnh nhận diện và xử lý an toàn mọi tình huống trên không gian mạng.</p>
-      </div>
-      <button type="button" class="btn btn-quiet" id="modalClose">Đóng ✕</button>
-    </div>
-    <div class="hb-grid">
