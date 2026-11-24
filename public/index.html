@@ -34,7 +34,7 @@
     </div>
 
     <div class="chat-box" id="chatBox">
-      <div class="msg bot">Xin chào! Bạn có thể tải tài liệu (PDF, Word, TXT) lên thanh phía trên, sau đó đặt câu hỏi (kể cả bài tập Toán, Lý, Hóa có công thức) để mình hỗ trợ nhé.</div>
+      <div class="msg bot">Tôi có thể giúp gì cho bạn?</div>
     </div>
 
     <div class="input-area">
@@ -65,14 +65,12 @@
       });
     }
 
-    // 1. Nạp thư viện vẽ công thức toán KaTeX đẹp chuẩn sách giáo khoa
     var katexBase = "https" + "://" + "cdn.jsdelivr.net/npm/katex@0.16.11/dist/";
     injectCss(katexBase + "katex.min.css");
     injectScript(katexBase + "katex.min.js").then(function() {
       return injectScript(katexBase + "contrib/auto-render.min.js");
     }).catch(function(e) { console.error("Lỗi tải KaTeX:", e); });
 
-    // 2. Nạp thư viện đọc PDF và Word đa nguồn dự phòng
     async function ensurePdfLib() {
       if (typeof window.pdfjsLib !== 'undefined') return window.pdfjsLib;
       var sources = [
@@ -167,7 +165,6 @@
       div.textContent = text;
       box.appendChild(div);
 
-      // Tự động vẽ đẹp công thức toán học nếu là tin nhắn từ bot
       if (sender === 'bot' && typeof window.renderMathInElement === 'function') {
         window.renderMathInElement(div, {
           delimiters: [
