@@ -5,8 +5,8 @@ export default async function handler(req, res) {
 
   try {
     const { message, history = [], fileName = '', fileContent = '' } = req.body;
-    const apiKey = process.env.GEMINI_API_KEY;
-    const sheetUrl = process.env.GOOGLE_SHEET_URL;
+    const apiKey = (process.env.GEMINI_API_KEY || '').trim();
+    const sheetUrl = (process.env.GOOGLE_SHEET_URL || '').trim();
 
     if (!apiKey) {
       return res.status(500).json({ error: 'Chưa cấu hình biến GEMINI_API_KEY trên Vercel.' });
@@ -25,17 +25,21 @@ export default async function handler(req, res) {
       { role: 'user', parts: [{ text: message }] }
     ];
 
-    const geminiRes = await fetch(
-      `https://googleapis.com{apiKey}`,
-      {
+    const geminiUrl = "https://googleapis.com" + apiKey;
+
+    let geminiRes;
+    try {
+      geminiRes = await fetch(geminiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           systemInstruction: { parts: [{ text: systemInstruction }] },
-          contents
+          contents: contents
         })
-      }
-    );
+      });
+    } catch (netErr) {
+      return res.status(500).json({ error: 'Lỗi kết nối tới Google Gemini: ' + (netErr.cause?.message || netErr.message) });
+    }
 
     const data = await geminiRes.json();
 
@@ -43,9 +47,9 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Lỗi từ Gemini API: ' + data.error.message });
     }
 
-    const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Xin lỗi, AI chưa thể phản hồi lúc này.";
+    const reply = data?.candidates?.at(0)?.content?.parts?.at(0)?.text || "Xin lỗi, AI chưa thể phản hồi lúc này.";
 
-    if (sheetUrl) {
+    if (sheetUrl && sheetUrl.startsWith('http')) {
       await fetch(sheetUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
