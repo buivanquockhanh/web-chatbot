@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAFE NET 4A — Trợ lý AI KHKT</title>
+  <!-- Thư viện đọc PDF và Word ngay trên trình duyệt -->
+  <script src="https://cloudflare.com"></script>
+  <script src="https://cloudflare.com"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #f0f4f8; margin: 0; display: flex; justify-content: center; height: 100vh; }
+    .container { width: 100%; max-width: 720px; background: #fff; display: flex; flex-direction: column; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .header { background: #1e3a8a; color: #fff; padding: 16px 20px; font-weight: bold; font-size: 18px; display: flex; justify-content: space-between; align-items: center; }
+    .upload-bar { background: #e0e7ff; padding: 10px 20px; display: flex; align-items: center; gap: 10px; font-size: 14px; border-bottom: 1px solid #c7d2fe; }
+    .chat-box { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+    .msg { max-width: 80%; padding: 12px 16px; border-radius: 12px; line-height: 1.5; white-space: pre-wrap; }
+    .user { align-self: flex-end; background: #2563eb; color: #fff; }
+    .bot { align-self: flex-start; background: #f1f5f9; color: #0f172a; border: 1px solid #e2e8f0; }
+    .input-area { display: flex; padding: 14px; border-top: 1px solid #e2e8f0; gap: 10px; }
+    input[type="text"] { flex: 1; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 15px; outline: none; }
+    button { background: #2563eb; color: #fff; border: none; padding: 0 20px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    button:disabled { background: #94a3b8; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <span>🛡️ SAFE NET 4A — Chatbot AI</span>
+      <span style="font-size: 12px; font-weight: normal;">Dự án KHKT</span>
+    </div>
+
+    <div class="upload-bar">
+      <label for="fileInput" style="cursor:pointer; font-weight:600; color:#1e3a8a;">📎 Tải tài liệu lên (PDF, DOCX, TXT):</label>
+      <input type="file" id="fileInput" accept=".pdf,.docx,.txt" />
+      <span id="fileStatus" style="color:#059669; font-weight:500;"></span>
+    </div>
+
+    <div class="chat-box" id="chatBox">
+      <div class="msg bot">Xin chào! Bạn có thể tải tài liệu (PDF, Word, TXT) lên thanh phía trên, sau đó đặt câu hỏi để mình hỗ trợ nhé.</div>
+    </div>
+
+    <div class="input-area">
+      <input type="text" id="userInput" placeholder="Nhập câu hỏi của bạn..." onkeypress="if(event.key==='Enter') sendMessage()" />
+      <button id="sendBtn" onclick="sendMessage()">Gửi</button>
+    </div>
+  </div>
+
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cloudflare.com';
+    let extractedText = "";
+    let uploadedFileName = "";
+    let chatHistory = [];
+
+    // Xử lý đọc file khi người dùng chọn tài liệu
+    document.getElementById('fileInput').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const status = document.getElementById('fileStatus');
+      status.textContent = "Đang đọc file...";
+      uploadedFileName = file.name;
+
+      try {
+        if (file.name.endsWith('.txt')) {
+          extractedText = await file.text();
+        } else if (file.name.endsWith('.pdf')) {
+          const arrayBuffer = await file.arrayBuffer();
+          const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+          let fullText = "";
+          for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const content = await page.getTextContent();
+            fullText += content.items.map(item => item.str).join(" ") + "\n";
+          }
+          extractedText = fullText;
+        } else if (file.name.endsWith('.docx')) {
+          const arrayBuffer = await file.arrayBuffer();
+          const result = await mammoth.extractRawText({ arrayBuffer });
+          extractedText = result.value;
+        }
+        status.textContent = `✅ Đã nạp (${extractedText.length} ký tự)`;
+      } catch (err) {
+        status.textContent = "❌ Lỗi đọc file";
+        console.error(err);
+      }
+    });
+
+    function appendMessage(text, sender) {
+      const box = document.getElementById('chatBox');
+      const div = document.createElement('div');
+      div.className = `msg ${sender}`;
+      div.textContent = text;
+      box.appendChild(div);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById('userInput');
+      const btn = document.getElementById('sendBtn');
+      const message = input.value.trim();
+      if (!message) return;
+
+      appendMessage(message, 'user');
+      input.value = '';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message,
+            history: chatHistory,
+            fileName: uploadedFileName,
+            fileContent: extractedText
+          })
+        });
+        const data = await res.json();
+        const reply = data.reply || data.error;
+        appendMessage(reply, 'bot');
+
+        chatHistory.push({ role: 'user', text: message });
+        chatHistory.push({ role: 'model', text: reply });
+      } catch (err) {
+        appendMessage("Lỗi kết nối máy chủ.", 'bot');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
