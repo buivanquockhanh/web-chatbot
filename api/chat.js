@@ -12,29 +12,36 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Chưa cấu hình biến GEMINI_API_KEY trên Vercel.' });
     }
 
-    let systemInstruction = "Bạn là trợ lý AI giáo dục của dự án SAFE NET 4A. Hãy trả lời thân thiện, chính xác và dễ hiểu bằng tiếng Việt.";
+    // Ghép ngữ cảnh tài liệu và lịch sử hội thoại vào prompt gửi cho AI
+    let fullPrompt = "Bạn là trợ lý AI giáo dục của dự án SAFE NET 4A. Hãy trả lời thân thiện, chính xác và dễ hiểu bằng tiếng Việt.\n\n";
+    
     if (fileContent) {
-      systemInstruction += `\n\nNgười dùng đã tải lên tài liệu tên là "${fileName}". Hãy ưu tiên sử dụng thông tin trong tài liệu dưới đây để trả lời câu hỏi. Nếu tài liệu không có thông tin, hãy nói rõ và hỗ trợ theo kiến thức chuẩn:\n--- NỘI DUNG TÀI LIỆU ---\n${fileContent.slice(0, 30000)}\n--- HẾT TÀI LIỆU ---`;
+      fullPrompt += `Người dùng đã tải lên tài liệu tên là "${fileName}". Hãy ưu tiên sử dụng thông tin trong tài liệu dưới đây để trả lời câu hỏi. Nếu tài liệu không có thông tin, hãy nói rõ và hỗ trợ theo kiến thức chuẩn:\n--- NỘI DUNG TÀI LIỆU ---\n${fileContent.slice(0, 30000)}\n--- HẾT TÀI LIỆU ---\n\n`;
     }
 
-    const contents = [
-      ...history.map(item => ({
-        role: item.role === 'user' ? 'user' : 'model',
-        parts: [{ text: item.text }]
-      })),
-      { role: 'user', parts: [{ text: message }] }
-    ];
+    if (history.length > 0) {
+      fullPrompt += "Lịch sử trò chuyện trước đó:\n";
+      history.forEach(item => {
+        fullPrompt += `${item.role === 'user' ? 'Người dùng' : 'Trợ lý AI'}: ${item.text}\n`;
+      });
+      fullPrompt += "\n";
+    }
+
+    fullPrompt += `Câu hỏi hiện tại của người dùng: ${message}`;
 
     const host = "generativelanguage" + ".googleapis" + ".com";
-    const path = "/v1beta/models/gemini-2.5-flash:generateContent";
-    const geminiUrl = "https" + "://" + host + path + "?key=" + encodeURIComponent(apiKey);
+    const path = "/v1beta/interactions";
+    const apiUrl = "https" + "://" + host + path;
 
-    const geminiRes = await fetch(geminiUrl, {
+    const geminiRes = await fetch(apiUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': apiKey
+      },
       body: JSON.stringify({
-        systemInstruction: { parts: [{ text: systemInstruction }] },
-        contents: contents
+        model: "gemini-3.8-flash",
+        input: fullPrompt
       })
     });
 
@@ -44,8 +51,16 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Lỗi từ Gemini API: ' + data.error.message });
     }
 
-    const reply = data?.candidates?.at(0)?.content?.parts?.at(0)?.text || "Xin lỗi, AI chưa thể phản hồi lúc này.";
+    // Trích xuất câu trả lời từ cấu trúc Interactions API mới
+    let reply = "Xin lỗi, AI chưa thể phản hồi lúc này.";
+    if (data.steps && Array.isArray(data.steps)) {
+      const modelStep = data.steps.find(step => step.type === 'model_output');
+      if (modelStep && modelStep.content && modelStep.content.at(0)?.text) {
+        reply = modelStep.content.at(0).text;
+      }
+    }
 
+    // Lưu lịch sử chat và dữ liệu tài liệu về Google Sheets
     if (sheetUrl && sheetUrl.startsWith('http')) {
       await fetch(sheetUrl, {
         method: 'POST',
