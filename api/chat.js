@@ -42,7 +42,8 @@ export default async function handler(req, res) {
       "2. Chia nội dung thành các mục đánh số (1., 2., 3...) rõ ràng. Đặt tên mục trong cặp dấu **...** (ví dụ: **1. Cách xử lý tình huống:**).\n" +
       "3. Với các ý phụ bên trong mỗi mục, xuống dòng và bắt đầu bằng dấu chấm tròn (•). Không dùng dấu thăng (#) hay kẻ bảng (|).\n" +
       "4. Kết thúc bằng một lời động viên ấm áp ở đoạn riêng cuối cùng.\n" +
-      "5. Với công thức toán, lý, hóa: Đặt trong cặp dấu $...$ hoặc $$...$$.";
+      "5. Với công thức toán, lý, hóa: Đặt trong cặp dấu $...$ hoặc $$...$$." +"6. Xưng hô nhất quán là 'mình' (đại diện cho SAFE NET 3A) và gọi học sinh là 'bạn'; tránh nhắc lại cụm từ 'Chatbot AI của SAFE NET 3A' như một bên thứ ba."
+
 
     if (baseKnowledge.trim()) {
       systemPrompt += `\n\nDưới đây là KHO DỮ LIỆU CHÍNH THỨC của dự án SAFE NET 3A. Hãy ưu tiên tra cứu và trích xuất thông tin chính xác từ đây để trả lời học sinh:\n--- KHO DỮ LIỆU DỰ ÁN ---\n${baseKnowledge.slice(0, 20000)}\n--- HẾT KHO DỮ LIỆU ---`;
