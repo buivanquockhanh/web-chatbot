@@ -12,377 +12,305 @@
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased">
 
-  <!-- Nơi nạp các mảnh giao diện -->
-  <div id="part-modals"></div>
-  <div id="part-header-hero"></div>
-  
-  <main class="max-w-6xl mx-auto px-4 pb-12 space-y-12">
-    <div id="part-pillars"></div>
-    <div id="part-workspace"></div>
+  <!-- MODAL 1: THÔNG BÁO NHẮC NHỞ -->
+  <div id="welcomeModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 p-6 md:p-8 relative">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
+        <span class="text-xs font-bold tracking-wider uppercase text-blue-600 bg-blue-50 px-3 py-1 rounded-full">📌 THÔNG BÁO NHẮC NHỞ · SAFE NET 3A</span>
+        <button onclick="closeModal('welcomeModal')" class="text-slate-400 hover:text-slate-700 text-xl font-bold w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 transition">✕</button>
+      </div>
+      <h2 class="text-xl md:text-2xl font-bold text-slate-900 mb-4">NHỮNG CÁCH ỨNG XỬ VĂN MINH TRÊN KHÔNG GIAN MẠNG</h2>
+      <div class="space-y-2.5 text-sm text-slate-600 leading-relaxed">
+        <p><strong class="text-slate-900">1. Giữ thái độ lịch sự, dùng ngôn từ chuẩn mực:</strong> Sử dụng tiếng Việt rõ ràng, văn minh; không chửi bới, miệt thị, công kích cá nhân hay xúc phạm danh dự người khác.</p>
+        <p><strong class="text-slate-900">2. Suy nghĩ kỹ trước khi đăng bài và bình luận:</strong> Giữ bình tĩnh trước các vấn đề gây tranh cãi; không hùa theo đám đông hay bình luận theo cảm xúc nhất thời.</p>
+        <p><strong class="text-slate-900">3. Kiểm chứng thông tin trước khi chia sẻ:</strong> Chỉ chia sẻ thông tin chính thống, đã xác thực; không tiếp tay lan truyền tin giả (fake news) hoặc nội dung giật gân câu view.</p>
+        <p><strong class="text-slate-900">4. Tôn trọng sự khác biệt và phản biện xây dựng:</strong> Lắng nghe quan điểm trái chiều trên tinh thần tôn trọng; tranh luận bằng lý lẽ khách quan, không kỳ thị ngoại hình, giới tính hay vùng miền.</p>
+        <p><strong class="text-slate-900">5. Bảo vệ quyền riêng tư của bản thân và người khác:</strong> Không tự ý đăng tải hình ảnh, tin nhắn, thông tin cá nhân của người khác khi chưa được phép; chủ động bảo mật tài khoản cá nhân.</p>
+        <p><strong class="text-slate-900">6. Tôn trọng bản quyền nội dung số:</strong> Luôn ghi rõ nguồn gốc, tên tác giả khi trích dẫn bài viết, hình ảnh hoặc sản phẩm sáng tạo của người khác.</p>
+        <p><strong class="text-slate-900">7. Nói không với bắt nạt trực tuyến (Cyberbullying):</strong> Không tham gia công kích, tẩy chay vô căn cứ; chủ động báo cáo (Report) các nội dung độc hại và hỗ trợ, bảo vệ nạn nhân trên mạng.</p>
+        <p><strong class="text-slate-900">8. Lan tỏa năng lượng và giá trị tích cực:</strong> Chia sẻ kiến thức hữu ích, câu chuyện đẹp, hành động nhân văn và sử dụng mạng xã hội hợp lý để cân bằng với cuộc sống thực.</p>
+      </div>
+      <div class="mt-5 p-4 bg-blue-50 rounded-xl text-center">
+        <p class="font-semibold text-blue-900 italic">“Không gian mạng là ảo – Trách nhiệm và sự tử tế là thật.”</p>
+      </div>
+      <div class="mt-5 flex items-center justify-between gap-4">
+        <span class="text-xs text-slate-400">Nhấn nút ✕ hoặc nút bên cạnh để bắt đầu sử dụng.</span>
+        <button onclick="closeModal('welcomeModal')" class="shrink-0 bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2.5 rounded-xl transition">Bắt đầu sử dụng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: CẨM NANG HÀNH ĐỘNG SAFE NET 3A -->
+  <div id="handbookModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 p-6 md:p-8 relative">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
+        <span class="text-xs font-bold tracking-wider uppercase text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">HỆ THỐNG HỖ TRỢ THPT MỘ ĐỨC</span>
+        <button onclick="closeModal('handbookModal')" class="text-slate-400 hover:text-slate-700 text-sm font-semibold px-3 py-1 rounded-full hover:bg-slate-100 transition">Đóng ✕</button>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-900">Cẩm nang hành động SAFE NET 3A</h2>
+      <p class="text-sm text-slate-500 mt-1 mb-5">Quy trình 3 bước giúp bạn trang bị kiến thức, rèn luyện kỹ năng và tìm kiếm sự trợ giúp an toàn trên không gian mạng.</p>
+      <div class="space-y-3.5">
+        <div class="p-4 rounded-xl border border-blue-100 bg-blue-50/50">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="bg-blue-600 text-white text-xs font-bold px-2.5 py-0.5 rounded-md">A1</span>
+            <h3 class="font-bold text-slate-900">Awareness · Nhận diện</h3>
+          </div>
+          <p class="text-sm text-slate-600 leading-relaxed">Hiểu rõ khái niệm, biểu hiện, các hình thức bắt nạt trực tuyến phổ biến (bị xúc phạm trong nhóm trò chuyện, phát tán hình ảnh riêng tư, giả mạo tài khoản, bị cô lập...) cũng như nguyên nhân và hậu quả đối với học sinh. Nắm vững cách bảo vệ thông tin cá nhân và sử dụng mạng xã hội an toàn.</p>
+        </div>
+        <div class="p-4 rounded-xl border border-emerald-100 bg-emerald-50/50">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="bg-emerald-600 text-white text-xs font-bold px-2.5 py-0.5 rounded-md">A2</span>
+            <h3 class="font-bold text-slate-900">Action · Hành động</h3>
+          </div>
+          <p class="text-sm text-slate-600 leading-relaxed">Chuyển hóa kiến thức thành kỹ năng ứng phó cụ thể thông qua việc thực hành các tình huống giả định tương tác trên <strong>DIGITAL SHIELD</strong>. Rèn luyện khả năng giữ bình tĩnh, phân tích vấn đề, đánh giá hậu quả để lựa chọn cách xử lý an toàn (lưu bằng chứng, chặn tài khoản vi phạm, bảo mật tài khoản và hỗ trợ bạn bè).</p>
+        </div>
+        <div class="p-4 rounded-xl border border-purple-100 bg-purple-50/50">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="bg-purple-600 text-white text-xs font-bold px-2.5 py-0.5 rounded-md">A3</span>
+            <h3 class="font-bold text-slate-900">Assistance · Hỗ trợ</h3>
+          </div>
+          <p class="text-sm text-slate-600 leading-relaxed">Chủ động tìm kiếm sự hỗ trợ thay vì im lặng che giấu trải nghiệm bị bắt nạt. Trò chuyện trực tiếp với <strong>Chatbot AI SAFE NET 3A</strong>, chia sẻ tâm sự kín tại <strong>Trạm Lắng Nghe (Padlet)</strong>, kết nối cha mẹ, thầy cô Tổ Tư vấn học đường THPT Mộ Đức hoặc gọi tổng đài miễn phí <strong>111</strong> khi có nguy cơ mất an toàn.</p>
+        </div>
+      </div>
+      <div class="mt-5 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+        <h4 class="font-bold text-amber-900 mb-2">⚠ 4 Nguyên tắc vàng bảo vệ bản thân</h4>
+        <ul class="space-y-1.5 text-sm text-amber-950 list-disc pl-5">
+          <li><strong>Không im lặng chịu đựng:</strong> Luôn tìm một người lớn đáng tin cậy hoặc kết nối qua kênh hỗ trợ để được đồng hành.</li>
+          <li><strong>Không đáp trả tiêu cực:</strong> Tránh đôi co, xúc phạm ngược lại hoặc chia sẻ rộng rãi nội dung gây tổn thương.</li>
+          <li><strong>Giữ kín thông tin cá nhân:</strong> Tuyệt đối không gửi mật khẩu, mã OTP, địa chỉ nhà hay hình ảnh nhạy cảm cho người lạ.</li>
+          <li><strong>Lưu giữ bằng chứng:</strong> Chụp màn hình toàn bộ tin nhắn, đường link, tài khoản vi phạm trước khi chặn.</li>
+        </ul>
+      </div>
+      <div class="mt-5 flex justify-end">
+        <button onclick="closeModal('handbookModal')" class="bg-slate-900 hover:bg-slate-800 text-white font-medium px-6 py-2.5 rounded-xl transition">💬 Trò chuyện cùng AI ngay</button>
+      </div>
+    </div>
+  </div>
+  <!-- HEADER -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <span class="text-2xl">🛡</span>
+        <div>
+          <span class="font-bold text-slate-900 text-lg tracking-tight">SAFE NET 3A</span>
+          <span class="hidden sm:inline-block text-xs text-slate-500 ml-2">THPT Mộ Đức · Không gian hỗ trợ an toàn số</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-2.5">
+        <button onclick="openModal('handbookModal')" class="text-sm font-medium text-slate-700 hover:text-blue-600 bg-slate-100 hover:bg-blue-50 px-3.5 py-2 rounded-xl transition">📘 Cẩm nang 3A</button>
+        <button onclick="resetChat()" class="text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 px-3.5 py-2 rounded-xl transition">+ Cuộc trò chuyện mới</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-8 md:py-12 space-y-12">
+
+    <!-- HERO SECTION -->
+    <section class="text-center max-w-3xl mx-auto">
+      <span class="inline-block text-xs font-semibold uppercase tracking-wider text-blue-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded-full mb-4">
+        Adaptive digital safety system · Mô hình 3A
+      </span>
+      <h1 class="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight mb-4">
+        Mỗi câu chuyện, một hướng hỗ trợ <span class="text-blue-600 italic">phù hợp.</span>
+      </h1>
+      <p class="text-slate-600 text-base md:text-lg leading-relaxed mb-6">
+        Trò chuyện tự nhiên, hỏi tiếp khi cần và điều chỉnh hướng hỗ trợ theo những gì bạn chia sẻ. SAFE NET đồng hành cùng bạn qua mô hình 3A: <strong>Nhận diện – Hành động – Hỗ trợ</strong>.
+      </p>
+      <div class="inline-flex flex-wrap justify-center items-center gap-2 text-xs md:text-sm font-medium bg-white border border-slate-200 px-4 py-2 rounded-full shadow-sm">
+        <span class="text-blue-600 font-bold">A1</span> Nhận diện
+        <span class="text-slate-300">•</span>
+        <span class="text-emerald-600 font-bold">A2</span> Hành động
+        <span class="text-slate-300">•</span>
+        <span class="text-purple-600 font-bold">A3</span> Hỗ trợ
+      </div>
+    </section>
+
+    <!-- BA TRỤ CỘT 3A -->
+    <section>
+      <div class="mb-5">
+        <h2 class="text-xl font-bold text-slate-900">Ba trụ cột 3A</h2>
+        <p class="text-sm text-slate-500">Mỗi lượt trò chuyện và trải nghiệm giúp bạn nâng cao kỹ năng an toàn số.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-blue-300 transition">
+          <span class="inline-block text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-lg mb-3">A1</span>
+          <h3 class="font-bold text-slate-900 text-lg mb-2">Awareness · Nhận diện</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">Trang bị kiến thức nền tảng qua cẩm nang điện tử về khái niệm, biểu hiện, hậu quả của bắt nạt trực tuyến và cách bảo vệ thông tin cá nhân.</p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-emerald-300 transition">
+          <span class="inline-block text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-lg mb-3">A2</span>
+          <h3 class="font-bold text-slate-900 text-lg mb-2">Action · Hành động</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">Rèn luyện kỹ năng thực hành thông qua hệ thống tình huống giả định tương tác <strong>DIGITAL SHIELD</strong> để biết cách phân tích và ứng phó an toàn.</p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-purple-300 transition">
+          <span class="inline-block text-xs font-bold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-lg mb-3">A3</span>
+          <h3 class="font-bold text-slate-900 text-lg mb-2">Assistance · Hỗ trợ</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">Kết nối trực tiếp với Chatbot AI, không gian chia sẻ kín (Trạm Lắng Nghe / Padlet) và người lớn đáng tin cậy để được đồng hành kịp thời.</p>
+        </div>
+      </div>
+    </section>
+    <!-- NGƯỜI HỖ TRỢ & CHATBOT AI -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <!-- Cột trái -->
+      <div class="lg:col-span-5 space-y-4">
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+          <span class="text-xs font-semibold uppercase text-blue-600">Người hỗ trợ trực tiếp</span>
+          <h3 class="text-lg font-bold text-slate-900 mt-1 mb-2">Khi bạn cần một người thật bên cạnh</h3>
+          <p class="text-sm text-slate-600 mb-4">Chatbot chỉ là bước khởi đầu. Dưới đây là người phụ trách dự án sẵn sàng lắng nghe và hỗ trợ bạn tại trường.</p>
+          <div class="flex items-center gap-3 p-3.5 bg-slate-50 rounded-xl border border-slate-100 mb-3">
+            <div class="w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center shrink-0">NB</div>
+            <div>
+              <div class="font-bold text-slate-900 text-sm">Giáo viên phụ trách dự án</div>
+              <div class="text-xs text-slate-500">THPT Mộ Đức</div>
+            </div>
+          </div>
+          <div class="space-y-1.5 text-sm text-slate-600">
+            <div>📞 Điện thoại: <span class="font-medium text-slate-800">Đang cập nhật</span></div>
+            <div>✉ Email: <span class="font-medium text-slate-800">Đang cập nhật</span></div>
+          </div>
+        </div>
+
+        <div class="bg-indigo-50/70 p-5 rounded-2xl border border-indigo-100">
+          <h4 class="font-bold text-indigo-950 text-base mb-1">Trạm Lắng Nghe (Padlet)</h4>
+          <p class="text-xs text-indigo-900/80 mb-3 leading-relaxed">Kênh chia sẻ ẩn danh do dự án thiết lập. Bạn có thể viết ra những điều chưa muốn nói bằng lời.</p>
+          <a href="#link-padlet" target="_blank" class="inline-flex items-center text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-xl transition">Mở Trạm Lắng Nghe ↗</a>
+        </div>
+
+        <div class="bg-rose-50 p-5 rounded-2xl border border-rose-200">
+          <h4 class="font-bold text-rose-900 text-base mb-1">Khi có nguy cơ ngay lập tức</h4>
+          <p class="text-xs text-rose-800 mb-3 leading-relaxed">Nếu bạn hoặc một bạn khác đang bị đe dọa, ép buộc hoặc mất an toàn, hãy gọi tổng đài quốc gia bảo vệ trẻ em.</p>
+          <a href="tel:111" class="inline-flex items-center text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 px-4 py-2 rounded-xl transition">📞 Gọi tổng đài 111</a>
+        </div>
+      </div>
+
+      <!-- Cột phải: Chatbot AI -->
+      <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm flex flex-col overflow-hidden">
+        <div class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+          <div class="flex items-center gap-2.5">
+            <span class="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded-lg">3A</span>
+            <div>
+              <div class="font-bold text-slate-900 text-sm">SAFE NET AI</div>
+              <div class="text-xs text-slate-500">AI trò chuyện nhiều lượt · Hỗ trợ học tập & an toàn số</div>
+            </div>
+          </div>
+          <span class="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Sẵn sàng trò chuyện
+          </span>
+        </div>
+
+        <div id="chatBox" class="flex-1 p-6 overflow-y-auto flex flex-col items-center justify-center text-center min-h-[340px]">
+          <div class="text-4xl mb-3">💬</div>
+          <h3 class="font-bold text-slate-900 text-lg">Tôi có thể giúp gì cho bạn?</h3>
+          <p class="text-sm text-slate-500 max-w-md mt-1">Bạn có thể tải tài liệu lên hoặc chia sẻ câu chuyện của mình bên dưới.</p>
+        </div>
+
+        <div class="p-4 border-t border-slate-100 bg-slate-50/50">
+          <div class="flex items-center justify-between mb-2 gap-2">
+            <label class="cursor-pointer inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-blue-600 bg-white border border-slate-200 px-3 py-1.5 rounded-lg transition">
+              📎 Đính kèm tài liệu (PDF, DOCX, TXT)
+              <input id="fileInput" type="file" accept=".pdf,.docx,.txt" onchange="updateFileName()" class="hidden">
+            </label>
+            <span id="fileNameDisplay" class="text-xs text-slate-400 truncate">Chưa chọn tài liệu</span>
+          </div>
+          <div class="flex gap-2">
+            <input id="userInput" type="text" maxlength="4000" oninput="updateCharCount()" onkeypress="if(event.key==='Enter') sendMessage()" placeholder="Nhập câu chuyện hoặc câu hỏi của bạn..." class="flex-1 bg-white border border-slate-300 focus:border-blue-500 focus:outline-none rounded-xl px-4 py-2.5 text-sm">
+            <button onclick="sendMessage()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2.5 rounded-xl transition">➤</button>
+          </div>
+          <div class="flex justify-between text-[11px] text-slate-400 mt-1.5 px-1">
+            <span>Không nhập mật khẩu hoặc thông tin nhạy cảm.</span>
+            <span id="charCount">0/4000</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- 3 THẺ CHỨC NĂNG NHANH -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div onclick="openModal('handbookModal')" class="cursor-pointer bg-white p-5 rounded-2xl border border-slate-200 hover:border-blue-400 shadow-sm transition flex flex-col justify-between">
+        <div>
+          <h3 class="font-bold text-slate-900 mb-1.5">📘 Cẩm nang SAFE NET 3A</h3>
+          <p class="text-xs text-slate-600 leading-relaxed mb-4">Tìm hiểu chi tiết quy trình 3 bước nhận diện, hành động, hỗ trợ cùng kiến thức phòng ngừa bắt nạt trực tuyến và 4 nguyên tắc vàng bảo vệ bản thân.</p>
+        </div>
+        <span class="text-xs font-bold text-blue-600">Mở cẩm nang ›</span>
+      </div>
+
+      <a href="#link-digital-shield" class="bg-white p-5 rounded-2xl border border-slate-200 hover:border-emerald-400 shadow-sm transition flex flex-col justify-between">
+        <div>
+          <h3 class="font-bold text-slate-900 mb-1.5">🛡 DIGITAL SHIELD · Lá chắn số</h3>
+          <p class="text-xs text-slate-600 leading-relaxed mb-4">Hệ thống học tập tương tác với các tình huống giả định về bắt nạt trực tuyến giúp rèn luyện kỹ năng phản ứng an toàn.</p>
+        </div>
+        <span class="text-xs font-bold text-emerald-600">Trải nghiệm ngay ↗</span>
+      </a>
+
+      <div onclick="resetChat()" class="cursor-pointer bg-white p-5 rounded-2xl border border-slate-200 hover:border-slate-400 shadow-sm transition flex flex-col justify-between">
+        <div>
+          <h3 class="font-bold text-slate-900 mb-1.5">🔄 Làm mới hội thoại</h3>
+          <p class="text-xs text-slate-600 leading-relaxed mb-4">Bắt đầu một chủ đề mới. Nội dung hội thoại hiện tại sẽ được xóa khỏi giao diện để đảm bảo riêng tư.</p>
+        </div>
+        <span class="text-xs font-bold text-slate-700">Bắt đầu lại ›</span>
+      </div>
+    </section>
+
+    <!-- CAM KẾT BẢO MẬT -->
+    <section class="bg-slate-100 border border-slate-200 rounded-2xl p-5 text-xs text-slate-600 leading-relaxed">
+      <strong>🔒 Cam kết bảo mật & Lưu ý sử dụng:</strong> SAFE NET 3A là công cụ hỗ trợ giáo dục và tư vấn ban đầu, không thay thế người lớn đáng tin cậy, chuyên viên tâm lý, nhà trường hay cơ quan chức năng. Mọi trao đổi được bảo mật và không yêu cầu tài khoản; bạn vui lòng không nhập họ tên thật, địa chỉ nhà, mật khẩu hay hình ảnh riêng tư. Nếu có nguy cơ mất an toàn khẩn cấp, hãy liên hệ trực tiếp thầy cô hoặc gọi tổng đài <strong>111</strong>.
+    </section>
+
   </main>
 
-  <div id="part-footer"></div>
+  <!-- FOOTER -->
+  <footer class="bg-slate-900 text-slate-300 py-10">
+    <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8 border-b border-slate-800 pb-8">
+      <div>
+        <div class="font-bold text-white text-lg mb-2">🛡 THPT Mộ Đức</div>
+        <p class="text-sm text-slate-400 max-w-md leading-relaxed">Không gian đồng hành và hỗ trợ học sinh trước áp lực, tổn thương tâm lý và bắt nạt trên không gian mạng thông qua mô hình SAFE NET 3A.</p>
+      </div>
+      <div class="md:text-right">
+        <div class="font-bold text-white text-sm uppercase tracking-wider mb-3">Khi cần giúp đỡ ngay</div>
+        <ul class="space-y-1.5 text-sm">
+          <li>📞 <strong class="text-white">111</strong> Tổng đài quốc gia bảo vệ trẻ em</li>
+          <li>📞 <strong class="text-white">113</strong> Công an</li>
+          <li>📞 <strong class="text-white">115</strong> Cấp cứu y tế</li>
+        </ul>
+      </div>
+    </div>
+    <div class="max-w-6xl mx-auto px-4 pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-2">
+      <div>© Trường THPT Mộ Đức · Dự án KHKT SAFE NET 3A</div>
+      <div>Không cần tài khoản để nhắn tin · Cam kết bảo mật & An toàn</div>
+    </div>
+  </footer>
 
-  <!-- Script nạp tự động 4 file thành phần & xử lý sự kiện chung -->
+  <!-- JAVASCRIPT -->
   <script>
-    async function loadComponent(elementId, filePath) {
-      try {
-        const res = await fetch(filePath);
-        if (res.ok) document.getElementById(elementId).innerHTML = await res.text();
-      } catch (err) {
-        console.error(`Lỗi tải ${filePath}:`, err);
-      }
+    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+    function updateCharCount() {
+      const input = document.getElementById('userInput');
+      document.getElementById('charCount').textContent = `${input.value.length}/4000`;
     }
-
-    // Nạp đồng thời 4 mảnh
-    Promise.all([
-      loadComponent('part-modals', './components/1-modals.html'),
-      loadComponent('part-header-hero', './components/2-header-hero.html'),
-      loadComponent('part-pillars', './components/3-pillars-3a.html'),
-      loadComponent('part-workspace', './components/4-chat-support.html'),
-      loadComponent('part-footer', './components/5-footer.html')
-    ]);
-
-    // Các hàm điều khiển Modal & Chat dùng chung toàn project
-    function openModal(id) {
-      document.getElementById(id)?.classList.remove('hidden');
-    }
-    function closeModal(id) {
-      document.getElementById(id)?.classList.add('hidden');
+    function updateFileName() {
+      const fileInput = document.getElementById('fileInput');
+      document.getElementById('fileNameDisplay').textContent = fileInput.files.length > 0 ? fileInput.files[0].name : 'Chưa chọn tài liệu';
     }
     function resetChat() {
       const chatBox = document.getElementById('chatBox');
-      if (!chatBox) return;
-      chatBox.className = "flex-1 p-6 overflow-y-auto flex flex-col items-center justify-center text-center min-h-[320px]";
-      chatBox.innerHTML = `
-        <div class="text-4xl mb-3">💬</div>
-        <h3 class="font-bold text-slate-900 text-lg">Tôi có thể giúp gì cho bạn?</h3>
-        <p class="text-sm text-slate-500 max-w-md mt-1">Bạn có thể tải tài liệu lên hoặc chia sẻ câu chuyện của mình bên dưới để được hỗ trợ nhận diện và ứng phó an toàn.</p>
-      `;
+      chatBox.className = "flex-1 p-6 overflow-y-auto flex flex-col items-center justify-center text-center min-h-[340px]";
+      chatBox.innerHTML = `<div class="text-4xl mb-3">💬</div><h3 class="font-bold text-slate-900 text-lg">Tôi có thể giúp gì cho bạn?</h3><p class="text-sm text-slate-500 max-w-md mt-1">Bạn có thể tải tài liệu lên hoặc chia sẻ câu chuyện của mình bên dưới.</p>`;
     }
     function sendMessage() {
       const input = document.getElementById('userInput');
-      const text = input?.value.trim();
+      const text = input.value.trim();
       if (!text) return;
-
       const chatBox = document.getElementById('chatBox');
       if (chatBox.classList.contains('justify-center')) {
-        chatBox.className = "flex-1 p-6 overflow-y-auto space-y-4 min-h-[320px] max-h-[450px]";
+        chatBox.className = "flex-1 p-6 overflow-y-auto space-y-4 min-h-[340px] max-h-[450px]";
         chatBox.innerHTML = '';
       }
-
-      chatBox.innerHTML += `
-        <div class="flex justify-end">
-          <div class="bg-blue-600 text-white text-sm px-4 py-2.5 rounded-2xl rounded-tr-none max-w-md shadow-sm">${text}</div>
-        </div>
-        <div class="flex justify-start">
-          <div class="bg-slate-100 text-slate-800 text-sm px-4 py-2.5 rounded-2xl rounded-tl-none max-w-md">
-            Cảm ơn bạn đã chia sẻ với SAFE NET 3A. (Gắn API Chatbot / Google Sheets của bạn tại đây).
-          </div>
-        </div>
-      `;
+      const safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      chatBox.innerHTML += `<div class="flex justify-end"><div class="bg-blue-600 text-white text-sm px-4 py-2.5 rounded-2xl rounded-tr-none max-w-md shadow-sm whitespace-pre-wrap">${safeText}</div></div><div class="flex justify-start"><div class="bg-slate-100 text-slate-800 text-sm px-4 py-2.5 rounded-2xl rounded-tl-none max-w-md">Cảm ơn bạn đã chia sẻ với SAFE NET 3A. (Gắn API Chatbot & Google Sheets của bạn tại đây).</div></div>`;
       input.value = '';
+      updateCharCount();
       chatBox.scrollTop = chatBox.scrollHeight;
     }
   </script>
 </body>
 </html>
-<!-- MODAL 1: THÔNG BÁO NHẮC NHỞ -->
-<div id="welcomeModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-  <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 p-6 md:p-8 relative">
-    <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
-      <span class="text-xs font-bold tracking-wider uppercase text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
-        📌 THÔNG BÁO NHẮC NHỞ · SAFE NET 3A
-      </span>
-      <button onclick="closeModal('welcomeModal')" class="text-slate-400 hover:text-slate-700 text-xl font-bold w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 transition">✕</button>
-    </div>
-    
-    <h2 class="text-xl md:text-2xl font-bold text-slate-900 mb-4">NHỮNG CÁCH ỨNG XỬ VĂN MINH TRÊN KHÔNG GIAN MẠNG</h2>
-    
-    <div class="space-y-3 text-sm text-slate-600 leading-relaxed">
-      <p><strong class="text-slate-900">1. Giữ thái độ lịch sự, dùng ngôn từ chuẩn mực:</strong> Sử dụng tiếng Việt rõ ràng, văn minh; không chửi bới, miệt thị, công kích cá nhân hay xúc phạm danh dự người khác.</p>
-      <p><strong class="text-slate-900">2. Suy nghĩ kỹ trước khi đăng bài và bình luận:</strong> Giữ bình tĩnh trước các vấn đề gây tranh cãi; không hùa theo đám đông hay bình luận theo cảm xúc nhất thời.</p>
-      <p><strong class="text-slate-900">3. Kiểm chứng thông tin trước khi chia sẻ:</strong> Chỉ chia sẻ thông tin chính thống, đã xác thực; không tiếp tay lan truyền tin giả (fake news) hoặc nội dung giật gân câu view.</p>
-      <p><strong class="text-slate-900">4. Tôn trọng sự khác biệt và phản biện xây dựng:</strong> Lắng nghe quan điểm trái chiều trên tinh thần tôn trọng; tranh luận bằng lý lẽ khách quan, không kỳ thị ngoại hình, giới tính hay vùng miền.</p>
-      <p><strong class="text-slate-900">5. Bảo vệ quyền riêng tư của bản thân và người khác:</strong> Không tự ý đăng tải hình ảnh, tin nhắn, thông tin cá nhân của người khác khi chưa được phép; chủ động bảo mật tài khoản cá nhân.</p>
-      <p><strong class="text-slate-900">6. Tôn trọng bản quyền nội dung số:</strong> Luôn ghi rõ nguồn gốc, tên tác giả khi trích dẫn bài viết, hình ảnh hoặc sản phẩm sáng tạo của người khác.</p>
-      <p><strong class="text-slate-900">7. Nói không với bắt nạt trực tuyến (Cyberbullying):</strong> Không tham gia công kích, tẩy chay vô căn cứ; chủ động báo cáo (Report) các nội dung độc hại và hỗ trợ, bảo vệ nạn nhân trên mạng.</p>
-      <p><strong class="text-slate-900">8. Lan tỏa năng lượng và giá trị tích cực:</strong> Chia sẻ kiến thức hữu ích, câu chuyện đẹp, hành động nhân văn và sử dụng mạng xã hội hợp lý để cân bằng với cuộc sống thực.</p>
-    </div>
-
-    <div class="mt-6 p-4 bg-blue-50 rounded-xl text-center">
-      <p class="font-semibold text-blue-900 italic">“Không gian mạng là ảo – Trách nhiệm và sự tử tế là thật.”</p>
-    </div>
-
-    <div class="mt-6 flex justify-end">
-      <button onclick="closeModal('welcomeModal')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2.5 rounded-xl transition">Đã hiểu & Bắt đầu</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL 2: CẨM NANG HÀNH ĐỘNG SAFE NET 3A -->
-<div id="handbookModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-  <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 p-6 md:p-8 relative">
-    <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
-      <span class="text-xs font-bold tracking-wider uppercase text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">HỆ THỐNG HỖ TRỢ THPT MỘ ĐỨC</span>
-      <button onclick="closeModal('handbookModal')" class="text-slate-400 hover:text-slate-700 text-xl font-bold w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 transition">✕</button>
-    </div>
-
-    <h2 class="text-2xl font-bold text-slate-900">Cẩm nang hành động SAFE NET 3A</h2>
-    <p class="text-sm text-slate-500 mt-1 mb-6">Quy trình 3 bước giúp bạn trang bị kiến thức, rèn luyện kỹ năng và tìm kiếm sự trợ giúp an toàn trên không gian mạng.</p>
-
-    <div class="space-y-4">
-      <div class="p-4 rounded-xl border border-blue-100 bg-blue-50/50">
-        <div class="flex items-center gap-2 mb-1">
-          <span class="bg-blue-600 text-white text-xs font-bold px-2.5 py-0.5 rounded-md">A1</span>
-          <h3 class="font-bold text-slate-900">Awareness · Nhận diện</h3>
-        </div>
-        <p class="text-sm text-slate-600 leading-relaxed">
-          Hiểu rõ khái niệm, biểu hiện, các hình thức bắt nạt trực tuyến phổ biến (xúc phạm trong nhóm trò chuyện, phát tán hình ảnh riêng tư, giả mạo tài khoản, cô lập...) cũng như nguyên nhân và hậu quả đối với học sinh. Nắm vững cách bảo vệ thông tin cá nhân và sử dụng mạng xã hội an toàn.
-        </p>
-      </div>
-
-      <div class="p-4 rounded-xl border border-emerald-100 bg-emerald-50/50">
-        <div class="flex items-center gap-2 mb-1">
-          <span class="bg-emerald-600 text-white text-xs font-bold px-2.5 py-0.5 rounded-md">A2</span>
-          <h3 class="font-bold text-slate-900">Action · Hành động</h3>
-        </div>
-        <p class="text-sm text-slate-600 leading-relaxed">
-          Chuyển hóa kiến thức thành kỹ năng ứng phó thực tế thông qua việc thực hành trên hệ thống tình huống tương tác <strong>DIGITAL SHIELD</strong>. Rèn luyện khả năng bình tĩnh, phân tích vấn đề, đánh giá hậu quả để lựa chọn cách xử lý an toàn (lưu bằng chứng, chặn tài khoản vi phạm, bảo mật tài khoản và hỗ trợ bạn bè).
-        </p>
-      </div>
-
-      <div class="p-4 rounded-xl border border-purple-100 bg-purple-50/50">
-        <div class="flex items-center gap-2 mb-1">
-          <span class="bg-purple-600 text-white text-xs font-bold px-2.5 py-0.5 rounded-md">A3</span>
-          <h3 class="font-bold text-slate-900">Assistance · Hỗ trợ</h3>
-        </div>
-        <p class="text-sm text-slate-600 leading-relaxed">
-          Chủ động tìm kiếm sự đồng hành thay vì im lặng chịu đựng. Trò chuyện trực tiếp với <strong>Chatbot AI SAFE NET 3A</strong>, gửi tâm sự ẩn danh tại <strong>Trạm Lắng Nghe (Padlet)</strong>, chia sẻ với cha mẹ, thầy cô Tổ Tư vấn học đường THPT Mộ Đức hoặc gọi tổng đài miễn phí <strong>111</strong> khi có nguy cơ mất an toàn.
-        </p>
-      </div>
-    </div>
-
-    <div class="mt-6 p-5 bg-amber-50 border border-amber-200 rounded-xl">
-      <h4 class="font-bold text-amber-900 mb-3 flex items-center gap-2"><span>⚠</span> 4 Nguyên tắc vàng bảo vệ bản thân</h4>
-      <ul class="space-y-2 text-sm text-amber-950 list-disc pl-5">
-        <li><strong>Không im lặng chịu đựng:</strong> Luôn tìm một người lớn đáng tin cậy hoặc kết nối qua kênh hỗ trợ để được đồng hành.</li>
-        <li><strong>Không đáp trả tiêu cực:</strong> Tránh đôi co, xúc phạm ngược lại hoặc chia sẻ rộng rãi nội dung gây tổn thương.</li>
-        <li><strong>Giữ kín thông tin cá nhân:</strong> Tuyệt đối không gửi mật khẩu, mã OTP, địa chỉ nhà hay hình ảnh nhạy cảm cho người lạ.</li>
-        <li><strong>Lưu giữ bằng chứng:</strong> Chụp màn hình toàn bộ tin nhắn, đường link, tài khoản vi phạm trước khi chặn.</li>
-      </ul>
-    </div>
-
-    <div class="mt-6 flex justify-end">
-      <button onclick="closeModal('handbookModal')" class="bg-slate-900 hover:bg-slate-800 text-white font-medium px-6 py-2.5 rounded-xl transition">💬 Trò chuyện cùng AI ngay</button>
-    </div>
-  </div>
-</div>
-<!-- HEADER -->
-<header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-slate-200">
-  <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-    <div class="flex items-center gap-2.5">
-      <span class="text-2xl">🛡</span>
-      <div>
-        <span class="font-bold text-slate-900 text-lg tracking-tight">SAFE NET 3A</span>
-        <span class="hidden sm:inline-block text-xs text-slate-500 ml-2">THPT Mộ Đức · Không gian hỗ trợ an toàn số</span>
-      </div>
-    </div>
-    <div class="flex items-center gap-3">
-      <button onclick="openModal('handbookModal')" class="text-sm font-medium text-slate-700 hover:text-blue-600 bg-slate-100 hover:bg-blue-50 px-3.5 py-2 rounded-xl transition">
-        📘 Cẩm nang 3A
-      </button>
-      <button onclick="resetChat()" class="text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 px-3.5 py-2 rounded-xl transition">
-        + Cuộc trò chuyện mới
-      </button>
-    </div>
-  </div>
-</header>
-
-<!-- HERO SECTION -->
-<section class="text-center max-w-3xl mx-auto px-4 pt-10 pb-8">
-  <span class="inline-block text-xs font-semibold uppercase tracking-wider text-blue-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded-full mb-4">
-    Adaptive Digital Safety System · Mô hình 3A
-  </span>
-  <h1 class="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight mb-4">
-    Mỗi câu chuyện, một hướng hỗ trợ <span class="text-blue-600 italic">phù hợp.</span>
-  </h1>
-  <p class="text-slate-600 text-base md:text-lg leading-relaxed mb-6">
-    Trò chuyện tự nhiên, hỏi tiếp khi cần và điều chỉnh hướng hỗ trợ theo những gì bạn chia sẻ. SAFE NET đồng hành cùng bạn qua mô hình 3A: <strong>Nhận diện – Hành động – Hỗ trợ</strong>.
-  </p>
-  <div class="inline-flex flex-wrap justify-center items-center gap-2 text-xs md:text-sm font-medium bg-white border border-slate-200 px-4 py-2 rounded-full shadow-sm">
-    <span class="text-blue-600 font-bold">A1</span> Nhận diện
-    <span class="text-slate-300">•</span>
-    <span class="text-emerald-600 font-bold">A2</span> Hành động
-    <span class="text-slate-300">•</span>
-    <span class="text-purple-600 font-bold">A3</span> Hỗ trợ
-  </div>
-</section>
-<section>
-  <div class="mb-6">
-    <h2 class="text-xl font-bold text-slate-900">Ba trụ cột 3A</h2>
-    <p class="text-sm text-slate-500">Mỗi lượt trò chuyện và trải nghiệm giúp bạn nâng cao kỹ năng an toàn số.</p>
-  </div>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-    <!-- A1 -->
-    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-blue-300 transition">
-      <span class="inline-block text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-lg mb-3">A1</span>
-      <h3 class="font-bold text-slate-900 text-lg mb-2">Awareness · Nhận diện</h3>
-      <p class="text-sm text-slate-600 leading-relaxed">
-        Trang bị kiến thức nền tảng qua cẩm nang điện tử về khái niệm, biểu hiện, hậu quả của bắt nạt trực tuyến và cách bảo vệ thông tin cá nhân.
-      </p>
-    </div>
-    <!-- A2 -->
-    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-emerald-300 transition">
-      <span class="inline-block text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-lg mb-3">A2</span>
-      <h3 class="font-bold text-slate-900 text-lg mb-2">Action · Hành động</h3>
-      <p class="text-sm text-slate-600 leading-relaxed">
-        Rèn luyện kỹ năng thực hành thông qua hệ thống tình huống giả định tương tác <strong>DIGITAL SHIELD</strong> để biết cách phân tích và ứng phó an toàn.
-      </p>
-    </div>
-    <!-- A3 -->
-    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-purple-300 transition">
-      <span class="inline-block text-xs font-bold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-lg mb-3">A3</span>
-      <h3 class="font-bold text-slate-900 text-lg mb-2">Assistance · Hỗ trợ</h3>
-      <p class="text-sm text-slate-600 leading-relaxed">
-        Kết nối trực tiếp với Chatbot AI, không gian chia sẻ kín (Trạm Lắng Nghe / Padlet) và người lớn đáng tin cậy để được đồng hành kịp thời.
-      </p>
-    </div>
-  </div>
-</section>
-<!-- KHU VỰC HỖ TRỢ TRỰC TIẾP & CHATBOT -->
-<section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-  <!-- Cột trái: Người hỗ trợ & Kênh kết nối -->
-  <div class="lg:col-span-5 space-y-4">
-    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-      <span class="text-xs font-semibold uppercase text-blue-600">Người hỗ trợ trực tiếp</span>
-      <h3 class="text-lg font-bold text-slate-900 mt-1 mb-2">Khi bạn cần một người thật bên cạnh</h3>
-      <p class="text-sm text-slate-600 mb-4">Chatbot chỉ là bước khởi đầu. Dưới đây là người phụ trách dự án sẵn sàng lắng nghe và hỗ trợ bạn tại trường.</p>
-      
-      <div class="flex items-center gap-3 p-3.5 bg-slate-50 rounded-xl border border-slate-100 mb-3">
-        <div class="w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center shrink-0">NB</div>
-        <div>
-          <div class="font-bold text-slate-900 text-sm">Giáo viên phụ trách dự án</div>
-          <div class="text-xs text-slate-500">Trường THPT Mộ Đức</div>
-        </div>
-      </div>
-      <div class="space-y-1.5 text-sm text-slate-600">
-        <div>📞 Điện thoại: <span class="font-medium text-slate-800">Đang cập nhật</span></div>
-        <div>✉ Email: <span class="font-medium text-slate-800">Đang cập nhật</span></div>
-      </div>
-    </div>
-
-    <!-- Trạm Lắng Nghe -->
-    <div class="bg-indigo-50/70 p-5 rounded-2xl border border-indigo-100">
-      <h4 class="font-bold text-indigo-950 text-base mb-1">Trạm Lắng Nghe (Padlet)</h4>
-      <p class="text-xs text-indigo-900/80 mb-3 leading-relaxed">Kênh chia sẻ ẩn danh do dự án thiết lập. Bạn có thể viết ra những điều chưa muốn nói bằng lời.</p>
-      <a href="#link-padlet-cua-ban" target="_blank" class="inline-flex items-center text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-xl transition">
-        Mở Trạm Lắng Nghe ↗
-      </a>
-    </div>
-
-    <!-- Khẩn cấp -->
-    <div class="bg-rose-50 p-5 rounded-2xl border border-rose-200">
-      <h4 class="font-bold text-rose-900 text-base mb-1">Khi có nguy cơ ngay lập tức</h4>
-      <p class="text-xs text-rose-800 mb-3 leading-relaxed">Nếu bạn hoặc một bạn khác đang bị đe dọa, ép buộc hoặc mất an toàn, hãy gọi tổng đài quốc gia bảo vệ trẻ em.</p>
-      <a href="tel:111" class="inline-flex items-center text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 px-4 py-2 rounded-xl transition">
-        📞 Gọi tổng đài 111
-      </a>
-    </div>
-  </div>
-
-  <!-- Cột phải: Khung Chatbot AI -->
-  <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm flex flex-col overflow-hidden">
-    <div class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-      <div class="flex items-center gap-2.5">
-        <span class="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded-lg">3A</span>
-        <div>
-          <div class="font-bold text-slate-900 text-sm">SAFE NET AI</div>
-          <div class="text-xs text-slate-500">AI trò chuyện nhiều lượt · Hỗ trợ học tập & an toàn số</div>
-        </div>
-      </div>
-      <span class="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
-        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Sẵn sàng trò chuyện
-      </span>
-    </div>
-
-    <div id="chatBox" class="flex-1 p-6 overflow-y-auto flex flex-col items-center justify-center text-center min-h-[320px]">
-      <div class="text-4xl mb-3">💬</div>
-      <h3 class="font-bold text-slate-900 text-lg">Tôi có thể giúp gì cho bạn?</h3>
-      <p class="text-sm text-slate-500 max-w-md mt-1">
-        Bạn có thể tải tài liệu lên hoặc chia sẻ câu chuyện của mình bên dưới để được hỗ trợ nhận diện và ứng phó an toàn.
-      </p>
-    </div>
-
-    <div class="p-4 border-t border-slate-100 bg-slate-50/50">
-      <div class="flex items-center justify-between mb-2">
-        <label class="cursor-pointer inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-blue-600 bg-white border border-slate-200 px-3 py-1.5 rounded-lg transition">
-          📎 Đính kèm tài liệu (PDF, DOCX, TXT)
-          <input type="file" accept=".pdf,.docx,.txt" class="hidden">
-        </label>
-        <span class="text-[11px] text-slate-400">Không nhập mật khẩu hoặc thông tin nhạy cảm.</span>
-      </div>
-      <div class="flex gap-2">
-        <input id="userInput" type="text" placeholder="Nhập câu chuyện hoặc câu hỏi của bạn..." onkeypress="if(event.key==='Enter') sendMessage()" class="flex-1 bg-white border border-slate-300 focus:border-blue-500 focus:outline-none rounded-xl px-4 py-2.5 text-sm">
-        <button onclick="sendMessage()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2.5 rounded-xl transition">➤</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 3 THẺ CHỨC NĂNG NHANH -->
-<section class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-8">
-  <div onclick="openModal('handbookModal')" class="cursor-pointer bg-white p-5 rounded-2xl border border-slate-200 hover:border-blue-400 shadow-sm transition flex flex-col justify-between">
-    <div>
-      <h3 class="font-bold text-slate-900 mb-1.5">📘 Cẩm nang SAFE NET 3A</h3>
-      <p class="text-xs text-slate-600 leading-relaxed mb-4">Tìm hiểu chi tiết quy trình 3 bước nhận diện, hành động, hỗ trợ cùng kiến thức phòng ngừa bắt nạt trực tuyến và 4 nguyên tắc vàng bảo vệ bản thân.</p>
-    </div>
-    <span class="text-xs font-bold text-blue-600">Mở cẩm nang ›</span>
-  </div>
-
-  <a href="#link-digital-shield-cua-ban" class="bg-white p-5 rounded-2xl border border-slate-200 hover:border-emerald-400 shadow-sm transition flex flex-col justify-between">
-    <div>
-      <h3 class="font-bold text-slate-900 mb-1.5">🛡 DIGITAL SHIELD · Lá chắn số</h3>
-      <p class="text-xs text-slate-600 leading-relaxed mb-4">Hệ thống học tập tương tác với các tình huống giả định về bắt nạt trực tuyến giúp rèn luyện kỹ năng phản ứng an toàn.</p>
-    </div>
-    <span class="text-xs font-bold text-emerald-600">Trải nghiệm ngay ↗</span>
-  </a>
-
-  <div onclick="resetChat()" class="cursor-pointer bg-white p-5 rounded-2xl border border-slate-200 hover:border-slate-400 shadow-sm transition flex flex-col justify-between">
-    <div>
-      <h3 class="font-bold text-slate-900 mb-1.5">🔄 Làm mới hội thoại</h3>
-      <p class="text-xs text-slate-600 leading-relaxed mb-4">Bắt đầu một chủ đề mới. Nội dung hội thoại hiện tại sẽ được xóa khỏi giao diện để đảm bảo riêng tư.</p>
-    </div>
-    <span class="text-xs font-bold text-slate-700">Bắt đầu lại ›</span>
-  </div>
-</section>
-<!-- CAM KẾT BẢO MẬT -->
-<div class="max-w-6xl mx-auto px-4 mb-10">
-  <div class="bg-slate-100 border border-slate-200 rounded-2xl p-5 text-xs text-slate-600 leading-relaxed">
-    <strong>🔒 Cam kết bảo mật & Lưu ý sử dụng:</strong> SAFE NET 3A là công cụ hỗ trợ giáo dục và tư vấn ban đầu, không thay thế người lớn đáng tin cậy, chuyên viên tâm lý, nhà trường hay cơ quan chức năng. Mọi trao đổi được bảo mật và không yêu cầu tài khoản; bạn vui lòng không nhập họ tên thật, địa chỉ nhà, mật khẩu hay hình ảnh riêng tư. Nếu có nguy cơ mất an toàn khẩn cấp, hãy liên hệ trực tiếp thầy cô hoặc gọi tổng đài <strong>111</strong>.
-  </div>
-</div>
-
-<!-- FOOTER -->
-<footer class="bg-slate-900 text-slate-300 py-10">
-  <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8 border-b border-slate-800 pb-8">
-    <div>
-      <div class="font-bold text-white text-lg mb-2">🛡 THPT Mộ Đức</div>
-      <p class="text-sm text-slate-400 max-w-md leading-relaxed">
-        Không gian đồng hành và hỗ trợ học sinh trước áp lực, tổn thương tâm lý và bắt nạt trên không gian mạng thông qua mô hình SAFE NET 3A.
-      </p>
-    </div>
-    <div class="md:text-right">
-      <div class="font-bold text-white text-sm uppercase tracking-wider mb-3">Khi cần giúp đỡ ngay</div>
-      <ul class="space-y-1.5 text-sm">
-        <li>📞 <strong class="text-white">111</strong> Tổng đài quốc gia bảo vệ trẻ em</li>
-        <li>📞 <strong class="text-white">113</strong> Công an</li>
-        <li>📞 <strong class="text-white">115</strong> Cấp cứu y tế</li>
-      </ul>
-    </div>
-  </div>
-  <div class="max-w-6xl mx-auto px-4 pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-2">
-    <div>© Trường THPT Mộ Đức · Dự án KHKT SAFE NET 3A</div>
-    <div>Không cần tài khoản để nhắn tin · Cam kết bảo mật & An toàn</div>
-  </div>
-</footer>
