@@ -1,316 +1,616 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SAFE NET 3A | Trợ lý an toàn số THPT Mộ Đức</title>
-  <script src="https://tailwindcss.com"></script>
-  <link href="https://googleapis.com" rel="stylesheet">
-  <style>
-    body { font-family: 'Be Vietnam Pro', sans-serif; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAFE NET 3A | Trợ lý an toàn số THPT Mộ Đức</title>
+<style>
+:root{--ink:#1e293b;--deep:#0f766e;--teal:#0d9488;--teal-soft:#ccfbf1;--coral:#f97316;--coral-deep:#ea580c;--line:#cbd5e1;--muted:#475569;--shadow:0 16px 40px rgba(13,148,136,.12);--radius:22px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:linear-gradient(180deg,#f0fdfa 0%,#f8fafc 100%);color:var(--ink);font-family:system-ui,-apple-system,sans-serif;font-size:16px;line-height:1.6}
+button,textarea{font:inherit}button{cursor:pointer}a{color:inherit}
+.topbar{position:sticky;top:0;z-index:30;background:linear-gradient(90deg,#0f766e,#0d9488);color:#fff;box-shadow:0 4px 20px rgba(13,148,136,.2)}
+.nav{max-width:1180px;margin:auto;padding:15px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:46px;height:46px;border-radius:14px;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:22px}
+.brand strong{display:block;font-size:20px}.brand small{display:block;color:#ccfbf1;font-size:13px}
+.nav-actions{display:flex;gap:10px}
+.btn{border:0;border-radius:999px;padding:11px 18px;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:6px;text-decoration:none;transition:.2s}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--coral);color:#fff;box-shadow:0 6px 16px rgba(249,115,22,.35)}.btn-primary:hover{background:var(--coral-deep)}
+.btn-cream{background:#fff;color:var(--deep)}.btn-soft{background:var(--teal-soft);color:var(--deep)}.btn-quiet{background:#fff;color:var(--muted);border:1px solid var(--line)}
+main{max-width:1180px;margin:0 auto;padding:30px 22px 50px}
+.hero{display:grid;grid-template-columns:1.45fr .95fr;gap:24px;margin-bottom:28px}
+.eyebrow{font-size:12.5px;font-weight:800;letter-spacing:.14em;color:var(--teal);text-transform:uppercase}
+h1{font-size:clamp(34px,4.5vw,52px);line-height:1.12;margin:10px 0 16px;color:#0f172a}
+h1 em{font-style:normal;color:var(--teal);background:var(--teal-soft);padding:0 10px;border-radius:12px}
+.hero-main p{color:var(--muted);font-size:16px;margin:0}
+.hero-chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.chip{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1.5px solid #99f6e4;border-radius:999px;padding:8px 16px 8px 10px;font-size:13.5px;font-weight:700;color:var(--deep)}
+.chip b{width:26px;height:26px;border-radius:50%;background:var(--teal);color:#fff;font-size:11px;display:grid;place-items:center}
+.hero-rail{background:#ffffff;color:var(--ink);border:1.5px solid #99f6e4;border-radius:var(--radius);padding:26px;box-shadow:0 16px 36px rgba(13,148,136,.09)}
+.hero-rail h2{font-size:21px;margin:0 0 6px;color:#0f766e}
+.hero-rail .sub{font-size:13.5px;color:var(--muted);margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid #e2e8f0}
+.rung{display:flex;gap:14px;padding:12px;border-radius:14px;transition:.2s}
+.rung:hover{background:#f0fdfa}
+.rung-dot{width:36px;height:36px;flex:0 0 36px;border-radius:12px;display:grid;place-items:center;font-size:12.5px;font-weight:800;color:#fff}
+.rung:nth-of-type(1) .rung-dot{background:#0d9488;box-shadow:0 4px 10px rgba(13,148,136,.25)}
+.rung:nth-of-type(2) .rung-dot{background:#0284c7;box-shadow:0 4px 10px rgba(2,132,199,.25)}
+.rung:nth-of-type(3) .rung-dot{background:#f97316;box-shadow:0 4px 10px rgba(249,115,22,.25)}
+.rung b{display:block;font-size:15px;color:#0f172a}
+.rung span{font-size:13px;color:var(--muted)}
+</style>
+<style>
+.support{background:linear-gradient(135deg,#0d9488,#0f766e);color:#fff;border-radius:24px;padding:30px;margin-bottom:28px;box-shadow:var(--shadow)}
+.support-head .eyebrow{color:#fde68a}.support-head h2{font-size:26px;margin:6px 0 6px}.support-head p{font-size:14.5px;color:#ccfbf1;margin:0 0 20px}
+.support-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:16px}
+.support-card{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:18px;padding:20px;display:flex;flex-direction:column}
+.support-card.main{background:#fff;color:var(--ink)}
+.person{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.person-avatar{width:54px;height:54px;border-radius:16px;background:var(--teal);color:#fff;display:grid;place-items:center;font-weight:800;font-size:18px}
+.person-name{font-weight:800;font-size:18px}.person-role{font-size:13px;font-weight:700;color:var(--coral-deep)}.person-org{font-size:13px;color:var(--muted)}
+.contact-row{display:block;padding:11px 14px;border-radius:12px;background:#f0fdfa;border:1px solid #99f6e4;color:var(--deep);font-size:14px;font-weight:700;margin-top:8px}
+.support-card h3{font-size:16px;margin:0 0 8px}.support-card .desc{font-size:13.5px;color:#e2e8f0;margin:0 0 14px;flex:1}.support-card.main .desc{color:var(--muted)}
+.layout{display:block;max-width:980px;margin:0 auto}
+.chat-shell{background:#fff;border:1.5px solid #cbd5e1;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.chat-head{padding:16px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;background:#f0fdfa}
+.chat-title{display:flex;align-items:center;gap:12px}
+.bot-avatar{width:42px;height:42px;border-radius:13px;background:var(--teal);color:#fff;display:grid;place-items:center;font-weight:800;font-size:15px}
+.online{color:#0f766e;font-size:12px;font-weight:700;background:#ccfbf1;border-radius:999px;padding:5px 12px}
+.upload-strip{padding:12px 22px;background:#f8fafc;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13.5px}
+.upload-label{font-weight:700;color:var(--deep);cursor:pointer;background:#fff;border:1.5px solid #5eead4;padding:7px 15px;border-radius:999px}
+#fileInput{display:none}#fileStatus{font-weight:700;color:var(--teal);font-size:13px}
+.messages{height:60vh;min-height:420px;overflow-y:auto;padding:24px;background:#f8fafc}
+.welcome{max-width:640px;margin:14px auto;text-align:center}.welcome h2{font-size:25px;margin:0 0 8px;color:#0f172a}.welcome p{font-size:14.5px;color:var(--muted);margin:0 0 16px}
+.suggestions{display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
+.suggestion{border:1px solid #99f6e4;background:#fff;color:var(--deep);border-radius:999px;padding:9px 15px;font-size:13px;font-weight:600}
+.msg-row{display:flex;margin:16px 0;gap:12px;align-items:flex-end}.msg-row.user{justify-content:flex-end}
+.msg-avatar{width:34px;height:34px;flex:0 0 34px;border-radius:10px;background:var(--teal);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:800}
+.bubble{max-width:86%;padding:16px 20px;border-radius:18px;background:#fff;border:1px solid #cbd5e1;font-size:15.5px;line-height:1.75;white-space:pre-wrap;overflow-wrap:anywhere}
+.bubble strong{color:#0f766e;font-weight:700}.user .bubble{background:var(--teal);color:#fff;border-color:var(--teal)}.user .bubble strong{color:#fff}
+.msg-time{font-size:11px;color:#94a3b8;margin-top:5px}.user .msg-time{text-align:right}
+.katex-display{margin:10px 0;overflow-x:auto;overflow-y:hidden}
+.composer{border-top:1px solid var(--line);padding:14px 18px;background:#fff}
+.composer-wrap{display:flex;align-items:flex-end;gap:10px;border:1.5px solid #94a3b8;background:#fff;border-radius:16px;padding:8px 10px 8px 15px}
+#messageInput{width:100%;border:0;outline:0;resize:none;min-height:40px;max-height:130px;background:transparent;font-size:15px;padding:8px 0}
+.send{width:42px;height:42px;border:0;border-radius:12px;background:var(--coral);color:#fff;font-size:16px;font-weight:bold}.send:disabled{opacity:.45}
+.composer-note{display:flex;justify-content:space-between;padding-top:7px;color:#64748b;font-size:12px}
+.resources{max-width:980px;margin:24px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:16px}.resource{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:20px}
+.resource b{display:block;font-size:16px;color:#0f172a}.resource p{font-size:13.5px;color:var(--muted);margin:6px 0 14px}
+.privacy-box{max-width:980px;margin:20px auto 0;background:#fefce8;border:1.5px solid #fde047;color:#713f12;border-radius:16px;padding:15px 20px;font-size:13.5px;line-height:1.65;display:flex;gap:12px;align-items:flex-start}
+.modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.65);display:none;align-items:center;justify-content:center;padding:18px;z-index:100}.modal-backdrop.show{display:flex}
+.modal{max-width:780px;width:100%;max-height:88vh;overflow-y:auto;background:#fff;border:2px solid #5eead4;border-radius:22px;padding:28px;box-shadow:0 25px 60px rgba(0,0,0,.3)}
+.modal-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;border-bottom:1.5px solid #e2e8f0;padding-bottom:14px;margin-bottom:18px}
+.modal-badge{display:inline-block;background:var(--teal-soft);color:var(--deep);font-size:12px;font-weight:800;padding:4px 12px;border-radius:999px;margin-bottom:6px}
+.modal-header h2{margin:0;font-size:24px;color:#0f172a}.modal-sub{margin:4px 0 0;font-size:14.5px;color:var(--muted)}
+.hb-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:18px}
+.hb-card{border-radius:16px;padding:16px 18px;border:1.5px solid #e2e8f0;background:#f8fafc}
+.hb-card.a1{background:#f0fdfa;border-color:#99f6e4}.hb-card.a2{background:#eff6ff;border-color:#bfdbfe}.hb-card.a3{background:#fff7ed;border-color:#fed7aa}
+.hb-step{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:15px;margin-bottom:6px;color:#0f172a}
+.hb-step span{background:var(--teal);color:#fff;padding:2px 10px;border-radius:8px;font-size:12px}
+.hb-card.a2 .hb-step span{background:#0284c7}.hb-card.a3 .hb-step span{background:var(--coral)}
+.hb-card p{margin:0;font-size:14px;color:#334155;line-height:1.6}
+.hb-rules{background:#fefce8;border:1.5px solid #fde047;border-radius:16px;padding:16px 18px;margin-bottom:18px}
+.hb-rules h4{margin:0 0 8px;font-size:15.5px;color:#854d0e}.hb-rules ul{margin:0;padding-left:20px;font-size:14px;color:#713f12;display:grid;gap:6px}
+.rules-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.72);display:flex;align-items:center;justify-content:center;padding:16px;z-index:999}
+.rules-box{max-width:780px;width:100%;max-height:90vh;overflow-y:auto;background:#fff;border:2px solid #5eead4;border-radius:24px;padding:26px 28px;box-shadow:0 25px 60px rgba(0,0,0,.35)}
+.rules-top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;border-bottom:1.5px solid #e2e8f0;padding-bottom:14px;margin-bottom:16px}
+.rules-tag{display:inline-block;background:#ccfbf1;color:#0f766e;font-size:12px;font-weight:800;padding:4px 12px;border-radius:999px;margin-bottom:6px}
+.rules-top h2{margin:0;font-size:21px;color:#0f172a}.rules-close-x{width:40px;height:40px;border-radius:50%;border:1.5px solid #cbd5e1;background:#f8fafc;color:#0f172a;font-size:18px;font-weight:800}
+.rules-close-x:hover{background:#f97316;color:#fff;border-color:#f97316}
+.rules-list{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.rule-item{background:#f0fdfa;border:1px solid #99f6e4;border-radius:14px;padding:12px 14px;font-size:13.5px;color:#334155}
+.rule-item b{display:block;color:#0f766e;font-size:14px;margin-bottom:3px}
+.rules-quote{background:linear-gradient(90deg,#0f766e,#0d9488);color:#fff;text-align:center;padding:14px 18px;border-radius:14px;font-weight:700;font-size:15px}
+.rules-hint{text-align:center;font-size:12.5px;color:#64748b;margin:10px 0 0}
+@media(max-width:900px){.hero,.support-grid,.resources,.rules-list{grid-template-columns:1fr}}
+</style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased">
-
-  <!-- MODAL 1: THÔNG BÁO NHẮC NHỞ -->
-  <div id="welcomeModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 p-6 md:p-8 relative">
-      <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
-        <span class="text-xs font-bold tracking-wider uppercase text-blue-600 bg-blue-50 px-3 py-1 rounded-full">📌 THÔNG BÁO NHẮC NHỞ · SAFE NET 3A</span>
-        <button onclick="closeModal('welcomeModal')" class="text-slate-400 hover:text-slate-700 text-xl font-bold w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 transition">✕</button>
-      </div>
-      <h2 class="text-xl md:text-2xl font-bold text-slate-900 mb-4">NHỮNG CÁCH ỨNG XỬ VĂN MINH TRÊN KHÔNG GIAN MẠNG</h2>
-      <div class="space-y-2.5 text-sm text-slate-600 leading-relaxed">
-        <p><strong class="text-slate-900">1. Giữ thái độ lịch sự, dùng ngôn từ chuẩn mực:</strong> Sử dụng tiếng Việt rõ ràng, văn minh; không chửi bới, miệt thị, công kích cá nhân hay xúc phạm danh dự người khác.</p>
-        <p><strong class="text-slate-900">2. Suy nghĩ kỹ trước khi đăng bài và bình luận:</strong> Giữ bình tĩnh trước các vấn đề gây tranh cãi; không hùa theo đám đông hay bình luận theo cảm xúc nhất thời.</p>
-        <p><strong class="text-slate-900">3. Kiểm chứng thông tin trước khi chia sẻ:</strong> Chỉ chia sẻ thông tin chính thống, đã xác thực; không tiếp tay lan truyền tin giả (fake news) hoặc nội dung giật gân câu view.</p>
-        <p><strong class="text-slate-900">4. Tôn trọng sự khác biệt và phản biện xây dựng:</strong> Lắng nghe quan điểm trái chiều trên tinh thần tôn trọng; tranh luận bằng lý lẽ khách quan, không kỳ thị ngoại hình, giới tính hay vùng miền.</p>
-        <p><strong class="text-slate-900">5. Bảo vệ quyền riêng tư của bản thân và người khác:</strong> Không tự ý đăng tải hình ảnh, tin nhắn, thông tin cá nhân của người khác khi chưa được phép; chủ động bảo mật tài khoản cá nhân.</p>
-        <p><strong class="text-slate-900">6. Tôn trọng bản quyền nội dung số:</strong> Luôn ghi rõ nguồn gốc, tên tác giả khi trích dẫn bài viết, hình ảnh hoặc sản phẩm sáng tạo của người khác.</p>
-        <p><strong class="text-slate-900">7. Nói không với bắt nạt trực tuyến (Cyberbullying):</strong> Không tham gia công kích, tẩy chay vô căn cứ; chủ động báo cáo (Report) các nội dung độc hại và hỗ trợ, bảo vệ nạn nhân trên mạng.</p>
-        <p><strong class="text-slate-900">8. Lan tỏa năng lượng và giá trị tích cực:</strong> Chia sẻ kiến thức hữu ích, câu chuyện đẹp, hành động nhân văn và sử dụng mạng xã hội hợp lý để cân bằng với cuộc sống thực.</p>
-      </div>
-      <div class="mt-5 p-4 bg-blue-50 rounded-xl text-center">
-        <p class="font-semibold text-blue-900 italic">“Không gian mạng là ảo – Trách nhiệm và sự tử tế là thật.”</p>
-      </div>
-      <div class="mt-5 flex items-center justify-between gap-4">
-        <span class="text-xs text-slate-400">Nhấn nút ✕ hoặc nút bên cạnh để bắt đầu sử dụng.</span>
-        <button onclick="closeModal('welcomeModal')" class="shrink-0 bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2.5 rounded-xl transition">Bắt đầu sử dụng</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL 2: CẨM NANG HÀNH ĐỘNG SAFE NET 3A -->
-  <div id="handbookModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-    <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 p-6 md:p-8 relative">
-      <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
-        <span class="text-xs font-bold tracking-wider uppercase text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">HỆ THỐNG HỖ TRỢ THPT MỘ ĐỨC</span>
-        <button onclick="closeModal('handbookModal')" class="text-slate-400 hover:text-slate-700 text-sm font-semibold px-3 py-1 rounded-full hover:bg-slate-100 transition">Đóng ✕</button>
-      </div>
-      <h2 class="text-2xl font-bold text-slate-900">Cẩm nang hành động SAFE NET 3A</h2>
-      <p class="text-sm text-slate-500 mt-1 mb-5">Quy trình 3 bước giúp bạn trang bị kiến thức, rèn luyện kỹ năng và tìm kiếm sự trợ giúp an toàn trên không gian mạng.</p>
-      <div class="space-y-3.5">
-        <div class="p-4 rounded-xl border border-blue-100 bg-blue-50/50">
-          <div class="flex items-center gap-2 mb-1">
-            <span class="bg-blue-600 text-white text-xs font-bold px-2.5 py-0.5 rounded-md">A1</span>
-            <h3 class="font-bold text-slate-900">Awareness · Nhận diện</h3>
-          </div>
-          <p class="text-sm text-slate-600 leading-relaxed">Hiểu rõ khái niệm, biểu hiện, các hình thức bắt nạt trực tuyến phổ biến (bị xúc phạm trong nhóm trò chuyện, phát tán hình ảnh riêng tư, giả mạo tài khoản, bị cô lập...) cũng như nguyên nhân và hậu quả đối với học sinh. Nắm vững cách bảo vệ thông tin cá nhân và sử dụng mạng xã hội an toàn.</p>
-        </div>
-        <div class="p-4 rounded-xl border border-emerald-100 bg-emerald-50/50">
-          <div class="flex items-center gap-2 mb-1">
-            <span class="bg-emerald-600 text-white text-xs font-bold px-2.5 py-0.5 rounded-md">A2</span>
-            <h3 class="font-bold text-slate-900">Action · Hành động</h3>
-          </div>
-          <p class="text-sm text-slate-600 leading-relaxed">Chuyển hóa kiến thức thành kỹ năng ứng phó cụ thể thông qua việc thực hành các tình huống giả định tương tác trên <strong>DIGITAL SHIELD</strong>. Rèn luyện khả năng giữ bình tĩnh, phân tích vấn đề, đánh giá hậu quả để lựa chọn cách xử lý an toàn (lưu bằng chứng, chặn tài khoản vi phạm, bảo mật tài khoản và hỗ trợ bạn bè).</p>
-        </div>
-        <div class="p-4 rounded-xl border border-purple-100 bg-purple-50/50">
-          <div class="flex items-center gap-2 mb-1">
-            <span class="bg-purple-600 text-white text-xs font-bold px-2.5 py-0.5 rounded-md">A3</span>
-            <h3 class="font-bold text-slate-900">Assistance · Hỗ trợ</h3>
-          </div>
-          <p class="text-sm text-slate-600 leading-relaxed">Chủ động tìm kiếm sự hỗ trợ thay vì im lặng che giấu trải nghiệm bị bắt nạt. Trò chuyện trực tiếp với <strong>Chatbot AI SAFE NET 3A</strong>, chia sẻ tâm sự kín tại <strong>Trạm Lắng Nghe (Padlet)</strong>, kết nối cha mẹ, thầy cô Tổ Tư vấn học đường THPT Mộ Đức hoặc gọi tổng đài miễn phí <strong>111</strong> khi có nguy cơ mất an toàn.</p>
-        </div>
-      </div>
-      <div class="mt-5 p-4 bg-amber-50 border border-amber-200 rounded-xl">
-        <h4 class="font-bold text-amber-900 mb-2">⚠ 4 Nguyên tắc vàng bảo vệ bản thân</h4>
-        <ul class="space-y-1.5 text-sm text-amber-950 list-disc pl-5">
-          <li><strong>Không im lặng chịu đựng:</strong> Luôn tìm một người lớn đáng tin cậy hoặc kết nối qua kênh hỗ trợ để được đồng hành.</li>
-          <li><strong>Không đáp trả tiêu cực:</strong> Tránh đôi co, xúc phạm ngược lại hoặc chia sẻ rộng rãi nội dung gây tổn thương.</li>
-          <li><strong>Giữ kín thông tin cá nhân:</strong> Tuyệt đối không gửi mật khẩu, mã OTP, địa chỉ nhà hay hình ảnh nhạy cảm cho người lạ.</li>
-          <li><strong>Lưu giữ bằng chứng:</strong> Chụp màn hình toàn bộ tin nhắn, đường link, tài khoản vi phạm trước khi chặn.</li>
-        </ul>
-      </div>
-      <div class="mt-5 flex justify-end">
-        <button onclick="closeModal('handbookModal')" class="bg-slate-900 hover:bg-slate-800 text-white font-medium px-6 py-2.5 rounded-xl transition">💬 Trò chuyện cùng AI ngay</button>
-      </div>
-    </div>
-  </div>
-  <!-- HEADER -->
-  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-slate-200">
-    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-2.5">
-        <span class="text-2xl">🛡</span>
-        <div>
-          <span class="font-bold text-slate-900 text-lg tracking-tight">SAFE NET 3A</span>
-          <span class="hidden sm:inline-block text-xs text-slate-500 ml-2">THPT Mộ Đức · Không gian hỗ trợ an toàn số</span>
-        </div>
-      </div>
-      <div class="flex items-center gap-2.5">
-        <button onclick="openModal('handbookModal')" class="text-sm font-medium text-slate-700 hover:text-blue-600 bg-slate-100 hover:bg-blue-50 px-3.5 py-2 rounded-xl transition">📘 Cẩm nang 3A</button>
-        <button onclick="resetChat()" class="text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 px-3.5 py-2 rounded-xl transition">+ Cuộc trò chuyện mới</button>
-      </div>
-    </div>
-  </header>
-
-  <main class="max-w-6xl mx-auto px-4 py-8 md:py-12 space-y-12">
-
-    <!-- HERO SECTION -->
-    <section class="text-center max-w-3xl mx-auto">
-      <span class="inline-block text-xs font-semibold uppercase tracking-wider text-blue-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded-full mb-4">
-        Adaptive digital safety system · Mô hình 3A
-      </span>
-      <h1 class="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight mb-4">
-        Mỗi câu chuyện, một hướng hỗ trợ <span class="text-blue-600 italic">phù hợp.</span>
-      </h1>
-      <p class="text-slate-600 text-base md:text-lg leading-relaxed mb-6">
-        Trò chuyện tự nhiên, hỏi tiếp khi cần và điều chỉnh hướng hỗ trợ theo những gì bạn chia sẻ. SAFE NET đồng hành cùng bạn qua mô hình 3A: <strong>Nhận diện – Hành động – Hỗ trợ</strong>.
-      </p>
-      <div class="inline-flex flex-wrap justify-center items-center gap-2 text-xs md:text-sm font-medium bg-white border border-slate-200 px-4 py-2 rounded-full shadow-sm">
-        <span class="text-blue-600 font-bold">A1</span> Nhận diện
-        <span class="text-slate-300">•</span>
-        <span class="text-emerald-600 font-bold">A2</span> Hành động
-        <span class="text-slate-300">•</span>
-        <span class="text-purple-600 font-bold">A3</span> Hỗ trợ
-      </div>
-    </section>
-
-    <!-- BA TRỤ CỘT 3A -->
-    <section>
-      <div class="mb-5">
-        <h2 class="text-xl font-bold text-slate-900">Ba trụ cột 3A</h2>
-        <p class="text-sm text-slate-500">Mỗi lượt trò chuyện và trải nghiệm giúp bạn nâng cao kỹ năng an toàn số.</p>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-blue-300 transition">
-          <span class="inline-block text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-lg mb-3">A1</span>
-          <h3 class="font-bold text-slate-900 text-lg mb-2">Awareness · Nhận diện</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">Trang bị kiến thức nền tảng qua cẩm nang điện tử về khái niệm, biểu hiện, hậu quả của bắt nạt trực tuyến và cách bảo vệ thông tin cá nhân.</p>
-        </div>
-        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-emerald-300 transition">
-          <span class="inline-block text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-lg mb-3">A2</span>
-          <h3 class="font-bold text-slate-900 text-lg mb-2">Action · Hành động</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">Rèn luyện kỹ năng thực hành thông qua hệ thống tình huống giả định tương tác <strong>DIGITAL SHIELD</strong> để biết cách phân tích và ứng phó an toàn.</p>
-        </div>
-        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-purple-300 transition">
-          <span class="inline-block text-xs font-bold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-lg mb-3">A3</span>
-          <h3 class="font-bold text-slate-900 text-lg mb-2">Assistance · Hỗ trợ</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">Kết nối trực tiếp với Chatbot AI, không gian chia sẻ kín (Trạm Lắng Nghe / Padlet) và người lớn đáng tin cậy để được đồng hành kịp thời.</p>
-        </div>
-      </div>
-    </section>
-    <!-- NGƯỜI HỖ TRỢ & CHATBOT AI -->
-    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      <!-- Cột trái -->
-      <div class="lg:col-span-5 space-y-4">
-        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-          <span class="text-xs font-semibold uppercase text-blue-600">Người hỗ trợ trực tiếp</span>
-          <h3 class="text-lg font-bold text-slate-900 mt-1 mb-2">Khi bạn cần một người thật bên cạnh</h3>
-          <p class="text-sm text-slate-600 mb-4">Chatbot chỉ là bước khởi đầu. Dưới đây là người phụ trách dự án sẵn sàng lắng nghe và hỗ trợ bạn tại trường.</p>
-          <div class="flex items-center gap-3 p-3.5 bg-slate-50 rounded-xl border border-slate-100 mb-3">
-            <div class="w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center shrink-0">NB</div>
-            <div>
-              <div class="font-bold text-slate-900 text-sm">Giáo viên phụ trách dự án</div>
-              <div class="text-xs text-slate-500">THPT Mộ Đức</div>
-            </div>
-          </div>
-          <div class="space-y-1.5 text-sm text-slate-600">
-            <div>📞 Điện thoại: <span class="font-medium text-slate-800">Đang cập nhật</span></div>
-            <div>✉ Email: <span class="font-medium text-slate-800">Đang cập nhật</span></div>
-          </div>
-        </div>
-
-        <div class="bg-indigo-50/70 p-5 rounded-2xl border border-indigo-100">
-          <h4 class="font-bold text-indigo-950 text-base mb-1">Trạm Lắng Nghe (Padlet)</h4>
-          <p class="text-xs text-indigo-900/80 mb-3 leading-relaxed">Kênh chia sẻ ẩn danh do dự án thiết lập. Bạn có thể viết ra những điều chưa muốn nói bằng lời.</p>
-          <a href="#link-padlet" target="_blank" class="inline-flex items-center text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-xl transition">Mở Trạm Lắng Nghe ↗</a>
-        </div>
-
-        <div class="bg-rose-50 p-5 rounded-2xl border border-rose-200">
-          <h4 class="font-bold text-rose-900 text-base mb-1">Khi có nguy cơ ngay lập tức</h4>
-          <p class="text-xs text-rose-800 mb-3 leading-relaxed">Nếu bạn hoặc một bạn khác đang bị đe dọa, ép buộc hoặc mất an toàn, hãy gọi tổng đài quốc gia bảo vệ trẻ em.</p>
-          <a href="tel:111" class="inline-flex items-center text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 px-4 py-2 rounded-xl transition">📞 Gọi tổng đài 111</a>
-        </div>
-      </div>
-
-      <!-- Cột phải: Chatbot AI -->
-      <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm flex flex-col overflow-hidden">
-        <div class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-          <div class="flex items-center gap-2.5">
-            <span class="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded-lg">3A</span>
-            <div>
-              <div class="font-bold text-slate-900 text-sm">SAFE NET AI</div>
-              <div class="text-xs text-slate-500">AI trò chuyện nhiều lượt · Hỗ trợ học tập & an toàn số</div>
-            </div>
-          </div>
-          <span class="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
-            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Sẵn sàng trò chuyện
-          </span>
-        </div>
-
-        <div id="chatBox" class="flex-1 p-6 overflow-y-auto flex flex-col items-center justify-center text-center min-h-[340px]">
-          <div class="text-4xl mb-3">💬</div>
-          <h3 class="font-bold text-slate-900 text-lg">Tôi có thể giúp gì cho bạn?</h3>
-          <p class="text-sm text-slate-500 max-w-md mt-1">Bạn có thể tải tài liệu lên hoặc chia sẻ câu chuyện của mình bên dưới.</p>
-        </div>
-
-        <div class="p-4 border-t border-slate-100 bg-slate-50/50">
-          <div class="flex items-center justify-between mb-2 gap-2">
-            <label class="cursor-pointer inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-blue-600 bg-white border border-slate-200 px-3 py-1.5 rounded-lg transition">
-              📎 Đính kèm tài liệu (PDF, DOCX, TXT)
-              <input id="fileInput" type="file" accept=".pdf,.docx,.txt" onchange="updateFileName()" class="hidden">
-            </label>
-            <span id="fileNameDisplay" class="text-xs text-slate-400 truncate">Chưa chọn tài liệu</span>
-          </div>
-          <div class="flex gap-2">
-            <input id="userInput" type="text" maxlength="4000" oninput="updateCharCount()" onkeypress="if(event.key==='Enter') sendMessage()" placeholder="Nhập câu chuyện hoặc câu hỏi của bạn..." class="flex-1 bg-white border border-slate-300 focus:border-blue-500 focus:outline-none rounded-xl px-4 py-2.5 text-sm">
-            <button onclick="sendMessage()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2.5 rounded-xl transition">➤</button>
-          </div>
-          <div class="flex justify-between text-[11px] text-slate-400 mt-1.5 px-1">
-            <span>Không nhập mật khẩu hoặc thông tin nhạy cảm.</span>
-            <span id="charCount">0/4000</span>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- 3 THẺ CHỨC NĂNG NHANH -->
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-5">
-      <div onclick="openModal('handbookModal')" class="cursor-pointer bg-white p-5 rounded-2xl border border-slate-200 hover:border-blue-400 shadow-sm transition flex flex-col justify-between">
-        <div>
-          <h3 class="font-bold text-slate-900 mb-1.5">📘 Cẩm nang SAFE NET 3A</h3>
-          <p class="text-xs text-slate-600 leading-relaxed mb-4">Tìm hiểu chi tiết quy trình 3 bước nhận diện, hành động, hỗ trợ cùng kiến thức phòng ngừa bắt nạt trực tuyến và 4 nguyên tắc vàng bảo vệ bản thân.</p>
-        </div>
-        <span class="text-xs font-bold text-blue-600">Mở cẩm nang ›</span>
-      </div>
-
-      <a href="#link-digital-shield" class="bg-white p-5 rounded-2xl border border-slate-200 hover:border-emerald-400 shadow-sm transition flex flex-col justify-between">
-        <div>
-          <h3 class="font-bold text-slate-900 mb-1.5">🛡 DIGITAL SHIELD · Lá chắn số</h3>
-          <p class="text-xs text-slate-600 leading-relaxed mb-4">Hệ thống học tập tương tác với các tình huống giả định về bắt nạt trực tuyến giúp rèn luyện kỹ năng phản ứng an toàn.</p>
-        </div>
-        <span class="text-xs font-bold text-emerald-600">Trải nghiệm ngay ↗</span>
-      </a>
-
-      <div onclick="resetChat()" class="cursor-pointer bg-white p-5 rounded-2xl border border-slate-200 hover:border-slate-400 shadow-sm transition flex flex-col justify-between">
-        <div>
-          <h3 class="font-bold text-slate-900 mb-1.5">🔄 Làm mới hội thoại</h3>
-          <p class="text-xs text-slate-600 leading-relaxed mb-4">Bắt đầu một chủ đề mới. Nội dung hội thoại hiện tại sẽ được xóa khỏi giao diện để đảm bảo riêng tư.</p>
-        </div>
-        <span class="text-xs font-bold text-slate-700">Bắt đầu lại ›</span>
-      </div>
-    </section>
-
-    <!-- CAM KẾT BẢO MẬT -->
-    <section class="bg-slate-100 border border-slate-200 rounded-2xl p-5 text-xs text-slate-600 leading-relaxed">
-      <strong>🔒 Cam kết bảo mật & Lưu ý sử dụng:</strong> SAFE NET 3A là công cụ hỗ trợ giáo dục và tư vấn ban đầu, không thay thế người lớn đáng tin cậy, chuyên viên tâm lý, nhà trường hay cơ quan chức năng. Mọi trao đổi được bảo mật và không yêu cầu tài khoản; bạn vui lòng không nhập họ tên thật, địa chỉ nhà, mật khẩu hay hình ảnh riêng tư. Nếu có nguy cơ mất an toàn khẩn cấp, hãy liên hệ trực tiếp thầy cô hoặc gọi tổng đài <strong>111</strong>.
-    </section>
-
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="bg-slate-900 text-slate-300 py-10">
-    <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8 border-b border-slate-800 pb-8">
+<body>
+<div class="rules-backdrop" id="welcomeRulesModal" role="dialog" aria-modal="true">
+  <div class="rules-box">
+    <div class="rules-top">
       <div>
-        <div class="font-bold text-white text-lg mb-2">🛡 THPT Mộ Đức</div>
-        <p class="text-sm text-slate-400 max-w-md leading-relaxed">Không gian đồng hành và hỗ trợ học sinh trước áp lực, tổn thương tâm lý và bắt nạt trên không gian mạng thông qua mô hình SAFE NET 3A.</p>
+        <span class="rules-tag">📌 THÔNG BÁO NHẮC NHỞ · SAFE NET 3A</span>
+        <h2>NHỮNG CÁCH ỨNG XỬ VĂN MINH TRÊN KHÔNG GIAN MẠNG</h2>
       </div>
-      <div class="md:text-right">
-        <div class="font-bold text-white text-sm uppercase tracking-wider mb-3">Khi cần giúp đỡ ngay</div>
-        <ul class="space-y-1.5 text-sm">
-          <li>📞 <strong class="text-white">111</strong> Tổng đài quốc gia bảo vệ trẻ em</li>
-          <li>📞 <strong class="text-white">113</strong> Công an</li>
-          <li>📞 <strong class="text-white">115</strong> Cấp cứu y tế</li>
-        </ul>
-      </div>
+      <button type="button" class="rules-close-x" id="closeRulesBtn" onclick="document.getElementById('welcomeRulesModal').style.display='none';document.body.style.overflow='';">✕</button>
     </div>
-    <div class="max-w-6xl mx-auto px-4 pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-2">
-      <div>© Trường THPT Mộ Đức · Dự án KHKT SAFE NET 3A</div>
-      <div>Không cần tài khoản để nhắn tin · Cam kết bảo mật & An toàn</div>
+    <div class="rules-list">
+      <div class="rule-item"><b>1. Giữ thái độ lịch sự, dùng ngôn từ chuẩn mực</b>Sử dụng tiếng Việt rõ ràng, văn minh; không chửi bới, miệt thị, công kích cá nhân hay xúc phạm danh dự người khác.</div>
+      <div class="rule-item"><b>2. Suy nghĩ kỹ trước khi đăng bài và bình luận</b>Giữ bình tĩnh trước các vấn đề gây tranh cãi; không hùa theo đám đông hay bình luận theo cảm xúc nhất thời.</div>
+      <div class="rule-item"><b>3. Kiểm chứng thông tin trước khi chia sẻ</b>Chỉ chia sẻ thông tin chính thống, đã xác thực; không tiếp tay lan truyền tin giả (fake news) hoặc nội dung giật gân câu view.</div>
+      <div class="rule-item"><b>4. Tôn trọng sự khác biệt và phản biện xây dựng</b>Lắng nghe quan điểm trái chiều trên tinh thần tôn trọng; tranh luận bằng lý lẽ khách quan, không kỳ thị ngoại hình, giới tính hay vùng miền.</div>
+      <div class="rule-item"><b>5. Bảo vệ quyền riêng tư của bản thân và người khác</b>Không tự ý đăng tải hình ảnh, tin nhắn, thông tin cá nhân của người khác khi chưa được phép; chủ động bảo mật tài khoản cá nhân.</div>
+      <div class="rule-item"><b>6. Tôn trọng bản quyền nội dung số</b>Luôn ghi rõ nguồn gốc, tên tác giả khi trích dẫn bài viết, hình ảnh hoặc sản phẩm sáng tạo của người khác.</div>
+      <div class="rule-item"><b>7. Nói không với bắt nạt trực tuyến (Cyberbullying)</b>Không tham gia công kích, tẩy chay vô căn cứ; chủ động báo cáo (Report) các nội dung độc hại và hỗ trợ, bảo vệ nạn nhân trên mạng.</div>
+      <div class="rule-item"><b>8. Lan tỏa năng lượng và giá trị tích cực</b>Chia sẻ kiến thức hữu ích, câu chuyện đẹp, hành động nhân văn và sử dụng mạng xã hội hợp lý để cân bằng với cuộc sống thực.</div>
     </div>
-  </footer>
+    <div class="rules-quote">“Không gian mạng là ảo – Trách nhiệm và sự tử tế là thật.”</div>
+    <p class="rules-hint">Vui lòng nhấn nút <b>✕</b> ở góc trên bên phải để đóng thông báo và bắt đầu sử dụng trang web.</p>
+  </div>
+</div>
 
-  <!-- JAVASCRIPT -->
-  <script>
-    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
-    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-    function updateCharCount() {
-      const input = document.getElementById('userInput');
-      document.getElementById('charCount').textContent = `${input.value.length}/4000`;
+<header class="topbar">
+  <nav class="nav">
+    <div class="brand">
+      <div class="logo">🛡️</div>
+      <div><strong>SAFE NET 3A</strong><small>THPT Mộ Đức · Không gian hỗ trợ an toàn số</small></div>
+    </div>
+    <div class="nav-actions">
+      <button type="button" class="btn btn-cream" onclick="document.getElementById('modalBackdrop').classList.add('show')">📘 Cẩm nang 3A</button>
+      <button type="button" class="btn btn-primary" id="newChatTop">+ Cuộc trò chuyện mới</button>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-main">
+      <span class="eyebrow">Adaptive digital safety system</span>
+      <h1>Mỗi câu chuyện,<br>một hướng hỗ trợ <em>phù hợp</em>.</h1>
+      <p>Trò chuyện tự nhiên, hỏi tiếp khi cần và điều chỉnh hướng hỗ trợ theo những gì bạn chia sẻ. SAFE NET đồng hành cùng bạn qua 3A: Nhận diện – Hành động – Hỗ trợ.</p>
+      <div class="hero-chips">
+        <span class="chip"><b>A1</b> Nhận diện</span>
+        <span class="chip"><b>A2</b> Hành động</span>
+        <span class="chip"><b>A3</b> Hỗ trợ</span>
+      </div>
+    </div>
+    <aside class="hero-rail">
+      <h2>Ba trụ cột 3A</h2>
+      <p class="sub">Mỗi lượt trò chuyện và trải nghiệm mở ra hướng bảo vệ an toàn.</p>
+      <div class="rung"><span class="rung-dot">A1</span><div><b>Awareness · Nhận diện</b><span>Hiểu rõ khái niệm, biểu hiện, hậu quả bắt nạt và cách bảo vệ thông tin cá nhân.</span></div></div>
+      <div class="rung"><span class="rung-dot">A2</span><div><b>Action · Hành động</b><span>Thực hành tình huống giả định trên DIGITAL SHIELD để rèn kỹ năng ứng phó.</span></div></div>
+      <div class="rung"><span class="rung-dot">A3</span><div><b>Assistance · Hỗ trợ</b><span>Trò chuyện cùng Chatbot AI, chia sẻ tại Padlet tâm sự kín và kết nối người tin cậy.</span></div></div>
+    </aside>
+  </section>
+  <section class="support" id="nguoi-ho-tro">
+    <div class="support-head">
+      <span class="eyebrow">Người hỗ trợ trực tiếp</span>
+      <h2>Khi bạn cần một người thật bên cạnh</h2>
+      <p>Chatbot chỉ là bước khởi đầu. Dưới đây là người phụ trách dự án sẵn sàng lắng nghe và hỗ trợ bạn tại trường.</p>
+    </div>
+    <div class="support-grid">
+      <article class="support-card main">
+        <div class="person">
+          <div class="person-avatar">NB</div>
+          <div>
+            <div class="person-name"></div>
+            <div class="person-role">Giáo viên phụ trách dự án</div>
+            <div class="person-org">THPT Mộ Đức</div>
+          </div>
+        </div>
+        <p class="desc">Bạn có thể gọi điện hoặc gửi email để hẹn gặp, trao đổi về bất kỳ tình huống nào khiến bạn không an toàn.</p>
+        <div class="contact-row">📞 Điện thoại: </div>
+        <div class="contact-row">✉️ Email: </div>
+      </article>
+      <article class="support-card">
+        <h3>Trạm Lắng Nghe</h3>
+        <p class="desc">Kênh chia sẻ ẩn danh qua Padlet tâm sự kín do dự án thiết lập. Bạn có thể viết ra những điều chưa muốn nói bằng lời.</p>
+        <button type="button" class="btn btn-cream" id="padletBtn">Mở Trạm Lắng Nghe ↗</button>
+      </article>
+      <article class="support-card">
+        <h3>Khi có nguy cơ ngay lập tức</h3>
+        <p class="desc">Nếu bạn hoặc một bạn khác đang bị đe dọa, ép buộc hoặc mất an toàn, hãy gọi tổng đài quốc gia bảo vệ trẻ em.</p>
+        <button type="button" class="btn btn-primary" id="call111Btn">Gọi tổng đài 111</button>
+      </article>
+    </div>
+  </section>
+
+  <section class="layout" id="chat">
+    <div class="chat-shell">
+      <div class="chat-head">
+        <div class="chat-title">
+          <div class="bot-avatar">3A</div>
+          <div><strong style="display:block;font-size:16px">SAFE NET AI</strong><small style="color:var(--muted);font-size:12.5px">AI trò chuyện nhiều lượt · Hỗ trợ học tập &amp; an toàn số</small></div>
+        </div>
+        <span class="online">● Sẵn sàng trò chuyện</span>
+      </div>
+      <div class="upload-strip">
+        <label for="fileInput" class="upload-label">📎 Đính kèm tài liệu (PDF, DOCX, TXT)</label>
+        <input type="file" id="fileInput" accept=".pdf,.docx,.txt" />
+        <span id="fileStatus">Chưa chọn tài liệu</span>
+      </div>
+      <div class="messages" id="messages">
+        <div class="welcome" id="welcome">
+          <h2>Tôi có thể giúp gì cho bạn?</h2>
+          <p>Bạn có thể tải tài liệu lên hoặc chia sẻ câu chuyện của mình bên dưới.</p>
+          <div class="suggestions" id="suggestions"></div>
+        </div>
+      </div>
+      <form class="composer" id="chatForm">
+        <div class="composer-wrap">
+          <textarea id="messageInput" rows="1" maxlength="4000" placeholder="Nhập câu hỏi hoặc câu chuyện của bạn… (Enter để gửi)"></textarea>
+          <button class="send" id="sendBtn" type="submit">➤</button>
+        </div>
+        <div class="composer-note">
+          <span>Không nhập mật khẩu hoặc thông tin nhạy cảm.</span>
+          <span id="counter">0/4000</span>
+        </div>
+      </form>
+    </div>
+  </section>
+  <section class="resources" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+    <article class="resource">
+      <b>📘 Cẩm nang SAFE NET 3A</b>
+      <p>Tìm hiểu chi tiết quy trình 3 bước Nhận diện – Hành động – Hỗ trợ cùng kiến thức phòng ngừa bắt nạt và 4 nguyên tắc vàng bảo vệ bản thân.</p>
+      <button type="button" class="btn btn-soft" onclick="document.getElementById('modalBackdrop').classList.add('show')">Mở cẩm nang ›</button>
+    </article>
+
+    <article class="resource" style="background:linear-gradient(145deg,#0f3d38,#0d9488);color:#fff;border-color:transparent">
+      <b style="color:#fff;display:flex;align-items:center;gap:8px">🛡️ DIGITAL SHIELD · Lá chắn số</b>
+      <p style="color:#ccfbf1">Hệ thống học tập tương tác với 10 tình huống giả định về bắt nạt trực tuyến giúp rèn luyện kỹ năng phản ứng an toàn.</p>
+      <a href="https://github.io" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Trải nghiệm ngay ↗</a>
+    </article>
+
+    <article class="resource">
+      <b>🔄 Làm mới hội thoại</b>
+      <p>Bắt đầu một chủ đề mới. Nội dung hội thoại hiện tại sẽ được xóa khỏi giao diện để đảm bảo riêng tư.</p>
+      <button type="button" class="btn btn-quiet" id="newChatCard">Bắt đầu lại ›</button>
+    </article>
+  </section>
+
+  <div class="privacy-box">
+    <span style="font-size:20px;line-height:1.2">🔒</span>
+    <div>
+      <b>Cam kết bảo mật &amp; Lưu ý sử dụng:</b> SAFE NET 3A là công cụ hỗ trợ giáo dục và tư vấn ban đầu, không thay thế người lớn đáng tin cậy, chuyên viên tâm lý, nhà trường hay cơ quan chức năng. Mọi trao đổi được bảo mật và không yêu cầu tài khoản; bạn vui lòng không nhập họ tên thật, địa chỉ nhà, mật khẩu hay hình ảnh riêng tư. Nếu có nguy cơ mất an toàn khẩn cấp, hãy liên hệ trực tiếp thầy cô hoặc gọi tổng đài <b>111</b>.
+    </div>
+  </div>
+</main>
+
+<footer style="background:#0f3d38;color:#e2e8f0;margin-top:44px;padding:44px 24px 26px">
+  <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:48px;align-items:start;padding-bottom:32px;border-bottom:1px solid rgba(255,255,255,.15)">
+    <div>
+      <h4 style="color:#fff;font-size:19px;margin:0 0 14px">🛡️ THPT Mộ Đức</h4>
+      <p style="margin:0;font-size:15px;line-height:1.75;color:#cbd5e1;max-width:460px">Không gian đồng hành và hỗ trợ học sinh trước áp lực, tổn thương tâm lý và bắt nạt trên không gian mạng thông qua mô hình SAFE NET 3A.</p>
+    </div>
+    <div>
+      <h4 style="color:#fff;font-size:18px;margin:0 0 16px">Khi cần giúp đỡ ngay</h4>
+      <ul class="footer-hotlines" style="list-style:none;padding:0;margin:0;display:grid;gap:11px">
+        <li data-num="111" style="background:rgba(255,255,255,.08);padding:10px 16px;border-radius:12px;display:flex;align-items:center;gap:12px;cursor:pointer;font-size:14.5px">📞 <b style="color:#fbbf24;font-size:16px;min-width:36px">111</b> Tổng đài quốc gia bảo vệ trẻ em</li>
+        <li data-num="113" style="background:rgba(255,255,255,.08);padding:10px 16px;border-radius:12px;display:flex;align-items:center;gap:12px;cursor:pointer;font-size:14.5px">📞 <b style="color:#fbbf24;font-size:16px;min-width:36px">113</b> Công an</li>
+        <li data-num="115" style="background:rgba(255,255,255,.08);padding:10px 16px;border-radius:12px;display:flex;align-items:center;gap:12px;cursor:pointer;font-size:14.5px">📞 <b style="color:#fbbf24;font-size:16px;min-width:36px">115</b> Cấp cứu y tế</li>
+      </ul>
+    </div>
+  </div>
+  <div style="max-width:1100px;margin:20px auto 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:13.5px;color:#94a3b8">
+    <span>© Trường THPT Mộ Đức · Dự án KHKT SAFE NET 3A</span>
+    <span>Không cần tài khoản để nhắn tin · Cam kết bảo mật &amp; An toàn</span>
+  </div>
+</footer>
+
+<div class="modal-backdrop" id="modalBackdrop" onclick="if(event.target===this)this.classList.remove('show')">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <span class="modal-badge">HỆ THỐNG HỖ TRỢ THPT MỘ ĐỨC</span>
+        <h2>Cẩm nang hành động SAFE NET 3A</h2>
+        <p class="modal-sub">Quy trình 3 bước trang bị kiến thức, rèn luyện kỹ năng thực hành và tìm kiếm sự trợ giúp an toàn trên không gian mạng.</p>
+      </div>
+      <button type="button" class="btn btn-quiet" onclick="document.getElementById('modalBackdrop').classList.remove('show')">Đóng ✕</button>
+    </div>
+    <div class="hb-grid">
+      <div class="hb-card a1">
+        <div class="hb-step"><span>A1</span> Awareness · Nhận diện</div>
+        <p>Trang bị kiến thức nền tảng qua cẩm nang điện tử về khái niệm, biểu hiện, các hình thức bắt nạt trực tuyến phổ biến (bị xúc phạm trong nhóm trò chuyện, phát tán hình ảnh riêng tư, giả mạo tài khoản, cô lập...), nguyên nhân và hậu quả đối với học sinh. Hướng dẫn cách bảo vệ thông tin cá nhân, sử dụng mạng xã hội an toàn và xử lý khi gặp phải hoặc chứng kiến hành vi bắt nạt.</p>
+      </div>
+      <div class="hb-card a2">
+        <div class="hb-step"><span>A2</span> Action · Hành động</div>
+        <p>Chuyển hóa kiến thức thành kỹ năng ứng phó cụ thể thông qua hệ thống học tập tương tác <b>DIGITAL SHIELD</b> với các tình huống giả định sát thực tế học đường. Rèn luyện khả năng giữ bình tĩnh, phân tích vấn đề, đánh giá hậu quả để lựa chọn cách xử lý phù hợp (chụp màn hình lưu bằng chứng, chặn tài khoản vi phạm, bảo mật tài khoản và hỗ trợ bạn bè).</p>
+      </div>
+      <div class="hb-card a3">
+        <div class="hb-step"><span>A3</span> Assistance · Hỗ trợ</div>
+        <p>Chủ động tìm kiếm sự hỗ trợ thay vì im lặng che giấu trải nghiệm bị bắt nạt. Trò chuyện trực tiếp với <b>Chatbot AI SAFE NET 3A</b> để nhận diện Cyberbullying, gợi ý cách ứng phó và tư vấn tâm lý – học tập; chia sẻ cảm xúc tại <b>PADLET tâm sự kín (Trạm Lắng Nghe)</b>; hoặc kết nối cha mẹ, thầy cô THPT Mộ Đức và gọi tổng đài miễn phí <b>111</b>.</p>
+      </div>
+    </div>
+    <div class="hb-rules">
+      <h4>⚠️ 4 Nguyên tắc vàng bảo vệ bản thân</h4>
+      <ul>
+        <li><b>Không im lặng chịu đựng:</b> Luôn tìm một người lớn đáng tin cậy hoặc kết nối qua các kênh hỗ trợ để được đồng hành.</li>
+        <li><b>Không đáp trả tiêu cực:</b> Tránh đôi co, xúc phạm ngược lại hoặc chia sẻ rộng rãi nội dung gây tổn thương.</li>
+        <li><b>Giữ kín thông tin cá nhân:</b> Tuyệt đối không gửi mật khẩu, mã OTP, địa chỉ nhà hay hình ảnh nhạy cảm cho người lạ.</li>
+        <li><b>Lưu giữ bằng chứng:</b> Chụp màn hình toàn bộ tin nhắn, đường link, tài khoản vi phạm trước khi chặn.</li>
+      </ul>
+    </div>
+    <div style="display:flex;justify-content:flex-end">
+      <button type="button" class="btn btn-primary" onclick="document.getElementById('modalBackdrop').classList.remove('show');document.getElementById('messageInput').focus()">💬 Trò chuyện cùng AI ngay</button>
+    </div>
+  </div>
+</div>
+<script>
+(function() {
+  function byId(id) { return document.getElementById(id); }
+
+  function injectCss(url) {
+    var l = document.createElement("link");
+    l.rel = "stylesheet";
+    l.href = url;
+    document.head.appendChild(l);
+  }
+
+  function injectScript(url) {
+    return new Promise(function(resolve, reject) {
+      var s = document.createElement("script");
+      s.src = url;
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+
+  var cdn = "https" + "://" + "cdn.jsdelivr.net";
+  var unpkg = "https" + "://" + "unpkg.com";
+
+  var katexBase = cdn + "/npm/katex@0.16.11/dist/";
+  injectCss(katexBase + "katex.min.css");
+  injectScript(katexBase + "katex.min.js").then(function() {
+    return injectScript(katexBase + "contrib/auto-render.min.js");
+  }).catch(function() {});
+
+  async function ensurePdfLib() {
+    if (typeof window.pdfjsLib !== "undefined") return window.pdfjsLib;
+    var sources = [
+      { lib: cdn + "/npm/pdfjs-dist@3.11.174/build/pdf.min.js", worker: cdn + "/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js" },
+      { lib: unpkg + "/pdfjs-dist@3.11.174/build/pdf.min.js", worker: unpkg + "/pdfjs-dist@3.11.174/build/pdf.worker.min.js" }
+    ];
+    for (var i = 0; i < sources.length; i++) {
+      try {
+        await injectScript(sources.at(i).lib);
+        if (typeof window.pdfjsLib !== "undefined") {
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc = sources.at(i).worker;
+          return window.pdfjsLib;
+        }
+      } catch (e) {}
     }
-    function updateFileName() {
-      const fileInput = document.getElementById('fileInput');
-      document.getElementById('fileNameDisplay').textContent = fileInput.files.length > 0 ? fileInput.files[0].name : 'Chưa chọn tài liệu';
+    throw new Error("Không thể tải thư viện đọc PDF.");
+  }
+
+  async function ensureMammothLib() {
+    if (typeof window.mammoth !== "undefined") return window.mammoth;
+    var urls = [
+      cdn + "/npm/mammoth@1.6.0/mammoth.browser.min.js",
+      unpkg + "/mammoth@1.6.0/mammoth.browser.min.js"
+    ];
+    for (var i = 0; i < urls.length; i++) {
+      try {
+        await injectScript(urls.at(i));
+        if (typeof window.mammoth !== "undefined") return window.mammoth;
+      } catch (e) {}
     }
-    function resetChat() {
-      const chatBox = document.getElementById('chatBox');
-      chatBox.className = "flex-1 p-6 overflow-y-auto flex flex-col items-center justify-center text-center min-h-[340px]";
-      chatBox.innerHTML = `<div class="text-4xl mb-3">💬</div><h3 class="font-bold text-slate-900 text-lg">Tôi có thể giúp gì cho bạn?</h3><p class="text-sm text-slate-500 max-w-md mt-1">Bạn có thể tải tài liệu lên hoặc chia sẻ câu chuyện của mình bên dưới.</p>`;
-    }
-    function sendMessage() {
-      const input = document.getElementById('userInput');
-      const text = input.value.trim();
-      if (!text) return;
-      const chatBox = document.getElementById('chatBox');
-      if (chatBox.classList.contains('justify-center')) {
-        chatBox.className = "flex-1 p-6 overflow-y-auto space-y-4 min-h-[340px] max-h-[450px]";
-        chatBox.innerHTML = '';
+    throw new Error("Không thể tải thư viện đọc file Word.");
+  }
+
+  ensurePdfLib().catch(function() {});
+  ensureMammothLib().catch(function() {});
+
+  window.safeNetFile = { text: "", name: "" };
+
+  var fileInput = byId("fileInput");
+  if (fileInput) {
+    fileInput.addEventListener("change", async function(e) {
+      var file = e.target.files.item(0);
+      if (!file) return;
+      var status = byId("fileStatus");
+      status.style.color = "var(--teal)";
+      status.textContent = "Đang đọc tài liệu...";
+      window.safeNetFile.name = file.name;
+      window.safeNetFile.text = "";
+
+      try {
+        var lower = file.name.toLowerCase();
+        if (lower.endsWith(".txt")) {
+          window.safeNetFile.text = await file.text();
+        } else if (lower.endsWith(".pdf")) {
+          var pdfLib = await ensurePdfLib();
+          var buf = await file.arrayBuffer();
+          var pdf = await pdfLib.getDocument({ data: buf }).promise;
+          var full = "";
+          for (var i = 1; i <= pdf.numPages; i++) {
+            var page = await pdf.getPage(i);
+            var content = await page.getTextContent();
+            full += content.items.map(function(it) { return it.str; }).join(" ") + "\n";
+          }
+          window.safeNetFile.text = full.trim();
+        } else if (lower.endsWith(".docx")) {
+          var mammothLib = await ensureMammothLib();
+          var buf = await file.arrayBuffer();
+          var res = await mammothLib.extractRawText({ arrayBuffer: buf });
+          window.safeNetFile.text = res.value.trim();
+        }
+
+        if (!window.safeNetFile.text) {
+          status.style.color = "var(--coral-deep)";
+          status.textContent = "⚠️ File rỗng hoặc là PDF ảnh scan";
+        } else {
+          status.style.color = "var(--deep)";
+          status.textContent = "✅ Đã nạp: " + file.name + " (" + window.safeNetFile.text.length + " ký tự)";
+        }
+      } catch (err) {
+        status.style.color = "var(--coral-deep)";
+        status.textContent = "❌ Lỗi đọc file: " + err.message;
       }
-      const safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-      chatBox.innerHTML += `<div class="flex justify-end"><div class="bg-blue-600 text-white text-sm px-4 py-2.5 rounded-2xl rounded-tr-none max-w-md shadow-sm whitespace-pre-wrap">${safeText}</div></div><div class="flex justify-start"><div class="bg-slate-100 text-slate-800 text-sm px-4 py-2.5 rounded-2xl rounded-tl-none max-w-md">Cảm ơn bạn đã chia sẻ với SAFE NET 3A. (Gắn API Chatbot & Google Sheets của bạn tại đây).</div></div>`;
-      input.value = '';
-      updateCharCount();
-      chatBox.scrollTop = chatBox.scrollHeight;
+    });
+  }
+})();
+</script>
+<script>
+(function() {
+  function byId(id) { return document.getElementById(id); }
+
+  if (byId("welcomeRulesModal")) {
+    document.body.style.overflow = "hidden";
+  }
+
+  var messagesEl = byId("messages");
+  var inputEl = byId("messageInput");
+  var sendBtn = byId("sendBtn");
+  var form = byId("chatForm");
+
+  var SUGGESTIONS = [
+    { label: "Bị nói xấu trong nhóm chat", prompt: "Mình đang bị một nhóm bạn nói xấu và chế giễu trong nhóm chat lớp. Mình không biết nên phản ứng thế nào." },
+    { label: "Cảm thấy bị cô lập", prompt: "Mình cảm thấy bị cô lập, các bạn thường không cho mình tham gia vào nhóm." },
+    { label: "Áp lực học tập", prompt: "Mình đang chịu áp lực học tập và cảm thấy rất khó cân bằng mọi thứ." },
+    { label: "Bị làm phiền trên mạng", prompt: "Có người lạ liên tục nhắn tin làm phiền và khiến mình thấy không an toàn." }
+  ];
+
+  function renderSuggestions() {
+    var box = byId("suggestions");
+    if (!box) return;
+    box.innerHTML = "";
+    SUGGESTIONS.forEach(function(item) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "suggestion";
+      btn.textContent = "• " + item.label;
+      btn.addEventListener("click", function() { sendMessage(item.prompt); });
+      box.appendChild(btn);
+    });
+  }
+  renderSuggestions();
+
+  var history = new Array();
+  var busy = false;
+
+  function timeLabel() {
+    return new Intl.DateTimeFormat("vi-VN", { hour: "2-digit", minute: "2-digit" }).format(new Date());
+  }
+
+  function addMessage(role, text) {
+    var w = byId("welcome");
+    if (w) w.remove();
+
+    var row = document.createElement("div");
+    row.className = "msg-row " + (role === "user" ? "user" : "assistant");
+    if (role !== "user") {
+      var avatar = document.createElement("div");
+      avatar.className = "msg-avatar";
+      avatar.textContent = "3A";
+      row.appendChild(avatar);
     }
-  </script>
+    var wrap = document.createElement("div");
+    var bubble = document.createElement("div");
+    bubble.className = "bubble";
+
+    var safeHtml = text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\*\*([^*]+?)\*{1,2}/g, "<strong>$1</strong>")
+      .replace(/\*/g, "");
+    bubble.innerHTML = safeHtml;
+
+    var time = document.createElement("div");
+    time.className = "msg-time";
+    time.textContent = timeLabel();
+    wrap.appendChild(bubble);
+    wrap.appendChild(time);
+    row.appendChild(wrap);
+    messagesEl.appendChild(row);
+
+    if (role !== "user" && typeof window.renderMathInElement === "function") {
+      window.renderMathInElement(bubble, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$", right: "$", display: false }
+        ],
+        throwOnError: false
+      });
+    }
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function setBusy(val) {
+    busy = val;
+    sendBtn.disabled = val;
+    inputEl.disabled = val;
+    sendBtn.textContent = val ? "…" : "➤";
+  }
+
+  async function sendMessage(text) {
+    var clean = text.trim();
+    if (!clean || busy || clean.length > 4000) return;
+
+    addMessage("user", clean);
+    inputEl.value = "";
+    byId("counter").textContent = "0/4000";
+    inputEl.style.height = "auto";
+    setBusy(true);
+
+    try {
+      var fileObj = window.safeNetFile || { name: "", text: "" };
+      var response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: clean,
+          history: history.slice(-20),
+          fileName: fileObj.name,
+          fileContent: fileObj.text
+        })
+      });
+
+      var data = await response.json().catch(function() { return {}; });
+      if (!response.ok) {
+        throw new Error(data.error || "Chưa thể kết nối SAFE NET lúc này.");
+      }
+
+      var answer = (data.reply || "").trim();
+      history.push({ role: "user", text: clean });
+      history.push({ role: "model", text: answer });
+      addMessage("assistant", answer);
+    } catch (error) {
+      addMessage("assistant", "Mình chưa kết nối được với hệ thống AI. " + error.message);
+    } finally {
+      setBusy(false);
+      inputEl.focus();
+    }
+  }
+
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+    sendMessage(inputEl.value);
+  });
+
+  inputEl.addEventListener("input", function() {
+    byId("counter").textContent = inputEl.value.length + "/4000";
+    inputEl.style.height = "auto";
+    inputEl.style.height = Math.min(inputEl.scrollHeight, 130) + "px";
+  });
+
+  inputEl.addEventListener("keydown", function(e) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      form.requestSubmit();
+    }
+  });
+
+  function newChat() {
+    if (busy) return;
+    history.length = 0;
+    messagesEl.innerHTML = '<div class="welcome" id="welcome"><h2>Tôi có thể giúp gì cho bạn?</h2><p>Bạn có thể tải tài liệu lên hoặc chia sẻ câu chuyện của mình bên dưới.</p><div class="suggestions" id="suggestions"></div></div>';
+    renderSuggestions();
+    inputEl.focus();
+  }
+
+  byId("newChatTop")?.addEventListener("click", newChat);
+  byId("newChatCard")?.addEventListener("click", newChat);
+
+  var padletUrl = "https" + "://" + "padlet.com" + "/bngan5441/TramLangNghe_THPTMoDuc";
+  byId("padletBtn")?.addEventListener("click", function() {
+    window.open(padletUrl, "_blank", "noopener,noreferrer");
+  });
+
+  byId("call111Btn")?.addEventListener("click", function() {
+    window.location.href = "tel:111";
+  });
+
+  document.querySelectorAll(".footer-hotlines li").forEach(function(item) {
+    item.addEventListener("click", function() {
+      var num = item.getAttribute("data-num");
+      if (num) window.location.href = "tel:" + num;
+    });
+  });
+})();
+</script>
 </body>
 </html>
