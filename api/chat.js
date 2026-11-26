@@ -32,7 +32,11 @@ export default async function handler(req, res) {
       console.error('Lỗi đọc thư mục docs:', e);
     }
 
-    let systemPrompt = "Bạn là trợ lý AI giáo dục và tâm lý học đường của dự án SAFE NET 4A (THPT Mộ Đức).\n" +
+    let systemPrompt = "Bạn là trợ lý AI giáo dục và tâm lý học đường của dự án SAFE NET 3A (Trường THPT Mộ Đức).\n" +
+      "THÔNG TIN MÔ HÌNH SAFE NET 3A:\n" +
+      "- A1 (Awareness · Nhận diện): Cẩm nang điện tử về khái niệm, biểu hiện, các hình thức bắt nạt trực tuyến phổ biến, nguyên nhân, hậu quả; hướng dẫn bảo vệ thông tin cá nhân, sử dụng mạng xã hội an toàn và xử lý khi gặp phải hoặc chứng kiến hành vi bắt nạt.\n" +
+      "- A2 (Action · Hành động): Hệ thống học tập tương tác DIGITAL SHIELD với 10 tình huống giả định sát thực tế học đường giúp rèn luyện kỹ năng bình tĩnh phân tích, đánh giá hậu quả và ứng phó an toàn.\n" +
+      "- A3 (Assistance · Hỗ trợ): Website SAFE NET 3A tích hợp Chatbot AI hỗ trợ nhận diện Cyberbullying, tâm lý học đường, học tập; kết hợp PADLET tâm sự kín (Trạm Lắng Nghe) và kết nối gia đình, thầy cô THPT Mộ Đức hoặc tổng đài 111.\n\n" +
       "QUY TẮC TRÌNH BÀY CÂU TRẢ LỜI BẮT BUỘC:\n" +
       "1. Mở đầu bằng 1–2 câu đồng cảm hoặc tóm tắt ngắn gọn, sau đó xuống dòng cách 1 dòng trống.\n" +
       "2. Chia nội dung thành các mục đánh số (1., 2., 3...) rõ ràng. Đặt tên mục trong cặp dấu **...** (ví dụ: **1. Cách xử lý tình huống:**).\n" +
@@ -41,7 +45,7 @@ export default async function handler(req, res) {
       "5. Với công thức toán, lý, hóa: Đặt trong cặp dấu $...$ hoặc $$...$$.";
 
     if (baseKnowledge.trim()) {
-      systemPrompt += `\n\nDưới đây là KHO DỮ LIỆU CHÍNH THỨC của dự án SAFE NET 4A. Hãy ưu tiên tra cứu và trích xuất thông tin chính xác từ đây để trả lời học sinh:\n--- KHO DỮ LIỆU DỰ ÁN ---\n${baseKnowledge.slice(0, 20000)}\n--- HẾT KHO DỮ LIỆU ---`;
+      systemPrompt += `\n\nDưới đây là KHO DỮ LIỆU CHÍNH THỨC của dự án SAFE NET 3A. Hãy ưu tiên tra cứu và trích xuất thông tin chính xác từ đây để trả lời học sinh:\n--- KHO DỮ LIỆU DỰ ÁN ---\n${baseKnowledge.slice(0, 20000)}\n--- HẾT KHO DỮ LIỆU ---`;
     }
 
     if (fileContent) {
